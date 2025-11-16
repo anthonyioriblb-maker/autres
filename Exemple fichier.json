@@ -1,0 +1,170 @@
+{
+  "students": [
+    {
+      "id": 1,
+      "name": "MARTIN Sophie",
+      "trimestres": {
+        "T1": {
+          "moyenne": 14.5,
+          "notes": {
+            "Français": 15.5,
+            "Mathématiques": 13.0,
+            "Histoire-Géographie": 16.0,
+            "Anglais": 14.5,
+            "Espagnol": 13.5,
+            "SVT": 15.0,
+            "Physique-Chimie": 14.0,
+            "Technologie": 15.5,
+            "EPS": 16.0,
+            "Arts Plastiques": 14.0,
+            "Musique": 13.5
+          },
+          "absences": 2,
+          "retards": 1,
+          "distinction": "compliments",
+          "comportementNegatif": "Quelques bavardages en cours de Mathématiques",
+          "comportementPositif": "Élève sérieuse et investie\nParticipation active en Français\nBonne entraide avec ses camarades\nTravail soigné et régulier",
+          "appreciation": "Très bon trimestre. Sophie fait preuve de sérieux et d'investissement dans toutes les matières. Ses résultats sont homogènes et témoignent d'un travail régulier. Elle doit continuer sur cette lancée en veillant à rester concentrée en cours de Mathématiques."
+        },
+        "T2": {
+          "moyenne": 15.2,
+          "notes": {
+            "Français": 16.0,
+            "Mathématiques": 14.5,
+            "Histoire-Géographie": 16.5,
+            "Anglais": 15.0,
+            "Espagnol": 14.0,
+            "SVT": 15.5,
+            "Physique-Chimie": 15.0,
+            "Technologie": 16.0,
+            "EPS": 15.5,
+            "Arts Plastiques": 14.5,
+            "Musique": 14.5
+          },
+          "absences": 0,
+          "retards": 0,
+          "distinction": "felicitations",
+          "comportementNegatif": "",
+          "comportementPositif": "Excellente progression en Mathématiques\nAttitude exemplaire en classe\nImplication remarquable dans les travaux de groupe\nAide spontanément ses camarades\nPrise d'initiative lors des exposés",
+          "appreciation": "Excellent trimestre. Sophie confirme ses excellentes dispositions et progresse dans toutes les matières. Son attitude en classe est exemplaire et elle fait preuve d'une grande maturité. Son investissement et sa rigueur sont à souligner."
+        },
+        "T3": {
+          "moyenne": 15.8,
+          "notes": {
+            "Français": 17.0,
+            "Mathématiques": 15.0,
+            "Histoire-Géographie": 17.5,
+            "Anglais": 16.0,
+            "Espagnol": 15.0,
+            "SVT": 16.0,
+            "Physique-Chimie": 15.5,
+            "Technologie": 16.5,
+            "EPS": 16.0,
+            "Arts Plastiques": 15.0,
+            "Musique": 14.5
+          },
+          "absences": 1,
+          "retards": 0,
+          "distinction": "felicitations",
+          "comportementNegatif": "",
+          "comportementPositif": "Année remarquable sur tous les plans\nAutonomie et esprit d'initiative développés\nQualités humaines appréciées de tous\nMaturité et responsabilité exemplaires\nMoteur de la classe",
+          "appreciation": "Année exceptionnelle. Sophie a su maintenir un excellent niveau tout au long de l'année et s'est affirmée comme une élève de référence dans la classe. Ses qualités de travail et son comportement exemplaire lui permettent d'envisager sereinement la poursuite de sa scolarité."
+        }
+      },
+      "orientation": {
+        "parcours": "2nde Générale et Technologique",
+        "voeux": [
+          "1. Lycée Victor Hugo - 2nde Générale",
+          "2. Lycée Sainte-Marie - 2nde Générale",
+          "3. Lycée Jean Moulin - 2nde Générale"
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "name": "DUBOIS Lucas",
+      "trimestres": {
+        "T1": {
+          "moyenne": 9.2,
+          "notes": {
+            "Français": 8.5,
+            "Mathématiques": 7.0,
+            "Histoire-Géographie": 9.0,
+            "Anglais": 8.0,
+            "Espagnol": 7.5,
+            "SVT": 10.5,
+            "Physique-Chimie": 8.5,
+            "Technologie": 12.0,
+            "EPS": 13.5,
+            "Arts Plastiques": 11.0,
+            "Musique": 9.5
+          },
+          "absences": 18,
+          "retards": 7,
+          "distinction": "",
+          "comportementNegatif": "Passivité généralisée en classe\nManque de travail personnel évident\nNe sollicite pas d'aide malgré les difficultés\nAbsences répétées et injustifiées\nRetards fréquents perturbant le cours",
+          "comportementPositif": "Élève discret et non-perturbateur\nBons résultats en EPS et Technologie\nCapacités réelles mais inexploitées",
+          "appreciation": "Trimestre très préoccupant. Lucas reste passif en classe et ne fournit pas le travail personnel nécessaire pour combler ses difficultés. Les absences répétées aggravent la situation. Des capacités existent mais restent inexploitées. Réaction indispensable au T2."
+        },
+        "T2": {
+          "moyenne": 10.5,
+          "notes": {
+            "Français": 10.0,
+            "Mathématiques": 9.5,
+            "Histoire-Géographie": 10.5,
+            "Anglais": 9.0,
+            "Espagnol": 9.5,
+            "SVT": 11.0,
+            "Physique-Chimie": 10.0,
+            "Technologie": 13.5,
+            "EPS": 14.0,
+            "Arts Plastiques": 11.5,
+            "Musique": 10.0
+          },
+          "absences": 8,
+          "retards": 3,
+          "distinction": "encouragements",
+          "comportementNegatif": "Encore quelques absences\nParticipation timide à l'oral\nTravail personnel encore insuffisant",
+          "comportementPositif": "Nette amélioration du comportement\nEfforts visibles dans toutes les matières\nAssiduité en progrès\nDemande de l'aide plus régulièrement\nProgression encourageante en Mathématiques et Français",
+          "appreciation": "Trimestre encourageant. Lucas a pris conscience de ses difficultés et fournit des efforts visibles. Ses résultats progressent dans toutes les matières et l'assiduité s'améliore. Il doit poursuivre sur cette voie en renforçant son travail personnel et sa participation en classe."
+        },
+        "T3": {
+          "moyenne": 11.8,
+          "notes": {
+            "Français": 11.5,
+            "Mathématiques": 11.0,
+            "Histoire-Géographie": 12.0,
+            "Anglais": 10.5,
+            "Espagnol": 11.0,
+            "SVT": 12.5,
+            "Physique-Chimie": 11.5,
+            "Technologie": 14.0,
+            "EPS": 15.0,
+            "Arts Plastiques": 12.0,
+            "Musique": 11.0
+          },
+          "absences": 3,
+          "retards": 1,
+          "distinction": "compliments",
+          "comportementNegatif": "",
+          "comportementPositif": "Transformation remarquable tout au long de l'année\nÉlève devenu acteur de sa scolarité\nParticipation régulière et pertinente\nAssiduité et ponctualité retrouvées\nTravail personnel soutenu\nAttitude positive et volontaire",
+          "appreciation": "Année remarquable par la progression accomplie. Lucas a su réagir après un premier trimestre difficile et s'est pleinement investi dans son travail. Ses résultats sont en constante amélioration et son attitude en classe a totalement changé. Il peut aborder sereinement la classe de seconde s'il maintient cet engagement."
+        }
+      },
+      "orientation": {
+        "parcours": "2nde Générale et Technologique",
+        "voeux": [
+          "1. Lycée Technique Paul Bert - 2nde STI2D",
+          "2. Lycée Professionnel Jules Ferry - Bac Pro Électrotechnique",
+          "3. Lycée Jean Moulin - 2nde Générale"
+        ]
+      }
+    }
+  ],
+  "appreciationsClasse": {
+    "general": "Classe de 3ème dynamique et hétérogène. Les élèves ont su évoluer positivement au cours de l'année et se sont investis dans leur orientation.",
+    "T1": "Premier trimestre marqué par une mise en route difficile pour certains élèves. La classe doit gagner en maturité et en investissement personnel.",
+    "T2": "Deuxième trimestre en nette amélioration. La classe a pris conscience des enjeux de l'orientation et montre un investissement accru dans le travail.",
+    "T3": "Troisième trimestre positif. La classe termine l'année sur de bonnes bases et est prête pour aborder le lycée. Les progrès accomplis sont encourageants."
+  }
+}

@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion Conseils de Classe - 3ème</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* INITIAL CHOICE PAGE */
+        .choice-page {
+            max-width: 800px;
+            margin: 100px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .choice-page h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 40px;
+        }
+
+        .choice-buttons {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .choice-btn {
+            flex: 1;
+            min-width: 250px;
+            padding: 40px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .choice-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .choice-btn-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .choice-btn-text {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .choice-btn-description {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        /* MAIN APP */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+            display: none;
+        }
+
+        .container.active {
+            display: block;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f5f5f5;
+            border-bottom: 2px solid #e0e0e0;
+            overflow-x: auto;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            background: #f5f5f5;
+            border: none;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s;
+            color: #666;
+            min-width: 150px;
+        }
+
+        .tab:hover {
+            background: #e8e8e8;
+        }
+
+        .tab.active {
+            background: white;
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 30px;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            box-shadow: 0 2px 10px rgba(108, 117, 125, 0.3);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            box-shadow: 0 2px 10px rgba(220, 53, 69, 0.3);
+        }
+
+        .student-list {
+            display: grid;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .student-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s;
+        }
+
+        .student-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateX(5px);
+        }
+
+        .student-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .student-name {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .student-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-small {
+            padding: 8px 15px;
+            font-size: 0.9em;
+        }
+
+        .trimestre-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .trimestre-btn {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .trimestre-btn.active {
+            background: #28a745;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 1em;
+            opacity: 0.9;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+            margin-top: 20px;
+        }
+
+        canvas {
+            width: 100% !important;
+            height: 300px !important;
+        }
+
+        .action-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .export-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1em;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 10px;
+        }
+
+        .note-item {
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .distinction-badges {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .badge {
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            font-size: 0.9em;
+            opacity: 0.3;
+        }
+
+        .badge.active {
+            opacity: 1;
+        }
+
+        .badge-felicitations {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-felicitations.active {
+            background: #fbbf24;
+            border-color: #92400e;
+            font-weight: bold;
+        }
+
+        .badge-compliments {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-compliments.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #1e40af;
+            font-weight: bold;
+        }
+
+        .badge-encouragements {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-encouragements.active {
+            background: #10b981;
+            color: white;
+            border-color: #065f46;
+            font-weight: bold;
+        }
+
+        .history-timeline {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f9fafb;
+            border-radius: 8px;
+        }
+
+        .history-item {
+            padding: 15px;
+            background: white;
+            border-left: 4px solid #667eea;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .history-trimestre {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .info-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .info-item {
+            padding: 10px;
+        }
+
+        .info-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printReport, #printReport * {
+                visibility: visible;
+            }
+            #printReport {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .choice-page {
+                margin: 20px auto;
+                padding: 20px;
+            }
+
+            .choice-buttons {
+                flex-direction: column;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab {
+                min-width: 100%;
+            }
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        /* Notification de sauvegarde */
+        .save-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 10000;
+            animation: slideIn 0.3s, slideOut 0.3s 2.7s;
+            font-weight: 600;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- CHOICE PAGE -->
+    <div id="choicePage" class="choice-page">
+        <h1>📚 Gestion Conseils de Classe - 3ème</h1>
+        <div class="choice-buttons">
+            <button class="choice-btn" onclick="startNewFile()">
+                <span class="choice-btn-icon">➕</span>
+                <div class="choice-btn-text">Nouveau fichier</div>
+                <div class="choice-btn-description">Commencer avec une classe vierge</div>
+            </button>
+            <button class="choice-btn" onclick="openExistingFile()">
+                <span class="choice-btn-icon">📂</span>
+                <div class="choice-btn-text">Ouvrir un fichier</div>
+                <div class="choice-btn-description">Charger des données existantes (JSON)</div>
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div class="container" id="mainApp">
+        <header>
+            <h1>📚 Gestion Conseils de Classe - 3ème</h1>
+            <p class="subtitle">Suivi des élèves, moyennes et orientations</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('eleves')">👥 Élèves</button>
+            <button class="tab" onclick="switchTab('bilan')">📝 Bilan de classe</button>
+            <button class="tab" onclick="switchTab('synthese')">📊 Synthèse</button>
+            <button class="tab" onclick="switchTab('export')">💾 Export/Import</button>
+        </div>
+
+        <!-- TAB: ÉLÈVES -->
+        <div id="tab-eleves" class="tab-content active">
+            <h2>Gestion des élèves</h2>
+            
+            <input type="text" id="searchStudent" class="search-box" placeholder="🔍 Rechercher un élève..." oninput="filterStudents()">
+            
+            <div class="trimestre-selector">
+                <button class="trimestre-btn active" onclick="filterByTrimestre(0)">Tous</button>
+                <button class="trimestre-btn" onclick="filterByTrimestre(1)">T1</button>
+                <button class="trimestre-btn" onclick="filterByTrimestre(2)">T2</button>
+                <button class="trimestre-btn" onclick="filterByTrimestre(3)">T3</button>
+            </div>
+
+            <div id="studentsList"></div>
+        </div>
+
+        <!-- TAB: BILAN -->
+        <div id="tab-bilan" class="tab-content">
+            <h2>Bilan de classe</h2>
+            
+            <div class="form-group">
+                <label>Sélectionner le trimestre pour le bilan :</label>
+                <div class="trimestre-selector">
+                    <button class="trimestre-btn active" onclick="selectBilanTrimestre(0)">Bilan général</button>
+                    <button class="trimestre-btn" onclick="selectBilanTrimestre(1)">Trimestre 1</button>
+                    <button class="trimestre-btn" onclick="selectBilanTrimestre(2)">Trimestre 2</button>
+                    <button class="trimestre-btn" onclick="selectBilanTrimestre(3)">Trimestre 3</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Appréciation générale de la classe :</label>
+                <textarea id="appreciationClasse" 
+                    placeholder="Rédigez ici l'appréciation générale de la classe pour ce trimestre..."
+                    oninput="saveAppreciationClasse(this.value)"
+                    style="min-height: 200px;"></textarea>
+            </div>
+
+            <div id="bilanStudentList"></div>
+        </div>
+
+        <!-- TAB: SYNTHÈSE -->
+        <div id="tab-synthese" class="tab-content">
+            <h2>Synthèse de la classe</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="statEffectif">0</div>
+                    <div class="stat-label">Élèves</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="statMoyenne">0</div>
+                    <div class="stat-label">Moyenne de classe</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px; background: white; padding: 20px; border-radius: 10px; border: 2px solid #e0e0e0;">
+                <h3 style="margin-bottom: 20px;">🏆 Distinctions par trimestre</h3>
+                <div id="distinctionsParTrimestre"></div>
+            </div>
+
+            <div class="chart-container">
+                <h3>Répartition des moyennes</h3>
+                <canvas id="statsChart"></canvas>
+            </div>
+        </div>
+
+        <!-- TAB: EXPORT/IMPORT -->
+        <div id="tab-export" class="tab-content">
+            <h2>Gestion des données</h2>
+            
+            <div class="export-section">
+                <h3>💾 Sauvegarder vos données</h3>
+                <p>Exportez toutes les données en format JSON (sauvegarde rapide : <strong>Ctrl+S</strong>).</p>
+                <button onclick="exportJSON()">📥 Télécharger JSON</button>
+            </div>
+
+            <div class="export-section">
+                <h3>📂 Charger/Fusionner des données</h3>
+                <p>Importez un fichier JSON. Si des élèves existent déjà, leurs données seront fusionnées (les nouveaux trimestres s'ajoutent aux anciens).</p>
+                <input type="file" id="jsonImport" accept=".json" onchange="handleJSONImport(event)">
+                <button onclick="importJSON()">📤 Importer JSON</button>
+                <div id="jsonImportStatus" style="margin-top: 15px;"></div>
+            </div>
+
+            <div class="export-section">
+                <h3>🖨️ Impression</h3>
+                <p>Générez un rapport imprimable de tous les élèves.</p>
+                <button onclick="exportPrintableReport()">🖨️ Générer rapport imprimable</button>
+            </div>
+
+            <div class="export-section" style="background: #ffe0e0; border: 2px solid #dc3545;">
+                <h3>⚠️ Zone dangereuse</h3>
+                <p><strong>Attention :</strong> Cette action est irréversible !</p>
+                <button class="btn-danger" onclick="resetAllData()">🗑️ Effacer toutes les données</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="printReport" class="hidden"></div>
+
+    <input type="file" id="jsonImport" accept=".json" onchange="handleJSONImport(event)" style="display: none;">
+
+    <script>
+        // Variables globales
+        let students = [];
+        let appreciationsClasse = {};
+        let currentTrimestre = 'T1';
+        let currentBilanTrimestre = 0;
+        let currentFileName = 'conseil_classe.json';
+        let currentFilterTrimestre = 0;
+        let nextStudentId = 1;
+
+        // Navigation initiale
+        function startNewFile() {
+            // Réinitialiser les données
+            students = [];
+            appreciationsClasse = {};
+            currentFileName = 'conseil_classe.json';
+            
+            // Afficher l'application
+            document.getElementById('choicePage').classList.add('hidden');
+            document.getElementById('mainApp').classList.add('active');
+            
+            renderAll();
+        }
+
+        function openExistingFile() {
+            // Ouvrir le sélecteur de fichier
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                currentFileName = file.name;
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    try {
+                        const data = JSON.parse(event.target.result);
+                        students = data.students || [];
+                        
+                        // Assurer que chaque élève a un ID
+                        students.forEach(student => {
+                            if (!student.id) {
+                                student.id = nextStudentId++;
+                            } else {
+                                nextStudentId = Math.max(nextStudentId, student.id + 1);
+                            }
+                            // Assurer que l'orientation existe
+                            if (!student.orientation) {
+                                student.orientation = { parcours: '', voeux: [] };
+                            }
+                            // Assurer que chaque trimestre a les champs nécessaires
+                            Object.keys(student.trimestres || {}).forEach(t => {
+                                if (!student.trimestres[t].notes) {
+                                    student.trimestres[t].notes = {};
+                                }
+                                if (!student.trimestres[t].absences) {
+                                    student.trimestres[t].absences = 0;
+                                }
+                                if (!student.trimestres[t].retards) {
+                                    student.trimestres[t].retards = 0;
+                                }
+                            });
+                        });
+                        
+                        appreciationsClasse = data.appreciationsClasse || {};
+                        
+                        // Afficher l'application
+                        document.getElementById('choicePage').classList.add('hidden');
+                        document.getElementById('mainApp').classList.add('active');
+                        
+                        renderAll();
+                        alert('✅ Fichier chargé avec succès !');
+                    } catch (error) {
+                        alert('❌ Erreur : fichier JSON invalide');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+
+        // Gestion des onglets
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById('tab-' + tabName).classList.add('active');
+            
+            if (tabName === 'bilan') renderBilan();
+            if (tabName === 'synthese') renderSynthese();
+        }
+
+        // Gestion des trimestres et filtres
+        function filterByTrimestre(num) {
+            currentFilterTrimestre = num;
+            document.querySelectorAll('#tab-eleves .trimestre-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderStudents();
+        }
+
+        function filterStudents() {
+            renderStudents();
+        }
+
+        // Affichage des élèves
+        function renderStudents() {
+            const container = document.getElementById('studentsList');
+            container.innerHTML = '';
+
+            const searchTerm = document.getElementById('searchStudent').value.toLowerCase();
+            
+            let filteredStudents = students;
+            if (searchTerm) {
+                filteredStudents = filteredStudents.filter(s => 
+                    s.name.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            filteredStudents.sort((a, b) => a.name.localeCompare(b.name));
+
+            if (currentFilterTrimestre === 0) {
+                // Mode "Tous" : afficher une carte pour chaque trimestre de chaque élève
+                filteredStudents.forEach(student => {
+                    ['T1', 'T2', 'T3'].forEach(trimestre => {
+                        if (student.trimestres[trimestre]) {
+                            const card = createStudentCardForTrimestre(student, trimestre);
+                            container.appendChild(card);
+                        }
+                    });
+                });
+            } else {
+                // Mode trimestre spécifique : afficher seulement les élèves qui ont ce trimestre
+                const trimestre = `T${currentFilterTrimestre}`;
+                filteredStudents.forEach(student => {
+                    if (student.trimestres[trimestre]) {
+                        const card = createStudentCardForTrimestre(student, trimestre);
+                        container.appendChild(card);
+                    }
+                });
+            }
+        }
+
+        function createStudentCardForTrimestre(student, trimestre) {
+            const card = document.createElement('div');
+            card.className = 'student-card';
+            const data = student.trimestres[trimestre] || {};
+
+            card.innerHTML = `
+                <div class="student-header">
+                    <div class="student-name">${student.name} - ${trimestre}</div>
+                    <div class="student-moyenne">${data.moyenne ? data.moyenne.toFixed(1) : '-'}/20</div>
+                </div>
+
+                <!-- SECTION 1 : RÉSULTATS CHIFFRÉS -->
+                <div style="margin-top: 20px; padding: 15px; background: #f8f9ff; border-radius: 8px;">
+                    <h4 style="color: #667eea; margin-bottom: 15px;">📊 RÉSULTATS CHIFFRÉS</h4>
+                    
+                    <div style="margin-bottom: 15px; line-height: 1.8;">
+                        <div><strong>• Moyenne générale ${trimestre}:</strong> ${data.moyenne ? data.moyenne.toFixed(1) : '-'}/20</div>
+                        <div><strong>• Matières < 10/20:</strong> ${Object.values(data.notes || {}).filter(n => n < 10).length} matières</div>
+                        <div style="display: flex; gap: 20px; margin-top: 10px;">
+                            <div style="flex: 1;">
+                                <label style="font-size: 0.9em; color: #666;">Absences (heures):</label>
+                                <input type="number" value="${data.absences || 0}" 
+                                       onchange="saveAbsences(${student.id}, '${trimestre}', this.value)"
+                                       style="width: 100%; padding: 8px; border: 1px solid #e5e7eb; border-radius: 5px; margin-top: 5px;">
+                            </div>
+                            <div style="flex: 1;">
+                                <label style="font-size: 0.9em; color: #666;">Retards:</label>
+                                <input type="number" value="${data.retards || 0}" 
+                                       onchange="saveRetards(${student.id}, '${trimestre}', this.value)"
+                                       style="width: 100%; padding: 8px; border: 1px solid #e5e7eb; border-radius: 5px; margin-top: 5px;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 15px;">
+                        <strong style="color: #667eea;">Détail par matière</strong>
+                        <div class="notes-grid" style="margin-top: 10px;">
+                            ${Object.entries(data.notes || {}).sort((a, b) => a[1] - b[1]).map(([subject, note]) => {
+                                let bgColor = '#ef4444'; // rouge
+                                if (note >= 10) {
+                                    bgColor = '#10b981'; // vert
+                                } else if (note >= 8) {
+                                    bgColor = '#f59e0b'; // orange
+                                }
+                                return `
+                                    <div class="note-item" style="background: ${bgColor}20; border-left: 3px solid ${bgColor};">
+                                        <div class="note-subject" style="font-weight: 600;">${subject}</div>
+                                        <div class="note-value" style="font-size: 1.2em; font-weight: bold; color: ${bgColor};">${note.toFixed(1)}</div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 2 : COMPORTEMENT & ATTITUDE -->
+                <div style="margin-top: 20px; padding: 15px; background: #f8f9ff; border-radius: 8px;">
+                    <h4 style="color: #667eea; margin-bottom: 10px;">👤 COMPORTEMENT & ATTITUDE</h4>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tr>
+                            <th style="background: #dc2626; color: white; padding: 10px; text-align: left; border: 1px solid #e5e7eb; width: 50%;">❌ Points négatifs</th>
+                            <th style="background: #10b981; color: white; padding: 10px; text-align: left; border: 1px solid #e5e7eb; width: 50%;">✅ Points positifs</th>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #e5e7eb; padding: 10px; vertical-align: top; background: #fee2e2;">
+                                <textarea placeholder="Passivité généralisée en classe&#10;Manque de travail personnel&#10;Ne sollicite pas d'aide&#10;Absences répétées..." 
+                                          onblur="saveComportementNegatif(${student.id}, '${trimestre}', this.value)"
+                                          style="width: 100%; min-height: 120px; border: none; resize: vertical; font-size: 0.9em; background: transparent;">${data.comportementNegatif || ''}</textarea>
+                            </td>
+                            <td style="border: 1px solid #e5e7eb; padding: 10px; vertical-align: top; background: #d1fae5;">
+                                <textarea placeholder="Discrète et non-perturbatrice&#10;Travail appliqué en Histoire-Géo&#10;Prise de confiance à l'oral en Français&#10;Progrès notés en EPS..." 
+                                          onblur="saveComportementPositif(${student.id}, '${trimestre}', this.value)"
+                                          style="width: 100%; min-height: 120px; border: none; resize: vertical; font-size: 0.9em; background: transparent;">${data.comportementPositif || ''}</textarea>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- SECTION ORIENTATION -->
+                <div style="margin-top: 20px; padding: 15px; background: #fff4e6; border-radius: 8px; border: 2px solid #fbbf24;">
+                    <h4 style="color: #f59e0b; margin-bottom: 10px;">🎯 VŒUX D'ORIENTATION</h4>
+                    <textarea placeholder="Vœux d'orientation (un par ligne)&#10;Ex: 1. Lycée Jean Moulin - 2nde Générale&#10;     2. Lycée Technique - STI2D&#10;     3. CAP Électricien - CFA de Lyon" 
+                              onblur="saveVoeux(${student.id}, this.value)" 
+                              style="width: 100%; min-height: 100px; font-size: 0.9em; resize: vertical;">${(student.orientation.voeux || []).join('\n')}</textarea>
+                </div>
+
+                <!-- SECTION DISTINCTION -->
+                <div style="margin-top: 20px; padding: 15px; background: #f8f9ff; border-radius: 8px;">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-label">Distinction ${trimestre}</div>
+                            <div class="distinction-badges">
+                                <span class="badge badge-felicitations ${data.distinction === 'felicitations' ? 'active' : ''}" 
+                                      onclick="toggleDistinction(${student.id}, '${trimestre}', 'felicitations')">
+                                    🏆 Félicitations
+                                </span>
+                                <span class="badge badge-compliments ${data.distinction === 'compliments' ? 'active' : ''}"
+                                      onclick="toggleDistinction(${student.id}, '${trimestre}', 'compliments')">
+                                    👏 Compliments
+                                </span>
+                                <span class="badge badge-encouragements ${data.distinction === 'encouragements' ? 'active' : ''}"
+                                      onclick="toggleDistinction(${student.id}, '${trimestre}', 'encouragements')">
+                                    💪 Encouragements
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 3 : APPRÉCIATION GÉNÉRALE -->
+                <div style="margin-top: 20px; padding: 15px; background: #f8f9ff; border-radius: 8px;">
+                    <h4 style="color: #667eea; margin-bottom: 10px;">📝 APPRÉCIATION GÉNÉRALE DU CONSEIL DE CLASSE</h4>
+                    <textarea id="appreciation_${student.id}_${trimestre}" placeholder="Trimestre très préoccupant. [Prénom] reste passive en classe et ne fournit pas le travail personnel nécessaire pour combler ses difficultés. Des capacités existent mais restent inexploitées. Réaction indispensable au T2..." 
+                              onblur="saveAppreciation(${student.id}, '${trimestre}', this.value)"
+                              style="width: 100%; min-height: 100px; resize: vertical; font-size: 0.95em; line-height: 1.6;">${getAppreciationWithDistinction(data)}</textarea>
+                </div>
+            `;
+
+            return card;
+        }
+
+        function getAppreciationWithDistinction(data) {
+            let appreciation = data.appreciation || '';
+            
+            // Retirer les anciennes mentions si elles existent
+            appreciation = appreciation.replace(/\s*FÉLICITATIONS DU CONSEIL DE CLASSE\.?\s*$/i, '');
+            appreciation = appreciation.replace(/\s*COMPLIMENTS DU CONSEIL DE CLASSE\.?\s*$/i, '');
+            appreciation = appreciation.replace(/\s*ENCOURAGEMENTS DU CONSEIL DE CLASSE\.?\s*$/i, '');
+            
+            // Ajouter la nouvelle mention selon la distinction
+            if (data.distinction === 'felicitations') {
+                appreciation = appreciation.trim() + ' FÉLICITATIONS DU CONSEIL DE CLASSE.';
+            } else if (data.distinction === 'compliments') {
+                appreciation = appreciation.trim() + ' COMPLIMENTS DU CONSEIL DE CLASSE.';
+            } else if (data.distinction === 'encouragements') {
+                appreciation = appreciation.trim() + ' ENCOURAGEMENTS DU CONSEIL DE CLASSE.';
+            }
+            
+            return appreciation;
+        }
+
+        function toggleDistinction(studentId, trimestre, distinction) {
+            const student = students.find(s => s.id === studentId);
+            if (!student || !student.trimestres[trimestre]) return;
+
+            const current = student.trimestres[trimestre].distinction;
+            student.trimestres[trimestre].distinction = current === distinction ? '' : distinction;
+            
+            // Mettre à jour l'appréciation avec la mention
+            const textarea = document.getElementById(`appreciation_${studentId}_${trimestre}`);
+            if (textarea) {
+                let appreciation = student.trimestres[trimestre].appreciation || '';
+                
+                // Retirer les anciennes mentions
+                appreciation = appreciation.replace(/\s*FÉLICITATIONS DU CONSEIL DE CLASSE\.?\s*$/i, '');
+                appreciation = appreciation.replace(/\s*COMPLIMENTS DU CONSEIL DE CLASSE\.?\s*$/i, '');
+                appreciation = appreciation.replace(/\s*ENCOURAGEMENTS DU CONSEIL DE CLASSE\.?\s*$/i, '');
+                
+                // Ajouter la nouvelle mention selon la distinction
+                if (student.trimestres[trimestre].distinction === 'felicitations') {
+                    appreciation = appreciation.trim() + ' FÉLICITATIONS DU CONSEIL DE CLASSE.';
+                } else if (student.trimestres[trimestre].distinction === 'compliments') {
+                    appreciation = appreciation.trim() + ' COMPLIMENTS DU CONSEIL DE CLASSE.';
+                } else if (student.trimestres[trimestre].distinction === 'encouragements') {
+                    appreciation = appreciation.trim() + ' ENCOURAGEMENTS DU CONSEIL DE CLASSE.';
+                }
+                
+                student.trimestres[trimestre].appreciation = appreciation;
+                textarea.value = appreciation;
+            }
+            
+            renderStudents();
+            renderSynthese();
+            renderBilan();
+        }
+
+        function saveAppreciation(studentId, trimestre, value) {
+            const student = students.find(s => s.id === studentId);
+            if (!student || !student.trimestres[trimestre]) return;
+            
+            // Retirer les anciennes mentions avant de sauvegarder
+            value = value.replace(/\s*FÉLICITATIONS DU CONSEIL DE CLASSE\.?\s*$/i, '');
+            value = value.replace(/\s*COMPLIMENTS DU CONSEIL DE CLASSE\.?\s*$/i, '');
+            value = value.replace(/\s*ENCOURAGEMENTS DU CONSEIL DE CLASSE\.?\s*$/i, '');
+            
+            student.trimestres[trimestre].appreciation = value;
+            
+            // Ajouter la mention selon la distinction actuelle
+            const distinction = student.trimestres[trimestre].distinction;
+            if (distinction === 'felicitations') {
+                student.trimestres[trimestre].appreciation = value.trim() + ' FÉLICITATIONS DU CONSEIL DE CLASSE.';
+            } else if (distinction === 'compliments') {
+                student.trimestres[trimestre].appreciation = value.trim() + ' COMPLIMENTS DU CONSEIL DE CLASSE.';
+            } else if (distinction === 'encouragements') {
+                student.trimestres[trimestre].appreciation = value.trim() + ' ENCOURAGEMENTS DU CONSEIL DE CLASSE.';
+            }
+        }
+
+        function saveComportementPositif(studentId, trimestre, value) {
+            const student = students.find(s => s.id === studentId);
+            if (!student || !student.trimestres[trimestre]) return;
+            student.trimestres[trimestre].comportementPositif = value;
+        }
+
+        function saveComportementNegatif(studentId, trimestre, value) {
+            const student = students.find(s => s.id === studentId);
+            if (!student || !student.trimestres[trimestre]) return;
+            student.trimestres[trimestre].comportementNegatif = value;
+        }
+
+        function saveAbsences(studentId, trimestre, value) {
+            const student = students.find(s => s.id === studentId);
+            if (!student || !student.trimestres[trimestre]) return;
+            student.trimestres[trimestre].absences = parseInt(value) || 0;
+        }
+
+        function saveRetards(studentId, trimestre, value) {
+            const student = students.find(s => s.id === studentId);
+            if (!student || !student.trimestres[trimestre]) return;
+            student.trimestres[trimestre].retards = parseInt(value) || 0;
+        }
+
+        function saveVoeux(studentId, value) {
+            const student = students.find(s => s.id === studentId);
+            if (!student) return;
+            student.orientation.voeux = value.split('\n').filter(v => v.trim());
+        }
+
+        function selectBilanTrimestre(num) {
+            currentBilanTrimestre = num;
+            document.querySelectorAll('#tab-bilan .trimestre-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderBilan();
+        }
+
+        // Bilan
+        function renderBilan() {
+            const container = document.getElementById('bilanStudentList');
+            container.innerHTML = '';
+
+            // Déterminer quel trimestre afficher
+            const trimestreKey = currentBilanTrimestre === 0 ? null : `T${currentBilanTrimestre}`;
+            
+            students.sort((a, b) => a.name.localeCompare(b.name)).forEach(student => {
+                let data = null;
+                let displayTrimestre = '';
+
+                if (trimestreKey) {
+                    data = student.trimestres[trimestreKey];
+                    displayTrimestre = trimestreKey;
+                } else {
+                    const trimestres = ['T3', 'T2', 'T1'].find(t => student.trimestres[t]);
+                    if (trimestres) {
+                        data = student.trimestres[trimestres];
+                        displayTrimestre = trimestres;
+                    }
+                }
+
+                if (!data) return;
+
+                const card = document.createElement('div');
+                card.className = 'student-card';
+                card.innerHTML = `
+                    <div class="student-header">
+                        <div class="student-name">${student.name}</div>
+                        <small style="color: #666;">${displayTrimestre}</small>
+                    </div>
+                    <p><strong>Moyenne :</strong> ${data.moyenne.toFixed(2)}/20</p>
+                    ${data.distinction ? `<p><strong>Distinction :</strong> ${data.distinction}</p>` : ''}
+                    ${data.appreciation ? `<p><strong>Appréciation :</strong> ${data.appreciation}</p>` : ''}
+                    ${student.orientation.parcours ? `<p><strong>Orientation :</strong> ${student.orientation.parcours}</p>` : ''}
+                `;
+                container.appendChild(card);
+            });
+
+            // Appréciation de classe
+            const trimestreKey2 = currentBilanTrimestre === 0 ? 'general' : `T${currentBilanTrimestre}`;
+            document.getElementById('appreciationClasse').value = appreciationsClasse[trimestreKey2] || '';
+        }
+
+        function saveAppreciationClasse(value) {
+            const trimestreKey = currentBilanTrimestre === 0 ? 'general' : `T${currentBilanTrimestre}`;
+            appreciationsClasse[trimestreKey] = value;
+        }
+
+        // Synthèse
+        function renderSynthese() {
+            const effectif = students.length;
+            
+            let totalMoyenne = 0;
+            let countMoyenne = 0;
+
+            students.forEach(student => {
+                const trimestres = ['T3', 'T2', 'T1'].find(t => student.trimestres[t]);
+                if (trimestres) {
+                    const data = student.trimestres[trimestres];
+                    if (data.moyenne) {
+                        totalMoyenne += data.moyenne;
+                        countMoyenne++;
+                    }
+                }
+            });
+
+            const moyenneClasse = countMoyenne > 0 ? (totalMoyenne / countMoyenne).toFixed(2) : '0';
+
+            document.getElementById('statEffectif').textContent = effectif;
+            document.getElementById('statMoyenne').textContent = moyenneClasse;
+
+            // Distinctions par trimestre
+            renderDistinctionsParTrimestre();
+
+            drawStatsChart();
+        }
+
+        function renderDistinctionsParTrimestre() {
+            const container = document.getElementById('distinctionsParTrimestre');
+            
+            const distinctionsByTrimestre = {
+                'T1': { felicitations: 0, compliments: 0, encouragements: 0 },
+                'T2': { felicitations: 0, compliments: 0, encouragements: 0 },
+                'T3': { felicitations: 0, compliments: 0, encouragements: 0 }
+            };
+
+            students.forEach(student => {
+                ['T1', 'T2', 'T3'].forEach(t => {
+                    if (student.trimestres[t] && student.trimestres[t].distinction) {
+                        const distinction = student.trimestres[t].distinction;
+                        distinctionsByTrimestre[t][distinction]++;
+                    }
+                });
+            });
+
+            let html = '<table style="width: 100%; border-collapse: collapse;">';
+            html += '<thead><tr style="background: #667eea; color: white;">';
+            html += '<th style="padding: 12px; text-align: left; border: 1px solid #e0e0e0;">Trimestre</th>';
+            html += '<th style="padding: 12px; text-align: center; border: 1px solid #e0e0e0;">🏆 Félicitations</th>';
+            html += '<th style="padding: 12px; text-align: center; border: 1px solid #e0e0e0;">👏 Compliments</th>';
+            html += '<th style="padding: 12px; text-align: center; border: 1px solid #e0e0e0;">💪 Encouragements</th>';
+            html += '<th style="padding: 12px; text-align: center; border: 1px solid #e0e0e0;">📊 Total</th>';
+            html += '</tr></thead><tbody>';
+
+            ['T1', 'T2', 'T3'].forEach(t => {
+                const data = distinctionsByTrimestre[t];
+                const total = data.felicitations + data.compliments + data.encouragements;
+                html += '<tr>';
+                html += `<td style="padding: 12px; border: 1px solid #e0e0e0; font-weight: bold;">${t}</td>`;
+                html += `<td style="padding: 12px; border: 1px solid #e0e0e0; text-align: center; background: #fef3c7;">${data.felicitations}</td>`;
+                html += `<td style="padding: 12px; border: 1px solid #e0e0e0; text-align: center; background: #dbeafe;">${data.compliments}</td>`;
+                html += `<td style="padding: 12px; border: 1px solid #e0e0e0; text-align: center; background: #d1fae5;">${data.encouragements}</td>`;
+                html += `<td style="padding: 12px; border: 1px solid #e0e0e0; text-align: center; font-weight: bold;">${total}</td>`;
+                html += '</tr>';
+            });
+
+            // Ligne totale
+            const totalFelicitations = distinctionsByTrimestre.T1.felicitations + distinctionsByTrimestre.T2.felicitations + distinctionsByTrimestre.T3.felicitations;
+            const totalCompliments = distinctionsByTrimestre.T1.compliments + distinctionsByTrimestre.T2.compliments + distinctionsByTrimestre.T3.compliments;
+            const totalEncouragements = distinctionsByTrimestre.T1.encouragements + distinctionsByTrimestre.T2.encouragements + distinctionsByTrimestre.T3.encouragements;
+            const grandTotal = totalFelicitations + totalCompliments + totalEncouragements;
+
+            html += '<tr style="background: #f3f4f6; font-weight: bold;">';
+            html += '<td style="padding: 12px; border: 1px solid #e0e0e0;">TOTAL</td>';
+            html += `<td style="padding: 12px; border: 1px solid #e0e0e0; text-align: center;">${totalFelicitations}</td>`;
+            html += `<td style="padding: 12px; border: 1px solid #e0e0e0; text-align: center;">${totalCompliments}</td>`;
+            html += `<td style="padding: 12px; border: 1px solid #e0e0e0; text-align: center;">${totalEncouragements}</td>`;
+            html += `<td style="padding: 12px; border: 1px solid #e0e0e0; text-align: center;">${grandTotal}</td>`;
+            html += '</tr>';
+
+            html += '</tbody></table>';
+
+            container.innerHTML = html;
+        }
+
+        function drawStatsChart() {
+            const canvas = document.getElementById('statsChart');
+            const ctx = canvas.getContext('2d');
+            
+            const ranges = [
+                { label: '0-5', min: 0, max: 5, count: 0 },
+                { label: '5-8', min: 5, max: 8, count: 0 },
+                { label: '8-10', min: 8, max: 10, count: 0 },
+                { label: '10-12', min: 10, max: 12, count: 0 },
+                { label: '12-14', min: 12, max: 14, count: 0 },
+                { label: '14-16', min: 14, max: 16, count: 0 },
+                { label: '16-20', min: 16, max: 20, count: 0 }
+            ];
+
+            students.forEach(student => {
+                const trimestres = ['T3', 'T2', 'T1'].find(t => student.trimestres[t]);
+                if (trimestres && student.trimestres[trimestres].moyenne) {
+                    const moy = student.trimestres[trimestres].moyenne;
+                    const range = ranges.find(r => moy >= r.min && moy < r.max) || ranges[ranges.length - 1];
+                    range.count++;
+                }
+            });
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const barWidth = canvas.width / ranges.length - 10;
+            const maxCount = Math.max(...ranges.map(r => r.count), 1);
+            
+            ranges.forEach((range, i) => {
+                const height = (range.count / maxCount) * (canvas.height - 40);
+                const x = i * (barWidth + 10) + 5;
+                const y = canvas.height - height - 20;
+
+                ctx.fillStyle = '#667eea';
+                ctx.fillRect(x, y, barWidth, height);
+
+                ctx.fillStyle = '#000';
+                ctx.font = '12px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(range.label, x + barWidth / 2, canvas.height - 5);
+                
+                if (range.count > 0) {
+                    ctx.fillText(range.count, x + barWidth / 2, y - 5);
+                }
+            });
+        }
+
+        // Export / Import
+        function exportJSON() {
+            const dataStr = JSON.stringify({students: students, appreciationsClasse: appreciationsClasse}, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = currentFileName;
+            link.click();
+            
+            // Message de confirmation avec notification visuelle
+            showNotification('💾 Fichier sauvegardé avec succès !');
+        }
+
+        function quickSave() {
+            exportJSON();
+        }
+
+        function importJSON() {
+            document.getElementById('jsonImport').click();
+        }
+
+        function handleJSONImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    const importedStudents = data.students || [];
+                    const importedAppreciations = data.appreciationsClasse || {};
+                    
+                    let added = 0;
+                    let updated = 0;
+                    let trimestresAdded = 0;
+                    
+                    // Fusionner les élèves
+                    importedStudents.forEach(importedStudent => {
+                        // Assurer que l'élève importé a un ID
+                        if (!importedStudent.id) {
+                            importedStudent.id = nextStudentId++;
+                        }
+                        
+                        // Chercher si l'élève existe déjà (par nom)
+                        let existingStudent = students.find(s => 
+                            s.name.toLowerCase() === importedStudent.name.toLowerCase()
+                        );
+                        
+                        if (existingStudent) {
+                            // Élève existe : fusionner les trimestres
+                            Object.keys(importedStudent.trimestres || {}).forEach(trimestre => {
+                                if (!existingStudent.trimestres[trimestre]) {
+                                    // Nouveau trimestre pour cet élève
+                                    existingStudent.trimestres[trimestre] = importedStudent.trimestres[trimestre];
+                                    trimestresAdded++;
+                                } else {
+                                    // Trimestre existe : mettre à jour les données
+                                    existingStudent.trimestres[trimestre] = importedStudent.trimestres[trimestre];
+                                }
+                            });
+                            
+                            // Fusionner l'orientation (garder les vœux des deux)
+                            if (importedStudent.orientation.parcours) {
+                                existingStudent.orientation.parcours = importedStudent.orientation.parcours;
+                            }
+                            if (importedStudent.orientation.voeux && importedStudent.orientation.voeux.length > 0) {
+                                existingStudent.orientation.voeux = importedStudent.orientation.voeux;
+                            }
+                            
+                            updated++;
+                        } else {
+                            // Nouvel élève : l'ajouter
+                            if (!importedStudent.orientation) {
+                                importedStudent.orientation = { parcours: '', voeux: [] };
+                            }
+                            
+                            // Assurer que chaque trimestre a les champs nécessaires
+                            Object.keys(importedStudent.trimestres || {}).forEach(t => {
+                                if (!importedStudent.trimestres[t].notes) {
+                                    importedStudent.trimestres[t].notes = {};
+                                }
+                                if (!importedStudent.trimestres[t].absences) {
+                                    importedStudent.trimestres[t].absences = 0;
+                                }
+                                if (!importedStudent.trimestres[t].retards) {
+                                    importedStudent.trimestres[t].retards = 0;
+                                }
+                                trimestresAdded++;
+                            });
+                            
+                            students.push(importedStudent);
+                            
+                            // Mettre à jour nextStudentId
+                            if (importedStudent.id >= nextStudentId) {
+                                nextStudentId = importedStudent.id + 1;
+                            }
+                            
+                            added++;
+                        }
+                    });
+                    
+                    // Fusionner les appréciations de classe
+                    Object.keys(importedAppreciations).forEach(key => {
+                        if (importedAppreciations[key]) {
+                            appreciationsClasse[key] = importedAppreciations[key];
+                        }
+                    });
+                    
+                    renderAll();
+                    
+                    document.getElementById('jsonImportStatus').innerHTML = `
+                        <div style="padding: 15px; background: #d1fae5; border-left: 4px solid #10b981; border-radius: 5px; color: #065f46;">
+                            ✅ Import et fusion réussis :<br>
+                            • ${added} nouvel(le)(s) élève(s) ajouté(s)<br>
+                            • ${updated} élève(s) mis à jour<br>
+                            • ${trimestresAdded} trimestre(s) ajouté(s)/mis à jour
+                        </div>
+                    `;
+                    
+                    setTimeout(() => {
+                        document.getElementById('jsonImportStatus').innerHTML = '';
+                    }, 5000);
+                } catch (error) {
+                    document.getElementById('jsonImportStatus').innerHTML = `
+                        <div style="padding: 15px; background: #fee2e2; border-left: 4px solid #dc3545; border-radius: 5px; color: #991b1b;">
+                            ❌ Erreur lors de l'import : fichier JSON invalide
+                        </div>
+                    `;
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = ''; // Reset input
+        }
+
+        function exportPrintableReport() {
+            const container = document.getElementById('printReport');
+            
+            let html = '<div style="padding: 20px;">';
+            html += '<h1 style="text-align: center; color: #667eea;">Rapport de Conseil de Classe - 3ème</h1>';
+            html += '<p style="text-align: center; color: #666; margin-bottom: 30px;">Généré le ' + new Date().toLocaleDateString('fr-FR') + '</p>';
+
+            students.sort((a, b) => a.name.localeCompare(b.name)).forEach(student => {
+                const trimestres = ['T3', 'T2', 'T1'].find(t => student.trimestres[t]);
+                if (!trimestres) return;
+
+                const data = student.trimestres[trimestres];
+                
+                html += '<div style="page-break-inside: avoid; border: 2px solid #e5e7eb; padding: 20px; margin-bottom: 20px; border-radius: 10px;">';
+                html += `<h2 style="color: #1f2937; margin-bottom: 10px;">${student.name}</h2>`;
+                html += `<p><strong>Moyenne ${trimestres}:</strong> ${data.moyenne.toFixed(2)}/20</p>`;
+                
+                if (data.distinction) {
+                    html += `<p><strong>Distinction:</strong> ${data.distinction}</p>`;
+                }
+                
+                if (data.appreciation) {
+                    html += `<p><strong>Appréciation:</strong> ${data.appreciation}</p>`;
+                }
+                
+                if (student.orientation.parcours) {
+                    html += `<p><strong>Orientation:</strong> ${student.orientation.parcours}</p>`;
+                }
+                
+                if (student.orientation.voeux && student.orientation.voeux.length > 0) {
+                    html += '<p><strong>Vœux:</strong></p><ul>';
+                    student.orientation.voeux.forEach(voeu => {
+                        html += `<li>${voeu}</li>`;
+                    });
+                    html += '</ul>';
+                }
+                
+                html += '</div>';
+            });
+
+            html += '</div>';
+            container.innerHTML = html;
+            
+            setTimeout(() => window.print(), 100);
+        }
+
+        function resetAllData() {
+            if (confirm('⚠️ ATTENTION : Êtes-vous sûr de vouloir effacer TOUTES les données ?\n\nCette action est IRRÉVERSIBLE.')) {
+                if (confirm('⚠️ DERNIÈRE CONFIRMATION : Toutes les données seront définitivement perdues. Confirmer ?')) {
+                    students = [];
+                    appreciationsClasse = {};
+                    currentFileName = 'conseil_classe.json';
+                    renderAll();
+                    alert('✅ Toutes les données ont été effacées.');
+                }
+            }
+        }
+
+        function renderAll() {
+            renderStudents();
+            renderBilan();
+            renderSynthese();
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'save-notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Initialisation
+        window.onload = function() {
+            // Gestionnaire pour Ctrl+S (sauvegarde rapide)
+            document.addEventListener('keydown', function(e) {
+                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                    e.preventDefault();
+                    quickSave();
+                }
+            });
+        };
+    </script>
+</body>
+</html>

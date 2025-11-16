@@ -1,0 +1,71 @@
+{
+  "students": [
+    {
+      "id": 1,
+      "name": "MARTIN Sophie",
+      "trimestres": {
+        "T2": {
+          "moyenne": 15.2,
+          "notes": {
+            "Français": 16.0,
+            "Mathématiques": 14.5,
+            "Histoire-Géographie": 16.5,
+            "Anglais": 15.0,
+            "Espagnol": 14.0,
+            "SVT": 15.5,
+            "Physique-Chimie": 15.0,
+            "Technologie": 16.0,
+            "EPS": 15.5,
+            "Arts Plastiques": 14.5,
+            "Musique": 14.5
+          },
+          "absences": 0,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "",
+          "comportementPositif": "",
+          "appreciation": ""
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 2,
+      "name": "DUBOIS Lucas",
+      "trimestres": {
+        "T2": {
+          "moyenne": 10.5,
+          "notes": {
+            "Français": 10.0,
+            "Mathématiques": 9.5,
+            "Histoire-Géographie": 10.5,
+            "Anglais": 9.0,
+            "Espagnol": 9.5,
+            "SVT": 11.0,
+            "Physique-Chimie": 10.0,
+            "Technologie": 13.5,
+            "EPS": 14.0,
+            "Arts Plastiques": 11.5,
+            "Musique": 10.0
+          },
+          "absences": 8,
+          "retards": 3,
+          "distinction": "",
+          "comportementNegatif": "",
+          "comportementPositif": "",
+          "appreciation": ""
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    }
+  ],
+  "appreciationsClasse": {
+    "T2": ""
+  }
+}
