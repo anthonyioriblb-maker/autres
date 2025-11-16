@@ -2,61 +2,29 @@
   "students": [
     {
       "id": 1,
-      "name": "MARTIN Sophie",
+      "name": "BERNARD Emma",
       "trimestres": {
         "T2": {
-          "moyenne": 15.2,
+          "moyenne": 13.8,
           "notes": {
-            "Français": 16.0,
-            "Mathématiques": 14.5,
-            "Histoire-Géographie": 16.5,
-            "Anglais": 15.0,
-            "Espagnol": 14.0,
-            "SVT": 15.5,
-            "Physique-Chimie": 15.0,
-            "Technologie": 16.0,
+            "Français": 14.5,
+            "Mathématiques": 13.0,
+            "Histoire-Géographie": 15.0,
+            "Anglais": 13.5,
+            "Espagnol": 13.0,
+            "SVT": 13.5,
+            "Physique-Chimie": 12.5,
+            "Technologie": 14.0,
             "EPS": 15.5,
-            "Arts Plastiques": 14.5,
-            "Musique": 14.5
+            "Arts Plastiques": 14.0,
+            "Musique": 13.5
           },
-          "absences": 0,
+          "absences": 1,
           "retards": 0,
-          "distinction": "",
-          "comportementNegatif": "",
-          "comportementPositif": "",
-          "appreciation": ""
-        }
-      },
-      "orientation": {
-        "parcours": "",
-        "voeux": []
-      }
-    },
-    {
-      "id": 2,
-      "name": "DUBOIS Lucas",
-      "trimestres": {
-        "T2": {
-          "moyenne": 10.5,
-          "notes": {
-            "Français": 10.0,
-            "Mathématiques": 9.5,
-            "Histoire-Géographie": 10.5,
-            "Anglais": 9.0,
-            "Espagnol": 9.5,
-            "SVT": 11.0,
-            "Physique-Chimie": 10.0,
-            "Technologie": 13.5,
-            "EPS": 14.0,
-            "Arts Plastiques": 11.5,
-            "Musique": 10.0
-          },
-          "absences": 8,
-          "retards": 3,
-          "distinction": "",
-          "comportementNegatif": "",
-          "comportementPositif": "",
-          "appreciation": ""
+          "distinction": "encouragements",
+          "comportementNegatif": "Quelques hésitations encore à l'oral",
+          "comportementPositif": "Nette amélioration du travail personnel\nProgression remarquable en Mathématiques\nParticipation plus régulière en classe\nAssiduité et ponctualité exemplaires\nAttitude positive et volontaire\nPrise de confiance visible",
+          "appreciation": "Bon trimestre en progression. Emma a pris en compte les conseils du T1 et fournit un travail plus régulier et approfondi. Les résultats sont en nette amélioration dans toutes les matières. Elle doit continuer sur cette dynamique positive et gagner en confiance à l'oral. ENCOURAGEMENTS DU CONSEIL DE CLASSE."
         }
       },
       "orientation": {
@@ -66,6 +34,6 @@
     }
   ],
   "appreciationsClasse": {
-    "T2": ""
+    "T2": "Deuxième trimestre encourageant avec une amélioration générale des résultats. La classe a pris conscience des enjeux de l'orientation."
   }
 }

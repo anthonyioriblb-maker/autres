@@ -1,0 +1,39 @@
+{
+  "students": [
+    {
+      "id": 1,
+      "name": "BERNARD Emma",
+      "trimestres": {
+        "T1": {
+          "moyenne": 12.3,
+          "notes": {
+            "Français": 13.5,
+            "Mathématiques": 11.0,
+            "Histoire-Géographie": 14.0,
+            "Anglais": 12.5,
+            "Espagnol": 11.5,
+            "SVT": 12.0,
+            "Physique-Chimie": 10.5,
+            "Technologie": 13.0,
+            "EPS": 14.5,
+            "Arts Plastiques": 13.5,
+            "Musique": 12.0
+          },
+          "absences": 4,
+          "retards": 2,
+          "distinction": "",
+          "comportementNegatif": "Quelques distractions en cours de Mathématiques\nParticipation irrégulière à l'oral\nTravail personnel parfois insuffisant",
+          "comportementPositif": "Élève agréable et sérieuse\nBonne entente avec ses camarades\nTravail appliqué en Histoire-Géographie\nInvestissement notable en EPS",
+          "appreciation": "Trimestre satisfaisant. Emma montre de bonnes capacités mais doit gagner en régularité dans son travail personnel. Elle doit également être plus attentive en cours de Mathématiques et de Physique-Chimie. Des efforts sont attendus pour le T2."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    }
+  ],
+  "appreciationsClasse": {
+    "T1": "Premier trimestre dans l'ensemble satisfaisant. La classe doit gagner en régularité et en investissement personnel pour progresser."
+  }
+}

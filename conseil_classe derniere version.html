@@ -582,8 +582,7 @@
             <div class="form-group">
                 <label>Sélectionner le trimestre pour le bilan :</label>
                 <div class="trimestre-selector">
-                    <button class="trimestre-btn active" onclick="selectBilanTrimestre(0)">Bilan général</button>
-                    <button class="trimestre-btn" onclick="selectBilanTrimestre(1)">Trimestre 1</button>
+                    <button class="trimestre-btn active" onclick="selectBilanTrimestre(1)">Trimestre 1</button>
                     <button class="trimestre-btn" onclick="selectBilanTrimestre(2)">Trimestre 2</button>
                     <button class="trimestre-btn" onclick="selectBilanTrimestre(3)">Trimestre 3</button>
                 </div>
@@ -646,7 +645,12 @@
 
             <div class="export-section">
                 <h3>🖨️ Impression</h3>
-                <p>Générez un rapport imprimable de tous les élèves.</p>
+                <p>Générez un rapport imprimable de tous les élèves pour le trimestre sélectionné.</p>
+                <div class="trimestre-selector" style="margin-bottom: 15px;">
+                    <button class="trimestre-btn" onclick="selectPrintTrimestre(1)">Trimestre 1</button>
+                    <button class="trimestre-btn" onclick="selectPrintTrimestre(2)">Trimestre 2</button>
+                    <button class="trimestre-btn active" onclick="selectPrintTrimestre(3)">Trimestre 3</button>
+                </div>
                 <button onclick="exportPrintableReport()">🖨️ Générer rapport imprimable</button>
             </div>
 
@@ -667,7 +671,8 @@
         let students = [];
         let appreciationsClasse = {};
         let currentTrimestre = 'T1';
-        let currentBilanTrimestre = 0;
+        let currentBilanTrimestre = 1;
+        let currentPrintTrimestre = 3;
         let currentFileName = 'conseil_classe.json';
         let currentFilterTrimestre = 0;
         let nextStudentId = 1;
@@ -1041,28 +1046,22 @@
             renderBilan();
         }
 
+        function selectPrintTrimestre(num) {
+            currentPrintTrimestre = num;
+            document.querySelectorAll('#tab-export .trimestre-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
         // Bilan
         function renderBilan() {
             const container = document.getElementById('bilanStudentList');
             container.innerHTML = '';
 
             // Déterminer quel trimestre afficher
-            const trimestreKey = currentBilanTrimestre === 0 ? null : `T${currentBilanTrimestre}`;
-            
-            students.sort((a, b) => a.name.localeCompare(b.name)).forEach(student => {
-                let data = null;
-                let displayTrimestre = '';
+            const trimestreKey = `T${currentBilanTrimestre}`;
 
-                if (trimestreKey) {
-                    data = student.trimestres[trimestreKey];
-                    displayTrimestre = trimestreKey;
-                } else {
-                    const trimestres = ['T3', 'T2', 'T1'].find(t => student.trimestres[t]);
-                    if (trimestres) {
-                        data = student.trimestres[trimestres];
-                        displayTrimestre = trimestres;
-                    }
-                }
+            students.sort((a, b) => a.name.localeCompare(b.name)).forEach(student => {
+                const data = student.trimestres[trimestreKey];
 
                 if (!data) return;
 
@@ -1071,7 +1070,7 @@
                 card.innerHTML = `
                     <div class="student-header">
                         <div class="student-name">${student.name}</div>
-                        <small style="color: #666;">${displayTrimestre}</small>
+                        <small style="color: #666;">${trimestreKey}</small>
                     </div>
                     <p><strong>Moyenne :</strong> ${data.moyenne.toFixed(2)}/20</p>
                     ${data.distinction ? `<p><strong>Distinction :</strong> ${data.distinction}</p>` : ''}
@@ -1082,12 +1081,12 @@
             });
 
             // Appréciation de classe
-            const trimestreKey2 = currentBilanTrimestre === 0 ? 'general' : `T${currentBilanTrimestre}`;
+            const trimestreKey2 = `T${currentBilanTrimestre}`;
             document.getElementById('appreciationClasse').value = appreciationsClasse[trimestreKey2] || '';
         }
 
         function saveAppreciationClasse(value) {
-            const trimestreKey = currentBilanTrimestre === 0 ? 'general' : `T${currentBilanTrimestre}`;
+            const trimestreKey = `T${currentBilanTrimestre}`;
             appreciationsClasse[trimestreKey] = value;
         }
 
@@ -1362,33 +1361,32 @@
 
         function exportPrintableReport() {
             const container = document.getElementById('printReport');
-            
+            const trimestreKey = `T${currentPrintTrimestre}`;
+
             let html = '<div style="padding: 20px;">';
             html += '<h1 style="text-align: center; color: #667eea;">Rapport de Conseil de Classe - 3ème</h1>';
-            html += '<p style="text-align: center; color: #666; margin-bottom: 30px;">Généré le ' + new Date().toLocaleDateString('fr-FR') + '</p>';
+            html += `<p style="text-align: center; color: #666; margin-bottom: 30px;">Trimestre ${currentPrintTrimestre} - Généré le ` + new Date().toLocaleDateString('fr-FR') + '</p>';
 
             students.sort((a, b) => a.name.localeCompare(b.name)).forEach(student => {
-                const trimestres = ['T3', 'T2', 'T1'].find(t => student.trimestres[t]);
-                if (!trimestres) return;
+                const data = student.trimestres[trimestreKey];
+                if (!data) return;
 
-                const data = student.trimestres[trimestres];
-                
                 html += '<div style="page-break-inside: avoid; border: 2px solid #e5e7eb; padding: 20px; margin-bottom: 20px; border-radius: 10px;">';
                 html += `<h2 style="color: #1f2937; margin-bottom: 10px;">${student.name}</h2>`;
-                html += `<p><strong>Moyenne ${trimestres}:</strong> ${data.moyenne.toFixed(2)}/20</p>`;
-                
+                html += `<p><strong>Moyenne ${trimestreKey}:</strong> ${data.moyenne.toFixed(2)}/20</p>`;
+
                 if (data.distinction) {
                     html += `<p><strong>Distinction:</strong> ${data.distinction}</p>`;
                 }
-                
+
                 if (data.appreciation) {
                     html += `<p><strong>Appréciation:</strong> ${data.appreciation}</p>`;
                 }
-                
+
                 if (student.orientation.parcours) {
                     html += `<p><strong>Orientation:</strong> ${student.orientation.parcours}</p>`;
                 }
-                
+
                 if (student.orientation.voeux && student.orientation.voeux.length > 0) {
                     html += '<p><strong>Vœux:</strong></p><ul>';
                     student.orientation.voeux.forEach(voeu => {
@@ -1396,14 +1394,21 @@
                     });
                     html += '</ul>';
                 }
-                
+
                 html += '</div>';
             });
 
             html += '</div>';
             container.innerHTML = html;
-            
-            setTimeout(() => window.print(), 100);
+
+            // Retirer temporairement la classe 'hidden' pour permettre l'impression
+            container.classList.remove('hidden');
+
+            setTimeout(() => {
+                window.print();
+                // Remettre la classe 'hidden' après l'impression
+                setTimeout(() => container.classList.add('hidden'), 500);
+            }, 100);
         }
 
         function resetAllData() {

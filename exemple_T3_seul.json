@@ -1,0 +1,43 @@
+{
+  "students": [
+    {
+      "id": 1,
+      "name": "BERNARD Emma",
+      "trimestres": {
+        "T3": {
+          "moyenne": 14.5,
+          "notes": {
+            "Français": 15.5,
+            "Mathématiques": 14.0,
+            "Histoire-Géographie": 16.0,
+            "Anglais": 14.5,
+            "Espagnol": 14.0,
+            "SVT": 14.5,
+            "Physique-Chimie": 13.5,
+            "Technologie": 15.0,
+            "EPS": 16.0,
+            "Arts Plastiques": 14.5,
+            "Musique": 14.0
+          },
+          "absences": 0,
+          "retards": 0,
+          "distinction": "compliments",
+          "comportementNegatif": "",
+          "comportementPositif": "Progression constante tout au long de l'année\nAutonomie développée dans le travail\nParticipation active et pertinente\nQualités relationnelles appréciées\nInvestissement dans tous les domaines\nÉlève devenue moteur dans les travaux de groupe",
+          "appreciation": "Excellent trimestre qui couronne une année de progrès constants. Emma a su tirer profit de ses capacités et s'est affirmée comme une élève sérieuse et investie. Sa progression est remarquable et témoigne d'un réel engagement dans son travail. Elle aborde la classe de seconde avec de solides bases. COMPLIMENTS DU CONSEIL DE CLASSE."
+        }
+      },
+      "orientation": {
+        "parcours": "2nde Générale et Technologique",
+        "voeux": [
+          "1. Lycée Lamartine - 2nde Générale",
+          "2. Lycée Charles de Gaulle - 2nde Générale",
+          "3. Lycée Marie Curie - 2nde Générale"
+        ]
+      }
+    }
+  ],
+  "appreciationsClasse": {
+    "T3": "Troisième trimestre positif qui clôture une année de progression. La classe est prête pour aborder le lycée avec confiance."
+  }
+}
