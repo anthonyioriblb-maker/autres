@@ -303,9 +303,27 @@
         }
 
         @media print {
+            @page {
+                size: A4;
+                margin: 1cm;
+            }
+
+            * {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            body {
+                background: white;
+                margin: 0;
+                padding: 0;
+                font-size: 11pt;
+            }
+
             .container {
                 box-shadow: none;
                 border-radius: 0;
+                max-width: 100%;
             }
 
             .header,
@@ -319,20 +337,67 @@
             }
 
             .content {
-                padding: 10px;
+                padding: 0;
+                margin: 0;
             }
 
             .question-item {
                 page-break-inside: avoid;
-                margin-bottom: 25px;
-                padding: 15px;
+                margin-bottom: 8px;
+                padding: 6px 8px;
+                background: #fafafa !important;
+                border-left: 2px solid #667eea !important;
+                border-radius: 4px;
+            }
+
+            .question-number {
+                font-size: 9pt;
+                padding: 2px 8px;
+                margin-bottom: 4px;
+            }
+
+            .theme-badge {
+                font-size: 8pt !important;
+                padding: 2px 6px !important;
+                margin-left: 6px !important;
+            }
+
+            .question-text {
+                font-size: 11pt !important;
+                margin: 6px 0 !important;
+                line-height: 1.3 !important;
+            }
+
+            /* Réduire la taille des SVG pour l'impression */
+            .question-item svg.number-line {
+                width: 350px !important;
+                height: 50px !important;
+                margin: 5px auto !important;
+            }
+
+            .question-item svg text {
+                font-size: 9px !important;
+            }
+
+            .question-item svg line {
+                stroke-width: 1px !important;
+            }
+
+            .question-item svg circle {
+                r: 3 !important;
+            }
+
+            /* Réduire la taille des fractions */
+            .fraction {
+                font-size: 0.9em !important;
             }
 
             .correction-space {
-                min-height: 80px;
+                min-height: 40px;
                 border-top: 1px dashed #ccc;
-                margin-top: 10px;
-                padding-top: 10px;
+                margin-top: 6px;
+                padding-top: 6px;
+                font-size: 10pt;
             }
 
             .correction-space::before {
@@ -341,8 +406,19 @@
                 color: #666;
             }
 
-            body {
-                background: white;
+            .answer-section {
+                font-size: 10pt !important;
+                padding: 6px !important;
+                margin-top: 6px !important;
+            }
+
+            .answer-section strong {
+                font-size: 10pt !important;
+            }
+
+            .answer-text {
+                margin-top: 4px !important;
+                font-size: 10pt !important;
             }
         }
 
@@ -486,9 +562,69 @@
             return num.toString().replace('.', ',');
         }
 
+        // Fonction pour calculer le PGCD
+        function pgcd(a, b) {
+            a = Math.abs(a);
+            b = Math.abs(b);
+            while (b !== 0) {
+                const temp = b;
+                b = a % b;
+                a = temp;
+            }
+            return a;
+        }
+
+        // Fonction pour simplifier une fraction
+        function simplifyFraction(numerator, denominator) {
+            const gcd = pgcd(numerator, denominator);
+            return {
+                num: numerator / gcd,
+                den: denominator / gcd
+            };
+        }
+
         // Fonction pour formater les fractions en HTML
         function formatFraction(numerator, denominator) {
             return `<span class="fraction"><span class="numerator">${numerator}</span><span class="denominator">${denominator}</span></span>`;
+        }
+
+        // Fonction pour générer une droite graduée en SVG
+        function generateNumberLine(min, max, step, targetValue, showPoint = false) {
+            const width = 500;
+            const height = 80;
+            const marginLeft = 35;
+            const marginRight = 35;
+            const lineY = 40;
+            const lineWidth = width - marginLeft - marginRight;
+
+            // Calculer la position du point
+            const range = max - min;
+            const pointX = marginLeft + ((targetValue - min) / range) * lineWidth;
+
+            let svg = `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="display: block; margin: 10px auto;" class="number-line">`;
+
+            // Ligne principale
+            svg += `<line x1="${marginLeft}" y1="${lineY}" x2="${width - marginRight}" y2="${lineY}" stroke="#333" stroke-width="1.5"/>`;
+
+            // Flèches aux extrémités
+            svg += `<polygon points="${marginLeft-4},${lineY} ${marginLeft},${lineY-4} ${marginLeft},${lineY+4}" fill="#333"/>`;
+            svg += `<polygon points="${width-marginRight+4},${lineY} ${width-marginRight},${lineY-4} ${width-marginRight},${lineY+4}" fill="#333"/>`;
+
+            // Graduations et labels
+            for (let val = min; val <= max; val += step) {
+                const x = marginLeft + ((val - min) / range) * lineWidth;
+                svg += `<line x1="${x}" y1="${lineY - 6}" x2="${x}" y2="${lineY + 6}" stroke="#333" stroke-width="1.2"/>`;
+                svg += `<text x="${x}" y="${lineY + 20}" text-anchor="middle" font-size="11" fill="#333">${toFrenchNumber(val)}</text>`;
+            }
+
+            // Point (seulement si showPoint = true, pour la correction)
+            if (showPoint) {
+                svg += `<circle cx="${pointX}" cy="${lineY}" r="4" fill="#e74c3c" stroke="#c0392b" stroke-width="1.5"/>`;
+                svg += `<text x="${pointX}" y="${lineY - 12}" text-anchor="middle" font-size="10" font-weight="bold" fill="#e74c3c">•</text>`;
+            }
+
+            svg += `</svg>`;
+            return svg;
         }
 
         // Générateurs de questions avec valeurs aléatoires
@@ -578,9 +714,10 @@
                                 const d = randInt(2, 6);
                                 const num = a * d + c * b;
                                 const den = b * d;
+                                const simplified = simplifyFraction(num, den);
                                 return {
                                     question: `Calculer : ${formatFraction(a, b)} + ${formatFraction(c, d)}`,
-                                    answer: formatFraction(num, den)
+                                    answer: formatFraction(simplified.num, simplified.den)
                                 };
                             },
                             () => {
@@ -590,9 +727,10 @@
                                 const d = randInt(2, 6);
                                 const num = a * c;
                                 const den = b * d;
+                                const simplified = simplifyFraction(num, den);
                                 return {
                                     question: `Calculer : ${formatFraction(a, b)} × ${formatFraction(c, d)}`,
-                                    answer: formatFraction(num, den)
+                                    answer: formatFraction(simplified.num, simplified.den)
                                 };
                             }
                         ];
@@ -753,7 +891,7 @@
                     }
                 },
                 {
-                    desc: "Simplifier des expressions littérales",
+                    desc: "Développer et réduire des expressions littérales",
                     generator: () => {
                         const ops = [
                             () => {
@@ -761,7 +899,7 @@
                                 const b = randInt(2, 9);
                                 const sum = a + b;
                                 return {
-                                    question: `Simplifier : ${a}x + ${b}x`,
+                                    question: `Réduire : ${a}x + ${b}x`,
                                     answer: `${sum}x`
                                 };
                             },
@@ -769,7 +907,7 @@
                                 const a = randInt(3, 9);
                                 const b = randInt(2, 6);
                                 return {
-                                    question: `Simplifier : ${a}(x + ${b})`,
+                                    question: `Développer et réduire : ${a}(x + ${b})`,
                                     answer: `${a}x + ${a * b}`
                                 };
                             },
@@ -779,7 +917,7 @@
                                 const c = randInt(1, 4);
                                 const result = a - b + c;
                                 return {
-                                    question: `Simplifier : ${a}y - ${b}y + ${c}y`,
+                                    question: `Réduire : ${a}y - ${b}y + ${c}y`,
                                     answer: `${result}y`
                                 };
                             }
@@ -899,19 +1037,30 @@
                     generator: () => {
                         const ops = [
                             () => {
-                                const n = randDecimal(0, 10);
+                                // Nombre décimal simple
+                                const step = randChoice([0.5, 1]);
+                                const min = 0;
+                                const max = step === 0.5 ? 5 : 10;
+                                const n = randDecimal(min + step, max - step);
+                                const roundedN = Math.round(n / step) * step; // Arrondir au pas
+
                                 return {
-                                    question: `Placer le point d'abscisse ${toFrenchNumber(n)} sur une droite graduée`,
-                                    answer: `Point placé à ${toFrenchNumber(n)} sur la droite`
+                                    question: `Placer le point d'abscisse ${toFrenchNumber(roundedN)} sur une droite graduée :<br>${generateNumberLine(min, max, step, roundedN, false)}`,
+                                    answer: `Point placé à ${toFrenchNumber(roundedN)} sur la droite :<br>${generateNumberLine(min, max, step, roundedN, true)}`
                                 };
                             },
                             () => {
-                                const a = randInt(1, 10);
-                                const b = randInt(2, 5);
-                                const decimal = toFrenchNumber(a / b);
+                                // Fraction
+                                const b = randChoice([2, 4, 5]); // Dénominateur
+                                const min = 0;
+                                const max = b; // La droite va de 0 à b
+                                const step = 1 / b; // Pas de la graduation
+                                const a = randInt(1, b * max - 1); // Numérateur
+                                const decimal = a / b;
+
                                 return {
-                                    question: `Placer le point d'abscisse ${formatFraction(a, b)} sur une droite graduée`,
-                                    answer: `Point placé à ${decimal} (soit ${formatFraction(a, b)})`
+                                    question: `Placer le point d'abscisse ${formatFraction(a, b)} sur une droite graduée :<br>${generateNumberLine(min, max, 1, decimal, false)}`,
+                                    answer: `Point placé à ${toFrenchNumber(decimal)} (soit ${formatFraction(a, b)}) :<br>${generateNumberLine(min, max, 1, decimal, true)}`
                                 };
                             }
                         ];
