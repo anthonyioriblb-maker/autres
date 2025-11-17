@@ -303,9 +303,27 @@
         }
 
         @media print {
+            @page {
+                size: A4;
+                margin: 1cm;
+            }
+
+            * {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            body {
+                background: white;
+                margin: 0;
+                padding: 0;
+                font-size: 11pt;
+            }
+
             .container {
                 box-shadow: none;
                 border-radius: 0;
+                max-width: 100%;
             }
 
             .header,
@@ -319,20 +337,67 @@
             }
 
             .content {
-                padding: 10px;
+                padding: 0;
+                margin: 0;
             }
 
             .question-item {
                 page-break-inside: avoid;
-                margin-bottom: 25px;
-                padding: 15px;
+                margin-bottom: 8px;
+                padding: 6px 8px;
+                background: #fafafa !important;
+                border-left: 2px solid #667eea !important;
+                border-radius: 4px;
+            }
+
+            .question-number {
+                font-size: 9pt;
+                padding: 2px 8px;
+                margin-bottom: 4px;
+            }
+
+            .theme-badge {
+                font-size: 8pt !important;
+                padding: 2px 6px !important;
+                margin-left: 6px !important;
+            }
+
+            .question-text {
+                font-size: 11pt !important;
+                margin: 6px 0 !important;
+                line-height: 1.3 !important;
+            }
+
+            /* Réduire la taille des SVG pour l'impression */
+            .question-item svg.number-line {
+                width: 350px !important;
+                height: 50px !important;
+                margin: 5px auto !important;
+            }
+
+            .question-item svg text {
+                font-size: 9px !important;
+            }
+
+            .question-item svg line {
+                stroke-width: 1px !important;
+            }
+
+            .question-item svg circle {
+                r: 3 !important;
+            }
+
+            /* Réduire la taille des fractions */
+            .fraction {
+                font-size: 0.9em !important;
             }
 
             .correction-space {
-                min-height: 80px;
+                min-height: 40px;
                 border-top: 1px dashed #ccc;
-                margin-top: 10px;
-                padding-top: 10px;
+                margin-top: 6px;
+                padding-top: 6px;
+                font-size: 10pt;
             }
 
             .correction-space::before {
@@ -341,8 +406,19 @@
                 color: #666;
             }
 
-            body {
-                background: white;
+            .answer-section {
+                font-size: 10pt !important;
+                padding: 6px !important;
+                margin-top: 6px !important;
+            }
+
+            .answer-section strong {
+                font-size: 10pt !important;
+            }
+
+            .answer-text {
+                margin-top: 4px !important;
+                font-size: 10pt !important;
             }
         }
 
@@ -514,37 +590,37 @@
 
         // Fonction pour générer une droite graduée en SVG
         function generateNumberLine(min, max, step, targetValue, showPoint = false) {
-            const width = 600;
-            const height = 100;
-            const marginLeft = 40;
-            const marginRight = 40;
-            const lineY = 50;
+            const width = 500;
+            const height = 80;
+            const marginLeft = 35;
+            const marginRight = 35;
+            const lineY = 40;
             const lineWidth = width - marginLeft - marginRight;
 
             // Calculer la position du point
             const range = max - min;
             const pointX = marginLeft + ((targetValue - min) / range) * lineWidth;
 
-            let svg = `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="display: block; margin: 15px auto;">`;
+            let svg = `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="display: block; margin: 10px auto;" class="number-line">`;
 
             // Ligne principale
-            svg += `<line x1="${marginLeft}" y1="${lineY}" x2="${width - marginRight}" y2="${lineY}" stroke="#333" stroke-width="2"/>`;
+            svg += `<line x1="${marginLeft}" y1="${lineY}" x2="${width - marginRight}" y2="${lineY}" stroke="#333" stroke-width="1.5"/>`;
 
             // Flèches aux extrémités
-            svg += `<polygon points="${marginLeft-5},${lineY} ${marginLeft},${lineY-5} ${marginLeft},${lineY+5}" fill="#333"/>`;
-            svg += `<polygon points="${width-marginRight+5},${lineY} ${width-marginRight},${lineY-5} ${width-marginRight},${lineY+5}" fill="#333"/>`;
+            svg += `<polygon points="${marginLeft-4},${lineY} ${marginLeft},${lineY-4} ${marginLeft},${lineY+4}" fill="#333"/>`;
+            svg += `<polygon points="${width-marginRight+4},${lineY} ${width-marginRight},${lineY-4} ${width-marginRight},${lineY+4}" fill="#333"/>`;
 
             // Graduations et labels
             for (let val = min; val <= max; val += step) {
                 const x = marginLeft + ((val - min) / range) * lineWidth;
-                svg += `<line x1="${x}" y1="${lineY - 8}" x2="${x}" y2="${lineY + 8}" stroke="#333" stroke-width="1.5"/>`;
-                svg += `<text x="${x}" y="${lineY + 25}" text-anchor="middle" font-size="14" fill="#333">${toFrenchNumber(val)}</text>`;
+                svg += `<line x1="${x}" y1="${lineY - 6}" x2="${x}" y2="${lineY + 6}" stroke="#333" stroke-width="1.2"/>`;
+                svg += `<text x="${x}" y="${lineY + 20}" text-anchor="middle" font-size="11" fill="#333">${toFrenchNumber(val)}</text>`;
             }
 
             // Point (seulement si showPoint = true, pour la correction)
             if (showPoint) {
-                svg += `<circle cx="${pointX}" cy="${lineY}" r="5" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>`;
-                svg += `<text x="${pointX}" y="${lineY - 15}" text-anchor="middle" font-size="12" font-weight="bold" fill="#e74c3c">•</text>`;
+                svg += `<circle cx="${pointX}" cy="${lineY}" r="4" fill="#e74c3c" stroke="#c0392b" stroke-width="1.5"/>`;
+                svg += `<text x="${pointX}" y="${lineY - 12}" text-anchor="middle" font-size="10" font-weight="bold" fill="#e74c3c">•</text>`;
             }
 
             svg += `</svg>`;
