@@ -626,6 +626,10 @@
             background: #0FBD8C;
         }
 
+        .scratch-block-data {
+            background: #FF8C1A;
+        }
+
         .scratch-indent {
             margin-left: 30px;
             padding-left: 15px;
@@ -643,6 +647,20 @@
             margin: 0 2px;
             font-weight: bold;
             box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        /* Ovale pour les variables (reporter blocks) */
+        .scratch-variable {
+            background: #FF8C1A;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 3px;
+            font-weight: bold;
+            min-width: 35px;
+            text-align: center;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.2);
         }
 
         .scratch-question-mark {
@@ -796,8 +814,25 @@
             // Fonction pour formater les valeurs et expressions
             function formatExpression(expr) {
                 expr = cleanVariable(expr);
-                // Remplacer les parenthèses simples par des arrondis
-                expr = expr.replace(/\(([^()]+?)\)/g, '<span class="scratch-input">$1</span>');
+                // Remplacer les parenthèses par des spans
+                // Les variables restent en orange, les nombres en blanc
+                expr = expr.replace(/\(([^()]+?)\)/g, (match, inner) => {
+                    // Si c'est un nombre pur, utiliser scratch-input (blanc)
+                    if (/^\d+(\.\d+)?$/.test(inner.trim())) {
+                        return `<span class="scratch-input">${inner}</span>`;
+                    }
+                    // Si c'est juste un nom de variable (lettres), utiliser scratch-variable (ovale orange)
+                    else if (/^[a-zA-Zéèêàâôîç]+$/.test(inner.trim())) {
+                        return `<span class="scratch-variable">${inner}</span>`;
+                    }
+                    // Sinon, parser l'expression (ex: "x + 1")
+                    else {
+                        // Remplacer les variables par des ovales et les nombres par des rectangles blancs
+                        inner = inner.replace(/\b([a-zA-Zéèêàâôîç]+)\b/g, '<span class="scratch-variable">$1</span>');
+                        inner = inner.replace(/\b(\d+)\b/g, '<span class="scratch-input">$1</span>');
+                        return inner;
+                    }
+                });
                 return expr;
             }
 
@@ -880,7 +915,7 @@
                         const varName = match[1].trim();
                         let value = match[2].trim();
                         value = formatExpression(value);
-                        blockHtml = `<div class="scratch-block">mettre <span class="scratch-input">${varName}</span> à ${value}</div>`;
+                        blockHtml = `<div class="scratch-block scratch-block-data">mettre <span class="scratch-variable">${varName}</span> à ${value}</div>`;
                     }
                 }
                 // Ajouter à variable
@@ -891,7 +926,7 @@
                         let value = match[1].trim();
                         const varName = match[2].trim();
                         value = formatExpression(value);
-                        blockHtml = `<div class="scratch-block">ajouter ${value} à <span class="scratch-input">${varName}</span></div>`;
+                        blockHtml = `<div class="scratch-block scratch-block-data">ajouter ${value} à <span class="scratch-variable">${varName}</span></div>`;
                     }
                 }
                 // Dire
