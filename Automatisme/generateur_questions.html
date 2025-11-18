@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Générateur de Questions - Automatismes DNB</title>
-    <!-- Bibliothèque scratchblocks pour afficher les blocs Scratch -->
-    <script src="https://scratchblocks.github.io/js/scratchblocks-v3.6-min.js"></script>
-    <link rel="stylesheet" href="https://scratchblocks.github.io/css/scratchblocks-v3.6-min.css">
     <style>
         * {
             margin: 0;
@@ -591,6 +588,68 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(0,0,0,0.3);
         }
+
+        /* Styles pour les blocs Scratch personnalisés */
+        .scratch-blocks {
+            background: #fff;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px auto;
+            max-width: 500px;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 14px;
+        }
+
+        .scratch-block {
+            background: #9966FF;
+            color: white;
+            padding: 8px 12px;
+            margin: 3px 0;
+            border-radius: 4px;
+            display: inline-block;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .scratch-block-control {
+            background: #FFAB19;
+        }
+
+        .scratch-block-motion {
+            background: #4C97FF;
+        }
+
+        .scratch-block-pen {
+            background: #0FBD8C;
+        }
+
+        .scratch-indent {
+            margin-left: 25px;
+            border-left: 3px solid #ddd;
+            padding-left: 10px;
+        }
+
+        .scratch-input {
+            background: white;
+            color: #333;
+            padding: 3px 8px;
+            border-radius: 10px;
+            display: inline-block;
+            margin: 0 3px;
+            font-weight: bold;
+        }
+
+        .scratch-question-mark {
+            background: #FF6680;
+            color: white;
+            padding: 3px 12px;
+            border-radius: 10px;
+            display: inline-block;
+            margin: 0 3px;
+            font-weight: bold;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -719,9 +778,68 @@
 
         // Fonction pour générer des blocs Scratch visuels
         function generateScratchBlocks(code) {
-            const blockId = 'scratch-' + Math.random().toString(36).substr(2, 9);
-            // Retourner le code dans une div avec classe scratch
-            return `<pre class="blocks" id="${blockId}" style="margin: 15px auto; max-width: 600px;">${code}</pre>`;
+            // Convertir le code textuel en blocs HTML stylisés
+            const lines = code.trim().split('\n');
+            let html = '<div class="scratch-blocks">';
+
+            lines.forEach(line => {
+                const trimmedLine = line.trim();
+                const indent = line.search(/\S/); // Niveau d'indentation
+
+                if (trimmedLine.startsWith('stylo en position')) {
+                    html += '<div class="scratch-block scratch-block-pen">stylo en position d\'écriture</div>';
+                } else if (trimmedLine.startsWith('répéter')) {
+                    const match = trimmedLine.match(/répéter \((\d+)\) fois/);
+                    const times = match ? match[1] : '?';
+                    html += `<div class="scratch-block scratch-block-control">répéter <span class="scratch-input">${times}</span> fois</div>`;
+                } else if (trimmedLine.startsWith('avancer de')) {
+                    const match = trimmedLine.match(/avancer de \((\d+)\)/);
+                    const distance = match ? match[1] : '?';
+                    html += `<div class="scratch-indent"><div class="scratch-block scratch-block-motion">avancer de <span class="scratch-input">${distance}</span></div></div>`;
+                } else if (trimmedLine.startsWith('tourner droite')) {
+                    const match = trimmedLine.match(/tourner droite de \((\?|\d+)\)/);
+                    const angle = match ? match[1] : '?';
+                    if (angle === '?') {
+                        html += `<div class="scratch-indent"><div class="scratch-block scratch-block-motion">tourner droite de <span class="scratch-question-mark">?</span> degrés</div></div>`;
+                    } else {
+                        html += `<div class="scratch-indent"><div class="scratch-block scratch-block-motion">tourner droite de <span class="scratch-input">${angle}</span> degrés</div></div>`;
+                    }
+                } else if (trimmedLine === 'end') {
+                    // Fin du bloc répéter
+                    html += '<div class="scratch-block scratch-block-control">end</div>';
+                } else if (trimmedLine.startsWith('mettre')) {
+                    const match = trimmedLine.match(/mettre \[(.+?)\] à \((\?|\d+)\)/);
+                    if (match) {
+                        const varName = match[1];
+                        const value = match[2];
+                        if (value === '?') {
+                            html += `<div class="scratch-block">mettre [${varName}] à <span class="scratch-question-mark">?</span></div>`;
+                        } else {
+                            html += `<div class="scratch-block">mettre [${varName}] à <span class="scratch-input">${value}</span></div>`;
+                        }
+                    }
+                } else if (trimmedLine.startsWith('ajouter')) {
+                    const match = trimmedLine.match(/ajouter \((\?|\d+)\) à \[(.+?)\]/);
+                    if (match) {
+                        const value = match[1];
+                        const varName = match[2];
+                        if (value === '?') {
+                            html += `<div class="scratch-block">ajouter <span class="scratch-question-mark">?</span> à [${varName}]</div>`;
+                        } else {
+                            html += `<div class="scratch-block">ajouter <span class="scratch-input">${value}</span> à [${varName}]</div>`;
+                        }
+                    }
+                } else if (trimmedLine.startsWith('dire')) {
+                    const match = trimmedLine.match(/dire \((.+?)\)/);
+                    if (match) {
+                        const message = match[1];
+                        html += `<div class="scratch-block">dire <span class="scratch-input">${message}</span></div>`;
+                    }
+                }
+            });
+
+            html += '</div>';
+            return html;
         }
 
         // Fonction pour générer un tableau HTML de proportionnalité
@@ -3247,13 +3365,6 @@ mettre [périmètre v] à (((longueur) + (largeur)) * (2))`;
             document.getElementById('statsSection').style.display = 'flex';
             document.getElementById('questionsCount').textContent = questionsGenerated;
             document.getElementById('printButtons').classList.add('active');
-
-            // Rendre les blocs Scratch visuels
-            setTimeout(() => {
-                if (typeof scratchblocks !== 'undefined') {
-                    scratchblocks.renderMatching('pre.blocks');
-                }
-            }, 100);
         }
 
         function toggleAnswers() {
