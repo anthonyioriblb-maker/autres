@@ -1141,6 +1141,76 @@
             return svg;
         }
 
+        // Fonction pour générer un SVG explicatif du triangle équilatéral (angle intérieur vs rotation)
+        function generateTriangleExplanationSVG() {
+            const width = 500;
+            const height = 350;
+
+            // Triangle équilatéral
+            const centerX = 250;
+            const centerY = 200;
+            const sideLength = 140;
+            const h = sideLength * Math.sqrt(3) / 2; // hauteur
+
+            // Sommets du triangle
+            const A = { x: centerX, y: centerY - h * 0.66 };
+            const B = { x: centerX - sideLength / 2, y: centerY + h * 0.33 };
+            const C = { x: centerX + sideLength / 2, y: centerY + h * 0.33 };
+
+            let svg = `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="display: block; margin: 15px auto; background: white; border: 1px solid #ddd;">`;
+
+            // Titre
+            svg += `<text x="${width/2}" y="25" text-anchor="middle" font-size="16" font-weight="bold" fill="#333">Triangle équilatéral : Angle intérieur vs Angle de rotation</text>`;
+
+            // Dessiner le triangle
+            svg += `<polygon points="${A.x},${A.y} ${B.x},${B.y} ${C.x},${C.y}" fill="#E3F2FD" stroke="#2196F3" stroke-width="2"/>`;
+
+            // Angle intérieur au point A (60°)
+            const angleRadius = 30;
+            const angleStartX = A.x + angleRadius;
+            const angleStartY = A.y;
+            const angleEndX = A.x - angleRadius * Math.cos(Math.PI / 3);
+            const angleEndY = A.y + angleRadius * Math.sin(Math.PI / 3);
+            svg += `<path d="M ${angleStartX} ${angleStartY} A ${angleRadius} ${angleRadius} 0 0 1 ${angleEndX} ${angleEndY}" stroke="#4CAF50" stroke-width="2" fill="none"/>`;
+            svg += `<text x="${A.x + 15}" y="${A.y + 25}" font-size="14" fill="#4CAF50" font-weight="bold">60°</text>`;
+            svg += `<text x="${A.x - 50}" y="${A.y + 50}" font-size="12" fill="#4CAF50">angle intérieur</text>`;
+
+            // Direction du lutin au point A (flèche vers B)
+            const dirX = (B.x - A.x) / sideLength * 40;
+            const dirY = (B.y - A.y) / sideLength * 40;
+            svg += `<line x1="${A.x}" y1="${A.y}" x2="${A.x + dirX}" y2="${A.y + dirY}" stroke="#FF9800" stroke-width="3" marker-end="url(#arrowOrange)"/>`;
+            svg += `<text x="${A.x + 50}" y="${A.y - 10}" font-size="12" fill="#FF9800" font-weight="bold">Direction du lutin</text>`;
+
+            // Angle de rotation au point B (120°)
+            // Montrer l'angle extérieur
+            const rotStartX = B.x + 50;
+            const rotStartY = B.y;
+            svg += `<path d="M ${rotStartX} ${rotStartY} A 50 50 0 0 0 ${B.x + 25} ${B.y - 43.3}" stroke="#F44336" stroke-width="2.5" fill="none"/>`;
+            svg += `<text x="${B.x + 40}" y="${B.y - 15}" font-size="14" fill="#F44336" font-weight="bold">120°</text>`;
+            svg += `<text x="${B.x + 10}" y="${B.y - 35}" font-size="12" fill="#F44336">rotation Scratch</text>`;
+
+            // Flèche de direction après le point B
+            const nextDirX = (C.x - B.x) / sideLength * 40;
+            const nextDirY = (C.y - B.y) / sideLength * 40;
+            svg += `<line x1="${B.x}" y1="${B.y}" x2="${B.x + nextDirX}" y2="${B.y + nextDirY}" stroke="#FF9800" stroke-width="3" marker-end="url(#arrowOrange)"/>`;
+
+            // Explication en bas
+            svg += `<text x="${width/2}" y="${height - 70}" text-anchor="middle" font-size="13" fill="#333" font-weight="bold">Pourquoi 120° et pas 60° ?</text>`;
+            svg += `<text x="${width/2}" y="${height - 50}" text-anchor="middle" font-size="12" fill="#555">L'angle intérieur du triangle = 60°</text>`;
+            svg += `<text x="${width/2}" y="${height - 32}" text-anchor="middle" font-size="12" fill="#555">Mais le lutin doit tourner de l'angle EXTÉRIEUR : 180° - 60° = 120°</text>`;
+            svg += `<text x="${width/2}" y="${height - 14}" text-anchor="middle" font-size="12" fill="#555">Formule générale : Angle de rotation = 360° ÷ nombre de côtés = 360° ÷ 3 = 120°</text>`;
+
+            // Définir le marqueur de flèche orange
+            svg += `<defs>
+                <marker id="arrowOrange" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                    <path d="M0,0 L0,6 L9,3 z" fill="#FF9800" />
+                </marker>
+            </defs>`;
+
+            svg += `</svg>`;
+            return svg;
+        }
+
         // Générateurs de questions avec valeurs aléatoires
         // Les générateurs peuvent retourner :
         // - Un objet {question, answer} pour une question simple
@@ -3249,7 +3319,7 @@ répéter (3) fois
 end`;
                                 return {
                                     question: `Compléter ce programme pour dessiner un triangle équilatéral :<br>${generateScratchBlocks(scratchCode)}`,
-                                    answer: `120 degrés<br><em>Explication : Angle extérieur = 360° ÷ 3 = 120°</em>`
+                                    answer: `<strong>120 degrés</strong><br><br>${generateTriangleExplanationSVG()}<br><div style="background: #FFF3CD; border-left: 4px solid #FF9800; padding: 12px; margin: 15px 0; border-radius: 4px;"><strong>⚠️ Attention :</strong> L'angle <strong>intérieur</strong> du triangle équilatéral est de 60°, mais dans Scratch, le lutin doit tourner de l'<strong>angle extérieur</strong> qui est de <strong>120°</strong>.<br><br>Calcul : 180° - 60° = 120°<br>Ou bien : 360° ÷ 3 côtés = 120°</div>`
                                 };
                             },
                             () => {
