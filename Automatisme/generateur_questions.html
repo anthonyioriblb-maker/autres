@@ -663,6 +663,32 @@
             box-shadow: 0 2px 3px rgba(0,0,0,0.2);
         }
 
+        /* Ovale vert pour les opérateurs mathématiques (+, -, *, /, mod) */
+        .scratch-operator {
+            background: #59C059;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 3px;
+            font-weight: bold;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+        }
+
+        /* Hexagone vert pour les comparaisons booléennes (<, >, =, et, ou) */
+        .scratch-boolean {
+            background: #59C059;
+            color: white;
+            padding: 4px 12px;
+            display: inline-block;
+            margin: 0 3px;
+            font-weight: bold;
+            clip-path: polygon(20% 0%, 80% 0%, 100% 50%, 80% 100%, 20% 100%, 0% 50%);
+            box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+            min-width: 50px;
+            text-align: center;
+        }
+
         .scratch-question-mark {
             background: #FF6680;
             color: white;
@@ -814,26 +840,76 @@
             // Fonction pour formater les valeurs et expressions
             function formatExpression(expr) {
                 expr = cleanVariable(expr);
-                // Remplacer les parenthèses par des spans
-                // Les variables restent en orange, les nombres en blanc
-                expr = expr.replace(/\(([^()]+?)\)/g, (match, inner) => {
-                    // Si c'est un nombre pur, utiliser scratch-input (blanc)
-                    if (/^\d+(\.\d+)?$/.test(inner.trim())) {
-                        return `<span class="scratch-input">${inner}</span>`;
+
+                // Fonction récursive pour traiter les expressions imbriquées
+                function processParentheses(text) {
+                    // Traiter de l'intérieur vers l'extérieur
+                    let hasParens = true;
+                    while (hasParens) {
+                        hasParens = false;
+                        text = text.replace(/\(([^()]+?)\)/g, (match, inner) => {
+                            hasParens = true;
+                            inner = inner.trim();
+
+                            // Cas 1 : Nombre pur
+                            if (/^\d+(\.\d+)?$/.test(inner)) {
+                                return `<span class="scratch-input">${inner}</span>`;
+                            }
+
+                            // Cas 2 : Variable seule
+                            if (/^[a-zA-Zéèêàâôîç]+$/.test(inner)) {
+                                return `<span class="scratch-variable">${inner}</span>`;
+                            }
+
+                            // Cas 3 : Opération mathématique (ex: "x + 1", "côté * 3")
+                            if (/[\+\-\*\/]|mod/.test(inner)) {
+                                // Détecter l'opérateur
+                                const opMatch = inner.match(/(.+?)\s*([\+\-\*\/]|mod)\s*(.+)/);
+                                if (opMatch) {
+                                    const left = opMatch[1].trim();
+                                    const operator = opMatch[2].trim();
+                                    const right = opMatch[3].trim();
+
+                                    // Formater les opérandes
+                                    const formattedLeft = formatOperand(left);
+                                    const formattedRight = formatOperand(right);
+
+                                    // Opérateur en ovale vert
+                                    return `<span class="scratch-operator">${formattedLeft} ${operator} ${formattedRight}</span>`;
+                                }
+                            }
+
+                            // Cas 4 : Expression complexe sans opérateur clair
+                            // Remplacer variables et nombres
+                            inner = inner.replace(/<span[^>]*>.*?<\/span>/g, (m) => m); // Garder les spans existants
+                            inner = inner.replace(/\b([a-zA-Zéèêàâôîç]+)\b/g, (m) => {
+                                if (m.includes('span')) return m;
+                                return `<span class="scratch-variable">${m}</span>`;
+                            });
+                            inner = inner.replace(/\b(\d+)\b/g, (m) => {
+                                if (m.includes('span')) return m;
+                                return `<span class="scratch-input">${m}</span>`;
+                            });
+
+                            return inner;
+                        });
                     }
-                    // Si c'est juste un nom de variable (lettres), utiliser scratch-variable (ovale orange)
-                    else if (/^[a-zA-Zéèêàâôîç]+$/.test(inner.trim())) {
-                        return `<span class="scratch-variable">${inner}</span>`;
+                    return text;
+                }
+
+                // Fonction pour formater un opérande (peut contenir des spans)
+                function formatOperand(operand) {
+                    if (operand.includes('span')) return operand;
+                    if (/^\d+(\.\d+)?$/.test(operand)) {
+                        return `<span class="scratch-input">${operand}</span>`;
                     }
-                    // Sinon, parser l'expression (ex: "x + 1")
-                    else {
-                        // Remplacer les variables par des ovales et les nombres par des rectangles blancs
-                        inner = inner.replace(/\b([a-zA-Zéèêàâôîç]+)\b/g, '<span class="scratch-variable">$1</span>');
-                        inner = inner.replace(/\b(\d+)\b/g, '<span class="scratch-input">$1</span>');
-                        return inner;
+                    if (/^[a-zA-Zéèêàâôîç]+$/.test(operand)) {
+                        return `<span class="scratch-variable">${operand}</span>`;
                     }
-                });
-                return expr;
+                    return operand;
+                }
+
+                return processParentheses(expr);
             }
 
             lines.forEach((line, index) => {
@@ -870,8 +946,24 @@
                     condition = cleanVariable(condition);
                     // Gérer les opérateurs de comparaison <...>
                     condition = condition.replace(/<(.+?)>/g, (match, inner) => {
-                        inner = formatExpression(inner);
-                        return `&lt;${inner}&gt;`;
+                        // Détecter les opérateurs de comparaison
+                        const compMatch = inner.match(/(.+?)\s*(>|<|=|≥|≤)\s*(.+)/);
+                        if (compMatch) {
+                            const left = compMatch[1].trim();
+                            const operator = compMatch[2].trim();
+                            const right = compMatch[3].trim();
+
+                            // Formater chaque côté
+                            const formattedLeft = formatExpression(left);
+                            const formattedRight = formatExpression(right);
+
+                            // Retourner dans un hexagone vert
+                            return `<span class="scratch-boolean">${formattedLeft} ${operator} ${formattedRight}</span>`;
+                        } else {
+                            // Pas de comparaison détectée, formater normalement
+                            inner = formatExpression(inner);
+                            return `&lt;${inner}&gt;`;
+                        }
                     });
                     blockHtml = `<div class="scratch-block scratch-block-control">si ${condition} alors</div>`;
                     indentLevel++;
