@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Générateur de Questions - Automatismes DNB</title>
+    <!-- Bibliothèque scratchblocks pour afficher les blocs Scratch -->
+    <script src="https://scratchblocks.github.io/js/scratchblocks-v3.6-min.js"></script>
+    <link rel="stylesheet" href="https://scratchblocks.github.io/css/scratchblocks-v3.6-min.css">
     <style>
         * {
             margin: 0;
@@ -332,6 +335,7 @@
             .buttons,
             .stats,
             .print-buttons,
+            .exam-timer,
             .no-print {
                 display: none !important;
             }
@@ -375,6 +379,12 @@
                 margin: 5px auto !important;
             }
 
+            .question-item svg.graph {
+                width: 300px !important;
+                height: 220px !important;
+                margin: 5px auto !important;
+            }
+
             .question-item svg text {
                 font-size: 9px !important;
             }
@@ -387,9 +397,24 @@
                 r: 3 !important;
             }
 
+            .question-item svg path {
+                stroke-width: 1.5px !important;
+            }
+
             /* Réduire la taille des fractions */
             .fraction {
                 font-size: 0.9em !important;
+            }
+
+            /* Optimiser les tableaux pour l'impression */
+            .question-item table {
+                font-size: 10pt !important;
+                margin: 8px auto !important;
+            }
+
+            .question-item table td {
+                padding: 4px 8px !important;
+                border: 1.5px solid #667eea !important;
             }
 
             .correction-space {
@@ -492,9 +517,89 @@
                 display: block !important;
             }
         }
+
+        /* Styles pour le mode examen */
+        .btn-exam {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+        }
+
+        .btn-exam:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
+        }
+
+        .exam-timer {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            font-size: 2em;
+            font-weight: bold;
+            z-index: 1000;
+            animation: pulse 2s infinite;
+        }
+
+        .exam-timer.active {
+            display: block;
+        }
+
+        .exam-timer.warning {
+            background: linear-gradient(135deg, #ff9800 0%, #ff6b00 100%);
+            animation: pulse 1s infinite;
+        }
+
+        .exam-timer.critical {
+            background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+            animation: pulse 0.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .exam-mode-active .theme-selection,
+        .exam-mode-active .question-count-section,
+        .exam-mode-active .buttons .btn-primary {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .exam-timer-label {
+            font-size: 0.5em;
+            display: block;
+            margin-bottom: 5px;
+            opacity: 0.9;
+        }
+
+        .btn-stop-exam {
+            background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+            color: white;
+        }
+
+        .btn-stop-exam:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
     </style>
 </head>
 <body>
+    <!-- Timer pour le mode examen -->
+    <div class="exam-timer" id="examTimer">
+        <span class="exam-timer-label">⏱️ Temps restant</span>
+        <span id="timerDisplay">20:00</span>
+    </div>
+
     <div class="container">
         <div class="header">
             <h1>📐 Générateur de Questions</h1>
@@ -520,6 +625,8 @@
 
             <div class="buttons">
                 <button class="btn btn-primary" onclick="generateQuestions()">🎲 Générer les questions</button>
+                <button class="btn btn-exam" id="examButton" onclick="startExamMode()">⏱️ Mode Examen Blanc (20 min)</button>
+                <button class="btn btn-stop-exam" id="stopExamButton" onclick="stopExamMode()" style="display: none;">⏹️ Arrêter l'examen</button>
                 <button class="btn btn-secondary" onclick="resetStats()">🔄 Réinitialiser</button>
             </div>
 
@@ -559,7 +666,29 @@
 
         // Fonction pour convertir un nombre en notation française (virgule au lieu du point)
         function toFrenchNumber(num) {
-            return num.toString().replace('.', ',');
+            const str = num.toString();
+            const parts = str.split('.');
+
+            // Partie entière avec espaces pour les milliers
+            let integerPart = parts[0];
+            const isNegative = integerPart.startsWith('-');
+            if (isNegative) {
+                integerPart = integerPart.substring(1);
+            }
+
+            // Ajouter les espaces tous les 3 chiffres (de droite à gauche)
+            integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
+            if (isNegative) {
+                integerPart = '-' + integerPart;
+            }
+
+            // Partie décimale avec virgule
+            if (parts.length > 1) {
+                return integerPart + ',' + parts[1];
+            }
+
+            return integerPart;
         }
 
         // Fonction pour calculer le PGCD
@@ -586,6 +715,157 @@
         // Fonction pour formater les fractions en HTML
         function formatFraction(numerator, denominator) {
             return `<span class="fraction"><span class="numerator">${numerator}</span><span class="denominator">${denominator}</span></span>`;
+        }
+
+        // Fonction pour générer des blocs Scratch visuels
+        function generateScratchBlocks(code) {
+            const blockId = 'scratch-' + Math.random().toString(36).substr(2, 9);
+            // Retourner le code dans une div avec classe scratch
+            return `<pre class="blocks" id="${blockId}" style="margin: 15px auto; max-width: 600px;">${code}</pre>`;
+        }
+
+        // Fonction pour générer un tableau HTML de proportionnalité
+        function generateProportionalityTable(row1Values, row2Values, row1Label = "", row2Label = "") {
+            let table = `<table style="border-collapse: collapse; margin: 15px auto; text-align: center; font-size: 1.1em;">`;
+
+            // Première ligne (en-tête optionnel + valeurs)
+            table += `<tr>`;
+            if (row1Label) {
+                table += `<td style="border: 2px solid #667eea; padding: 8px 12px; background: #f0f0f0; font-weight: bold;">${row1Label}</td>`;
+            }
+            for (let val of row1Values) {
+                const displayVal = val === "?" ? "?" : (typeof val === 'number' && val % 1 !== 0 ? toFrenchNumber(val) : val);
+                table += `<td style="border: 2px solid #667eea; padding: 8px 12px; background: #f8f9fa;">${displayVal}</td>`;
+            }
+            table += `</tr>`;
+
+            // Deuxième ligne (en-tête optionnel + valeurs)
+            table += `<tr>`;
+            if (row2Label) {
+                table += `<td style="border: 2px solid #667eea; padding: 8px 12px; background: #f0f0f0; font-weight: bold;">${row2Label}</td>`;
+            }
+            for (let val of row2Values) {
+                const displayVal = val === "?" ? "?" : (typeof val === 'number' && val % 1 !== 0 ? toFrenchNumber(val) : val);
+                table += `<td style="border: 2px solid #667eea; padding: 8px 12px; background: #f8f9fa;">${displayVal}</td>`;
+            }
+            table += `</tr>`;
+
+            table += `</table>`;
+            return table;
+        }
+
+        // Fonction pour générer un graphique simple en SVG
+        function generateGraph(points, title = "", xLabel = "x", yLabel = "y", showPoint = null) {
+            const width = 400;
+            const height = 300;
+            const marginLeft = 50;
+            const marginRight = 30;
+            const marginTop = 30;
+            const marginBottom = 40;
+            const graphWidth = width - marginLeft - marginRight;
+            const graphHeight = height - marginTop - marginBottom;
+
+            // Trouver les valeurs min/max
+            let minX = Math.min(...points.map(p => p.x));
+            let maxX = Math.max(...points.map(p => p.x));
+            let minY = 0;
+            let maxY = Math.max(...points.map(p => p.y)) * 1.1; // 10% de marge
+
+            let svg = `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="display: block; margin: 10px auto; background: white;" class="graph">`;
+
+            // Axes
+            svg += `<line x1="${marginLeft}" y1="${height - marginBottom}" x2="${width - marginRight}" y2="${height - marginBottom}" stroke="#333" stroke-width="2"/>`;
+            svg += `<line x1="${marginLeft}" y1="${marginTop}" x2="${marginLeft}" y2="${height - marginBottom}" stroke="#333" stroke-width="2"/>`;
+
+            // Flèches
+            svg += `<polygon points="${width - marginRight + 5},${height - marginBottom} ${width - marginRight},${height - marginBottom - 4} ${width - marginRight},${height - marginBottom + 4}" fill="#333"/>`;
+            svg += `<polygon points="${marginLeft},${marginTop - 5} ${marginLeft - 4},${marginTop} ${marginLeft + 4},${marginTop}" fill="#333"/>`;
+
+            // Labels des axes
+            svg += `<text x="${width - marginRight + 10}" y="${height - marginBottom + 5}" font-size="12" fill="#333">${xLabel}</text>`;
+            svg += `<text x="${marginLeft - 10}" y="${marginTop - 10}" font-size="12" fill="#333">${yLabel}</text>`;
+
+            // Graduations et labels sur axe X
+            for (let x = minX; x <= maxX; x++) {
+                const px = marginLeft + ((x - minX) / (maxX - minX)) * graphWidth;
+                svg += `<line x1="${px}" y1="${height - marginBottom - 3}" x2="${px}" y2="${height - marginBottom + 3}" stroke="#333" stroke-width="1"/>`;
+                svg += `<text x="${px}" y="${height - marginBottom + 18}" text-anchor="middle" font-size="11" fill="#333">${x}</text>`;
+            }
+
+            // Graduations sur axe Y (tous les 5 ou 10)
+            const stepY = maxY > 20 ? 10 : 5;
+            for (let y = 0; y <= maxY; y += stepY) {
+                const py = height - marginBottom - ((y - minY) / (maxY - minY)) * graphHeight;
+                svg += `<line x1="${marginLeft - 3}" y1="${py}" x2="${marginLeft + 3}" y2="${py}" stroke="#333" stroke-width="1"/>`;
+                svg += `<text x="${marginLeft - 8}" y="${py + 4}" text-anchor="end" font-size="11" fill="#333">${Math.round(y)}</text>`;
+            }
+
+            // Tracer la courbe
+            let pathData = "";
+            points.forEach((point, i) => {
+                const px = marginLeft + ((point.x - minX) / (maxX - minX)) * graphWidth;
+                const py = height - marginBottom - ((point.y - minY) / (maxY - minY)) * graphHeight;
+                if (i === 0) {
+                    pathData += `M ${px} ${py}`;
+                } else {
+                    pathData += ` L ${px} ${py}`;
+                }
+            });
+            svg += `<path d="${pathData}" stroke="#667eea" stroke-width="2" fill="none"/>`;
+
+            // Afficher un point spécifique si demandé
+            if (showPoint) {
+                const px = marginLeft + ((showPoint.x - minX) / (maxX - minX)) * graphWidth;
+                const py = height - marginBottom - ((showPoint.y - minY) / (maxY - minY)) * graphHeight;
+                svg += `<circle cx="${px}" cy="${py}" r="4" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>`;
+                svg += `<text x="${px + 10}" y="${py - 10}" font-size="11" font-weight="bold" fill="#e74c3c">(${toFrenchNumber(showPoint.x)} ; ${toFrenchNumber(showPoint.y)})</text>`;
+            }
+
+            svg += `</svg>`;
+            return svg;
+        }
+
+        // Fonction pour générer un triangle rectangle en SVG
+        function generateRightTriangle(a, b, c, labelA = "a", labelB = "b", labelC = "c", showRightAngle = true) {
+            const scale = 30; // pixels par unité
+            const width = Math.max(a, b) * scale + 100;
+            const height = Math.max(a, b) * scale + 80;
+            const marginLeft = 40;
+            const marginBottom = 40;
+
+            // Position des sommets (triangle rectangle en bas à gauche)
+            const x1 = marginLeft;
+            const y1 = height - marginBottom; // Coin en bas à gauche (angle droit)
+            const x2 = x1 + (b * scale); // Coin en bas à droite
+            const y2 = y1;
+            const x3 = x1; // Coin en haut à gauche
+            const y3 = y1 - (a * scale);
+
+            let svg = `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="display: block; margin: 15px auto; background: white;" class="triangle">`;
+
+            // Tracer le triangle
+            svg += `<path d="M ${x1} ${y1} L ${x2} ${y2} L ${x3} ${y3} Z" stroke="#2c3e50" stroke-width="2" fill="#ecf0f1" fill-opacity="0.3"/>`;
+
+            // Marquer l'angle droit
+            if (showRightAngle) {
+                const squareSize = 12;
+                svg += `<rect x="${x1}" y="${y1 - squareSize}" width="${squareSize}" height="${squareSize}" fill="none" stroke="#e74c3c" stroke-width="1.5"/>`;
+            }
+
+            // Labels des côtés
+            // Côté a (vertical gauche)
+            svg += `<text x="${x1 - 15}" y="${(y1 + y3) / 2}" text-anchor="middle" font-size="14" font-weight="bold" fill="#667eea">${labelA}</text>`;
+
+            // Côté b (horizontal bas)
+            svg += `<text x="${(x1 + x2) / 2}" y="${y1 + 25}" text-anchor="middle" font-size="14" font-weight="bold" fill="#667eea">${labelB}</text>`;
+
+            // Côté c (hypoténuse)
+            const midX = (x2 + x3) / 2;
+            const midY = (y2 + y3) / 2;
+            svg += `<text x="${midX + 15}" y="${midY}" text-anchor="middle" font-size="14" font-weight="bold" fill="#e74c3c">${labelC}</text>`;
+
+            svg += `</svg>`;
+            return svg;
         }
 
         // Fonction pour générer une droite graduée en SVG
@@ -638,8 +918,8 @@
                     generator: () => {
                         const fractions = [
                             {n: 1, d: 2}, {n: 1, d: 4}, {n: 3, d: 4},
-                            {n: 3, d: 2}, {n: 5, d: 2}, {n: 1, d: 10},
-                            {n: 1, d: 5}, {n: 2, d: 5}, {n: 4, d: 5}
+                            {n: 3, d: 2}, {n: 4, d: 2}, {n: 5, d: 2},
+                            {n: 1, d: 10}, {n: 100, d: 100}, {n: 7, d: 1}
                         ];
                         const f = randChoice(fractions);
                         const result = toFrenchNumber(f.n / f.d);
@@ -688,6 +968,177 @@
                                     answer: sorted.map(toFrenchNumber).join(' < ')
                                 };
                             }
+                        ];
+                        return randChoice(ops)();
+                    }
+                },
+                {
+                    desc: "Nombres relatifs",
+                    generator: () => {
+                        const ops = [
+                            // Addition de relatifs
+                            () => {
+                                const a = randInt(-10, 10);
+                                const b = randInt(-10, 10);
+                                const result = a + b;
+                                return {
+                                    question: `Calculer : ${a} + (${b})`,
+                                    answer: `${result}`
+                                };
+                            },
+                            // Soustraction de relatifs
+                            () => {
+                                const a = randInt(-10, 10);
+                                const b = randInt(-10, 10);
+                                const result = a - b;
+                                return {
+                                    question: `Calculer : ${a} - (${b})`,
+                                    answer: `${a} - (${b}) = ${a} + (${-b}) = ${result}`
+                                };
+                            },
+                            // Multiplication de relatifs (même signe)
+                            () => {
+                                const a = randInt(-8, -2);
+                                const b = randInt(-8, -2);
+                                const result = a * b;
+                                return {
+                                    question: `Calculer : (${a}) × (${b})`,
+                                    answer: `${result}<br><em>Règle : (-) × (-) = (+)</em>`
+                                };
+                            },
+                            // Multiplication de relatifs (signes différents)
+                            () => {
+                                const a = randInt(-8, -2);
+                                const b = randInt(2, 8);
+                                const result = a * b;
+                                return {
+                                    question: `Calculer : (${a}) × ${b}`,
+                                    answer: `${result}<br><em>Règle : (-) × (+) = (-)</em>`
+                                };
+                            },
+                            // Multiplication positifs
+                            () => {
+                                const a = randInt(2, 9);
+                                const b = randInt(2, 9);
+                                const result = a * b;
+                                return {
+                                    question: `Calculer : ${a} × ${b}`,
+                                    answer: `${result}<br><em>Règle : (+) × (+) = (+)</em>`
+                                };
+                            },
+                            // Division de relatifs (même signe)
+                            () => {
+                                const b = randInt(2, 8);
+                                const result = randInt(2, 8);
+                                const a = b * result;
+                                return {
+                                    question: `Calculer : (${-a}) ÷ (${-b})`,
+                                    answer: `${result}<br><em>Règle : (-) ÷ (-) = (+)</em>`
+                                };
+                            },
+                            // Division de relatifs (signes différents)
+                            () => {
+                                const b = randInt(2, 8);
+                                const result = randInt(2, 8);
+                                const a = b * result;
+                                return {
+                                    question: `Calculer : (${-a}) ÷ ${b}`,
+                                    answer: `${-result}<br><em>Règle : (-) ÷ (+) = (-)</em>`
+                                };
+                            },
+                            // Opposé d'un nombre
+                            () => {
+                                const a = randInt(-10, 10);
+                                return {
+                                    question: `Quel est l'opposé de ${a} ?`,
+                                    answer: `${-a}`
+                                };
+                            },
+                            // Distance à zéro (valeur absolue)
+                            () => {
+                                const a = randInt(-15, -1);
+                                return {
+                                    question: `Quelle est la distance à zéro de ${a} ?`,
+                                    answer: `${-a}<br><em>La distance à zéro est toujours positive</em>`
+                                };
+                            },
+                            () => {
+                                const a = randInt(1, 15);
+                                return {
+                                    question: `Quelle est la distance à zéro de ${a} ?`,
+                                    answer: `${a}`
+                                };
+                            },
+                            // Opération combinée simple
+                            () => {
+                                const a = randInt(-5, 5);
+                                const b = randInt(-5, 5);
+                                const c = randInt(-5, 5);
+                                const result = a + b + c;
+                                return {
+                                    question: `Calculer : ${a} + ${b} + ${c}`,
+                                    answer: `${result}`
+                                };
+                            },
+                            // Somme algébrique
+                            () => {
+                                const a = randInt(5, 15);
+                                const b = randInt(2, 8);
+                                const c = randInt(3, 10);
+                                const result = a - b + c;
+                                return {
+                                    question: `Calculer : ${a} - ${b} + ${c}`,
+                                    answer: `${result}`
+                                };
+                            },
+                            // Produit et somme
+                            () => {
+                                const a = randInt(-5, 5);
+                                const b = randInt(-5, 5);
+                                const c = randInt(-5, 5);
+                                const result = a * b + c;
+                                return {
+                                    question: `Calculer : ${a} × ${b} + ${c}`,
+                                    answer: `${a} × ${b} + ${c} = ${a * b} + ${c} = ${result}`
+                                };
+                            },
+                            // Comparaison de relatifs
+                            () => {
+                                const a = randInt(-10, -1);
+                                const b = randInt(-10, -1);
+                                const comp = a < b ? '<' : a > b ? '>' : '=';
+                                return {
+                                    question: `Comparer ${a} et ${b} (utiliser <, > ou =)`,
+                                    answer: `${a} ${comp} ${b}`
+                                };
+                            },
+                            // Ranger des relatifs
+                            () => {
+                                const nums = [randInt(-10, -1), randInt(-10, 10), randInt(1, 10), randInt(-10, 10)];
+                                const sorted = [...nums].sort((a, b) => a - b);
+                                return {
+                                    question: `Ranger dans l'ordre croissant : ${nums.join(' ; ')}`,
+                                    answer: sorted.join(' < ')
+                                };
+                            },
+                            // Encadrement
+                            () => {
+                                const a = randInt(-8, 8);
+                                return {
+                                    question: `Donner un encadrement de ${a} par deux entiers consécutifs`,
+                                    answer: `${a-1} < ${a} < ${a+1}`
+                                };
+                            },
+                            // Signe d'un produit
+                            () => ({
+                                question: "Quel est le signe du produit de deux nombres négatifs ?",
+                                answer: "Positif<br><em>(-) × (-) = (+)</em>"
+                            }),
+                            // Signe d'un quotient
+                            () => ({
+                                question: "Quel est le signe du quotient de deux nombres de signes différents ?",
+                                answer: "Négatif<br><em>(+) ÷ (-) = (-) ou (-) ÷ (+) = (-)</em>"
+                            })
                         ];
                         return randChoice(ops)();
                     }
@@ -834,12 +1285,11 @@
                             },
                             () => {
                                 const n = randDecimal(0.001, 0.099, 3);
-                                const str = n.toString();
-                                const exp = -(str.indexOf(str.replace(/^0\./,'').replace(/^0+/, '')[0]) - 1);
-                                const mantisse = toFrenchNumber(n * Math.pow(10, exp));
+                                const exp = Math.floor(Math.log10(n));
+                                const mantisse = n / Math.pow(10, exp);
                                 return {
                                     question: `Écrire ${toFrenchNumber(n)} en notation scientifique`,
-                                    answer: `${mantisse} × 10<sup>-${exp}</sup>`
+                                    answer: `${toFrenchNumber(mantisse.toFixed(2))} × 10<sup>${exp}</sup>`
                                 };
                             }
                         ];
@@ -878,10 +1328,10 @@
                         const exprs = [
                             {text: "le double de n", answer: "2n ou 2 × n"},
                             {text: "le triple de n", answer: "3n ou 3 × n"},
-                            {text: "la moitié de n", answer: "n/2 ou n ÷ 2"},
+                            {text: "la moitié de n", answer: `${formatFraction("n", 2)} ou n ÷ 2`},
                             {text: "le successeur de n", answer: "n + 1"},
                             {text: "le prédécesseur de n", answer: "n - 1"},
-                            {text: "le carré de n", answer: "n²"}
+                            {text: "le carré de n", answer: "n<sup>2</sup>"}
                         ];
                         const expr = randChoice(exprs);
                         return {
@@ -944,7 +1394,7 @@
                                 const x = randInt(2, 6);
                                 const result = x * x - a;
                                 return {
-                                    question: `Calculer x² - ${a} pour x = ${x}`,
+                                    question: `Calculer x<sup>2</sup> - ${a} pour x = ${x}`,
                                     answer: `${result}`
                                 };
                             },
@@ -954,7 +1404,7 @@
                                 const x = randInt(2, 4);
                                 const result = a * x * x + b * x;
                                 return {
-                                    question: `Calculer ${a}x² + ${b}x pour x = ${x}`,
+                                    question: `Calculer ${a}x<sup>2</sup> + ${b}x pour x = ${x}`,
                                     answer: `${result}`
                                 };
                             }
@@ -990,6 +1440,24 @@
                                 return {
                                     question: `Factoriser : ${a * pgcd}x + ${b * pgcd}`,
                                     answer: `${pgcd}(${a}x + ${b})`
+                                };
+                            },
+                            () => {
+                                // Identité remarquable (a+b)(a-b) = a² - b²
+                                const b = randInt(2, 7);
+                                const bb = b * b;
+                                return {
+                                    question: `Développer : (x + ${b})(x - ${b})`,
+                                    answer: `x<sup>2</sup> - ${bb}<br><em>Formule : (a + b)(a - b) = a<sup>2</sup> - b<sup>2</sup></em>`
+                                };
+                            },
+                            () => {
+                                // Factoriser avec identité remarquable a² - b² = (a+b)(a-b)
+                                const b = randInt(2, 8);
+                                const bb = b * b;
+                                return {
+                                    question: `Factoriser : x<sup>2</sup> - ${bb}`,
+                                    answer: `(x + ${b})(x - ${b})<br><em>Formule : a<sup>2</sup> - b<sup>2</sup> = (a + b)(a - b)</em>`
                                 };
                             }
                         ];
@@ -1059,8 +1527,8 @@
                                 const decimal = a / b;
 
                                 return {
-                                    question: `Placer le point d'abscisse ${formatFraction(a, b)} sur une droite graduée :<br>${generateNumberLine(min, max, 1, decimal, false)}`,
-                                    answer: `Point placé à ${toFrenchNumber(decimal)} (soit ${formatFraction(a, b)}) :<br>${generateNumberLine(min, max, 1, decimal, true)}`
+                                    question: `Placer le point d'abscisse ${formatFraction(a, b)} sur une droite graduée :<br>${generateNumberLine(min, max, step, decimal, false)}`,
+                                    answer: `Point placé à ${toFrenchNumber(decimal)} (soit ${formatFraction(a, b)}) :<br>${generateNumberLine(min, max, step, decimal, true)}`
                                 };
                             }
                         ];
@@ -1093,6 +1561,70 @@
                     }
                 },
                 {
+                    desc: "Exploiter le codage d'une figure",
+                    generator: () => {
+                        const ops = [
+                            () => ({
+                                question: "Sur une figure, deux segments ont le même codage (un trait). Que peut-on en déduire ?",
+                                answer: "Ces deux segments ont la même longueur (ils sont isométriques)"
+                            }),
+                            () => ({
+                                question: "Un triangle a trois côtés codés de la même façon. Quelle est la nature de ce triangle ?",
+                                answer: "Triangle équilatéral (tous les côtés sont égaux)"
+                            }),
+                            () => ({
+                                question: "Un triangle a deux côtés codés identiquement. Quelle est la nature de ce triangle ?",
+                                answer: "Triangle isocèle (deux côtés égaux)"
+                            }),
+                            () => ({
+                                question: "Sur une figure, un angle est marqué d'un petit carré. Que représente ce symbole ?",
+                                answer: "Un angle droit (90°)"
+                            }),
+                            () => ({
+                                question: "Un quadrilatère a ses 4 côtés codés de la même façon et un angle droit. Quelle est sa nature ?",
+                                answer: "Carré (4 côtés égaux et un angle droit)"
+                            }),
+                            () => ({
+                                question: "Un quadrilatère a ses côtés opposés codés deux par deux. Quelle est sa nature ?",
+                                answer: "Parallélogramme (côtés opposés égaux)"
+                            }),
+                            () => ({
+                                question: "Un triangle rectangle a deux côtés de l'angle droit codés de la même façon. Quelle est sa nature complète ?",
+                                answer: "Triangle rectangle isocèle"
+                            }),
+                            () => ({
+                                question: "Deux angles sont marqués du même codage (un arc). Que peut-on en déduire ?",
+                                answer: "Ces deux angles ont la même mesure"
+                            }),
+                            () => ({
+                                question: "Une droite est tracée en pointillés perpendiculaire à un segment [AB] en son milieu. Qu'est-ce que c'est ?",
+                                answer: "La médiatrice du segment [AB]"
+                            }),
+                            () => ({
+                                question: "Un point est marqué au milieu d'un segment avec un trait de codage. Comment appelle-t-on ce point ?",
+                                answer: "Le milieu du segment"
+                            }),
+                            () => ({
+                                question: "Un quadrilatère a 4 angles droits et les côtés opposés codés deux par deux. Quelle est sa nature ?",
+                                answer: "Rectangle"
+                            }),
+                            () => ({
+                                question: "Sur une figure, deux droites sont marquées avec des flèches identiques. Que signifie ce codage ?",
+                                answer: "Les deux droites sont parallèles"
+                            }),
+                            () => ({
+                                question: "Un triangle a un angle droit et tous ses côtés codés différemment. Quelle est sa nature ?",
+                                answer: "Triangle rectangle quelconque (ou scalène)"
+                            }),
+                            () => ({
+                                question: "Un losange est un quadrilatère dont les 4 côtés sont codés de la même façon. Quelle autre propriété possède-t-il ?",
+                                answer: "Ses côtés opposés sont parallèles (c'est un parallélogramme particulier)"
+                            })
+                        ];
+                        return randChoice(ops)();
+                    }
+                },
+                {
                     desc: "Angles",
                     generator: () => {
                         const ops = [
@@ -1109,7 +1641,7 @@
                                 const result = 90 - a;
                                 return {
                                     question: `Deux angles sont complémentaires. L'un mesure ${a}°, calculer l'autre`,
-                                    answer: `${result}°`
+                                    answer: `90° - ${a}° = ${result}°`
                                 };
                             },
                             () => {
@@ -1117,9 +1649,44 @@
                                 const result = 180 - a;
                                 return {
                                     question: `Deux angles sont supplémentaires. L'un mesure ${a}°, calculer l'autre`,
-                                    answer: `${result}°`
+                                    answer: `180° - ${a}° = ${result}°`
                                 };
-                            }
+                            },
+                            () => ({
+                                question: "Quelle est la mesure d'un angle nul ?",
+                                answer: "0°"
+                            }),
+                            () => ({
+                                question: "Qu'est-ce qu'un angle aigu ?",
+                                answer: "Un angle dont la mesure est comprise entre 0° et 90°"
+                            }),
+                            () => ({
+                                question: "Qu'est-ce qu'un angle obtus ?",
+                                answer: "Un angle dont la mesure est comprise entre 90° et 180°"
+                            }),
+                            () => {
+                                const a = randInt(40, 130);
+                                return {
+                                    question: `Deux angles sont opposés par le sommet. L'un mesure ${a}°, quelle est la mesure de l'autre ?`,
+                                    answer: `${a}°<br><em>Explication : Deux angles opposés par le sommet ont la même mesure</em>`
+                                };
+                            },
+                            () => {
+                                const a = randInt(50, 130);
+                                const b = 180 - a;
+                                return {
+                                    question: `Deux angles adjacents forment un angle plat. L'un mesure ${a}°, calculer l'autre`,
+                                    answer: `180° - ${a}° = ${b}°<br><em>Explication : Deux angles adjacents formant un angle plat sont supplémentaires</em>`
+                                };
+                            },
+                            () => ({
+                                question: "Que peut-on dire de deux angles opposés par le sommet ?",
+                                answer: "Ils ont la même mesure"
+                            }),
+                            () => ({
+                                question: "Que sont deux angles adjacents ?",
+                                answer: "Deux angles qui ont le même sommet, un côté commun, et sont situés de part et d'autre de ce côté commun"
+                            })
                         ];
                         return randChoice(ops)();
                     }
@@ -1134,7 +1701,7 @@
                                 const c = 180 - a - b;
                                 return {
                                     question: `Dans un triangle, deux angles mesurent ${a}° et ${b}°. Calculer le troisième angle`,
-                                    answer: `${c}°`
+                                    answer: `180° - ${a}° - ${b}° = ${c}°`
                                 };
                             },
                             () => ({
@@ -1146,7 +1713,7 @@
                                 const b = 90 - a;
                                 return {
                                     question: `Dans un triangle rectangle, un angle aigu mesure ${a}°. Calculer l'autre angle aigu`,
-                                    answer: `${b}°`
+                                    answer: `90° - ${a}° = ${b}°`
                                 };
                             },
                             () => ({
@@ -1161,12 +1728,13 @@
                     desc: "Conversions d'unités",
                     generator: () => {
                         const ops = [
+                            // LONGUEURS
                             () => {
                                 const n = randDecimal(1, 10);
                                 const result = n * 100;
                                 return {
                                     question: `Convertir ${toFrenchNumber(n)} m en cm`,
-                                    answer: `${toFrenchNumber(result)} cm`
+                                    answer: `${toFrenchNumber(n)} m × 100 = ${toFrenchNumber(result)} cm`
                                 };
                             },
                             () => {
@@ -1174,24 +1742,7 @@
                                 const result = n / 1000;
                                 return {
                                     question: `Convertir ${n} mm en m`,
-                                    answer: `${toFrenchNumber(result)} m`
-                                };
-                            },
-                            () => {
-                                const n = randDecimal(1, 5);
-                                const result = n * 1000;
-                                return {
-                                    question: `Convertir ${toFrenchNumber(n)} L en mL`,
-                                    answer: `${toFrenchNumber(result)} mL`
-                                };
-                            },
-                            () => {
-                                const h = randInt(1, 5);
-                                const min = randChoice([15, 30, 45]);
-                                const result = h * 60 + min;
-                                return {
-                                    question: `Convertir ${h} h ${min} min en minutes`,
-                                    answer: `${result} min`
+                                    answer: `${n} mm ÷ 1000 = ${toFrenchNumber(result)} m`
                                 };
                             },
                             () => {
@@ -1199,7 +1750,173 @@
                                 const result = n * 1000;
                                 return {
                                     question: `Convertir ${n} km en m`,
-                                    answer: `${result} m`
+                                    answer: `${n} km × 1000 = ${result} m`
+                                };
+                            },
+                            () => {
+                                const n = randInt(10, 100);
+                                const result = n * 10;
+                                return {
+                                    question: `Convertir ${n} cm en mm`,
+                                    answer: `${n} cm × 10 = ${result} mm`
+                                };
+                            },
+                            // AIRES
+                            () => {
+                                const n = randInt(2, 8);
+                                const result = n * 10000;
+                                return {
+                                    question: `Convertir ${n} m² en cm²`,
+                                    answer: `${n} m² × 10 000 = ${toFrenchNumber(result)} cm²`
+                                };
+                            },
+                            () => {
+                                const n = randInt(50000, 200000);
+                                const result = n / 10000;
+                                return {
+                                    question: `Convertir ${toFrenchNumber(n)} cm² en m²`,
+                                    answer: `${toFrenchNumber(n)} cm² ÷ 10 000 = ${toFrenchNumber(result)} m²`
+                                };
+                            },
+                            () => {
+                                const n = randInt(2, 5);
+                                const result = n * 1000000;
+                                return {
+                                    question: `Convertir ${n} km² en m²`,
+                                    answer: `${n} km² × 1 000 000 = ${toFrenchNumber(result)} m²`
+                                };
+                            },
+                            () => {
+                                const n = randInt(500, 2000);
+                                const result = n / 100;
+                                return {
+                                    question: `Convertir ${n} mm² en cm²`,
+                                    answer: `${n} mm² ÷ 100 = ${toFrenchNumber(result)} cm²`
+                                };
+                            },
+                            // VOLUMES
+                            () => {
+                                const n = randInt(2, 8);
+                                const result = n * 1000;
+                                return {
+                                    question: `Convertir ${n} dm³ en cm³`,
+                                    answer: `${n} dm³ × 1000 = ${toFrenchNumber(result)} cm³`
+                                };
+                            },
+                            () => {
+                                const n = randInt(2000, 8000);
+                                const result = n / 1000;
+                                return {
+                                    question: `Convertir ${toFrenchNumber(n)} cm³ en dm³`,
+                                    answer: `${toFrenchNumber(n)} cm³ ÷ 1000 = ${toFrenchNumber(result)} dm³`
+                                };
+                            },
+                            () => {
+                                const n = randInt(2, 10);
+                                const result = n * 1000;
+                                return {
+                                    question: `Convertir ${n} m³ en dm³`,
+                                    answer: `${n} m³ × 1000 = ${toFrenchNumber(result)} dm³`
+                                };
+                            },
+                            // MASSES
+                            () => {
+                                const n = randInt(1000, 5000);
+                                const result = n / 1000;
+                                return {
+                                    question: `Convertir ${toFrenchNumber(n)} g en kg`,
+                                    answer: `${toFrenchNumber(n)} g ÷ 1000 = ${toFrenchNumber(result)} kg`
+                                };
+                            },
+                            () => {
+                                const n = randDecimal(1, 8);
+                                const result = n * 1000;
+                                return {
+                                    question: `Convertir ${toFrenchNumber(n)} kg en g`,
+                                    answer: `${toFrenchNumber(n)} kg × 1000 = ${toFrenchNumber(result)} g`
+                                };
+                            },
+                            // VOLUMES LIQUIDES
+                            () => {
+                                const n = randDecimal(1, 5);
+                                const result = n * 1000;
+                                return {
+                                    question: `Convertir ${toFrenchNumber(n)} L en mL`,
+                                    answer: `${toFrenchNumber(n)} L × 1000 = ${toFrenchNumber(result)} mL`
+                                };
+                            },
+                            () => {
+                                const n = randDecimal(1, 5);
+                                const result = n * 100;
+                                return {
+                                    question: `Convertir ${toFrenchNumber(n)} L en cL`,
+                                    answer: `${toFrenchNumber(n)} L × 100 = ${toFrenchNumber(result)} cL`
+                                };
+                            },
+                            () => {
+                                const n = randDecimal(1, 5);
+                                const result = n * 10;
+                                return {
+                                    question: `Convertir ${toFrenchNumber(n)} L en dL`,
+                                    answer: `${toFrenchNumber(n)} L × 10 = ${toFrenchNumber(result)} dL`
+                                };
+                            },
+                            () => {
+                                const n = randInt(100, 500);
+                                const result = n / 100;
+                                return {
+                                    question: `Convertir ${n} cL en L`,
+                                    answer: `${n} cL ÷ 100 = ${toFrenchNumber(result)} L`
+                                };
+                            },
+                            // TEMPS
+                            () => {
+                                const h = randInt(1, 5);
+                                const min = randChoice([15, 30, 45]);
+                                const result = h * 60 + min;
+                                return {
+                                    question: `Convertir ${h} h ${min} min en minutes`,
+                                    answer: `${h} h × 60 + ${min} min = ${h * 60} min + ${min} min = ${result} min`
+                                };
+                            },
+                            () => {
+                                const min = randInt(60, 300);
+                                const result = min / 60;
+                                return {
+                                    question: `Convertir ${min} min en heures`,
+                                    answer: `${min} min ÷ 60 = ${toFrenchNumber(result)} h`
+                                };
+                            },
+                            () => {
+                                const s = randInt(120, 600);
+                                const result = s / 60;
+                                return {
+                                    question: `Convertir ${s} s en minutes`,
+                                    answer: `${s} s ÷ 60 = ${toFrenchNumber(result)} min`
+                                };
+                            },
+                            () => {
+                                const h = randInt(24, 120);
+                                const result = h / 24;
+                                return {
+                                    question: `Convertir ${h} h en jours`,
+                                    answer: `${h} h ÷ 24 = ${toFrenchNumber(result)} jour(s)`
+                                };
+                            },
+                            // CORRESPONDANCES
+                            () => {
+                                const n = randInt(5, 25);
+                                return {
+                                    question: `Convertir ${n} dm³ en L`,
+                                    answer: `${n} L<br><em>Rappel : 1 dm³ = 1 L</em>`
+                                };
+                            },
+                            () => {
+                                const n = randDecimal(1, 5);
+                                const result = n * 1000;
+                                return {
+                                    question: `Convertir ${toFrenchNumber(n)} m³ en L`,
+                                    answer: `${toFrenchNumber(result)} L<br><em>Rappel : 1 m³ = 1000 L</em>`
                                 };
                             }
                         ];
@@ -1244,13 +1961,13 @@
                                 const p = 4 * c;
                                 return {
                                     question: `Calculer le périmètre d'un carré de côté ${c} cm`,
-                                    answer: `${p} cm`
+                                    answer: `P = 4 × ${c} cm = ${p} cm`
                                 };
                             },
                             () => {
                                 // Paire théorie + pratique pour cercle
                                 const r = randInt(3, 10);
-                                const p = 2 * 3.14 * r;
+                                const p = 2 * Math.PI * r;
                                 return [
                                     {
                                         question: "Quelle est la formule du périmètre d'un cercle ?",
@@ -1258,7 +1975,7 @@
                                     },
                                     {
                                         question: `Calculer le périmètre d'un cercle de rayon ${r} cm (π ≈ 3,14)`,
-                                        answer: `P = 2 × 3,14 × ${r} = ${toFrenchNumber(p)} cm`
+                                        answer: `P = 2 × π × ${r} cm = ${2 * r}π cm ≈ ${toFrenchNumber(p.toFixed(2))} cm`
                                     }
                                 ];
                             },
@@ -1267,7 +1984,7 @@
                                 const p = 3 * c;
                                 return {
                                     question: `Un triangle équilatéral a un côté de ${c} cm. Quel est son périmètre ?`,
-                                    answer: `${p} cm`
+                                    answer: `P = 3 × ${c} cm = ${p} cm`
                                 };
                             }
                         ];
@@ -1290,7 +2007,7 @@
                                     },
                                     {
                                         question: `Calculer l'aire d'un rectangle de longueur ${L} cm et largeur ${l} cm`,
-                                        answer: `Aire = ${L} × ${l} = ${a} cm²`
+                                        answer: `Aire = ${L} cm × ${l} cm = ${a} cm²`
                                     }
                                 ];
                             },
@@ -1306,22 +2023,22 @@
                                     },
                                     {
                                         question: `Calculer l'aire d'un triangle de base ${b} cm et hauteur ${h} cm`,
-                                        answer: `Aire = (${b} × ${h}) ÷ 2 = ${b * h} ÷ 2 = ${toFrenchNumber(a)} cm²`
+                                        answer: `Aire = (${b} cm × ${h} cm) ÷ 2 = ${toFrenchNumber(a)} cm²`
                                     }
                                 ];
                             },
                             () => {
                                 // Paire théorie + pratique pour disque
                                 const r = randInt(3, 10);
-                                const a = 3.14 * r * r;
+                                const a = Math.PI * r * r;
                                 return [
                                     {
                                         question: "Quelle est la formule de l'aire d'un disque ?",
-                                        answer: "Aire = π × r²"
+                                        answer: "Aire = π × r<sup>2</sup>"
                                     },
                                     {
                                         question: `Calculer l'aire d'un disque de rayon ${r} cm (π ≈ 3,14)`,
-                                        answer: `Aire = 3,14 × ${r}² = 3,14 × ${r * r} = ${toFrenchNumber(a)} cm²`
+                                        answer: `Aire = π × (${r} cm)<sup>2</sup> = ${r * r}π cm² ≈ ${toFrenchNumber(a.toFixed(2))} cm²`
                                     }
                                 ];
                             },
@@ -1330,7 +2047,7 @@
                                 const a = c * c;
                                 return {
                                     question: `Calculer l'aire d'un carré de côté ${c} cm`,
-                                    answer: `${a} cm²`
+                                    answer: `Aire = ${c} cm × ${c} cm = ${a} cm²`
                                 };
                             }
                         ];
@@ -1346,7 +2063,7 @@
                                 const v = a * a * a;
                                 return {
                                     question: `Calculer le volume d'un cube d'arête ${a} cm`,
-                                    answer: `${v} cm³`
+                                    answer: `V = ${a} cm × ${a} cm × ${a} cm = ${v} cm³`
                                 };
                             },
                             () => {
@@ -1356,7 +2073,7 @@
                                 const v = L * l * h;
                                 return {
                                     question: `Calculer le volume d'un pavé droit de dimensions ${L} cm × ${l} cm × ${h} cm`,
-                                    answer: `${v} cm³`
+                                    answer: `V = ${L} cm × ${l} cm × ${h} cm = ${v} cm³`
                                 };
                             },
                             () => {
@@ -1365,22 +2082,65 @@
                                 const v = B * h;
                                 return {
                                     question: `Calculer le volume d'un prisme droit d'aire de base ${B} cm² et de hauteur ${h} cm`,
-                                    answer: `${v} cm³`
+                                    answer: `V = ${B} cm² × ${h} cm = ${v} cm³`
                                 };
                             },
                             () => {
                                 // Paire théorie + pratique
                                 const r = randInt(3, 6);
                                 const h = randInt(5, 10);
-                                const v = 3.14 * r * r * h;
+                                const v = Math.PI * r * r * h;
                                 return [
                                     {
                                         question: "Quelle est la formule du volume d'un cylindre ?",
-                                        answer: "V = π × r² × h"
+                                        answer: "V = π × r<sup>2</sup> × h"
                                     },
                                     {
                                         question: `Calculer le volume d'un cylindre de rayon ${r} cm et de hauteur ${h} cm (π ≈ 3,14)`,
-                                        answer: `V = 3,14 × ${r}² × ${h} = 3,14 × ${r*r} × ${h} = ${toFrenchNumber(v)} cm³`
+                                        answer: `V = π × (${r} cm)<sup>2</sup> × ${h} cm = ${r*r*h}π cm³ ≈ ${toFrenchNumber(v.toFixed(2))} cm³`
+                                    }
+                                ];
+                            },
+                            () => {
+                                // Pyramide - théorie + pratique
+                                const B = randInt(20, 60);
+                                const h = randInt(6, 15);
+                                const v = (B * h) / 3;
+                                return [
+                                    {
+                                        question: "Quelle est la formule du volume d'une pyramide ?",
+                                        answer: `V = ${formatFraction("Aire de la base × Hauteur", 3)}`
+                                    },
+                                    {
+                                        question: `Calculer le volume d'une pyramide d'aire de base ${B} cm² et de hauteur ${h} cm`,
+                                        answer: `V = ${formatFraction(`${B} cm² × ${h} cm`, 3)} = ${formatFraction(`${B * h} cm³`, 3)} = ${toFrenchNumber(v.toFixed(2))} cm³`
+                                    }
+                                ];
+                            },
+                            () => {
+                                // Pyramide à base carrée
+                                const cote = randInt(4, 10);
+                                const h = randInt(6, 12);
+                                const B = cote * cote;
+                                const v = (B * h) / 3;
+                                return {
+                                    question: `Calculer le volume d'une pyramide à base carrée de côté ${cote} cm et de hauteur ${h} cm`,
+                                    answer: `Aire de la base = ${cote} cm × ${cote} cm = ${B} cm²<br>V = ${formatFraction(`${B} cm² × ${h} cm`, 3)} = ${formatFraction(`${B * h} cm³`, 3)} = ${toFrenchNumber(v.toFixed(2))} cm³`
+                                };
+                            },
+                            () => {
+                                // Cône - théorie + pratique
+                                const r = randInt(3, 7);
+                                const h = randInt(6, 12);
+                                const v = (Math.PI * r * r * h) / 3;
+                                return [
+                                    {
+                                        question: "Quelle est la formule du volume d'un cône ?",
+                                        answer: `V = ${formatFraction("π × r<sup>2</sup> × h", 3)}`
+                                    },
+                                    {
+                                        question: `Calculer le volume d'un cône de rayon ${r} cm et de hauteur ${h} cm (π ≈ 3,14)`,
+                                        answer: `V = ${formatFraction(`π × (${r} cm)<sup>2</sup> × ${h} cm`, 3)} = ${formatFraction(`${r*r*h}π cm³`, 3)} ≈ ${toFrenchNumber(v.toFixed(2))} cm³`
                                     }
                                 ];
                             }
@@ -1413,7 +2173,7 @@
                                     },
                                     {
                                         question: `Application : Dans un triangle rectangle ABC, AB = ${a} cm et AC = ${b} cm. Calculer BC`,
-                                        answer: `BC² = AB² + AC² = ${a}² + ${b}² = ${a*a} + ${b*b} = ${a*a + b*b}, donc BC = ${toFrenchNumber(c.toFixed(2))} cm`
+                                        answer: `BC<sup>2</sup> = AB<sup>2</sup> + AC<sup>2</sup> = ${a}<sup>2</sup> + ${b}<sup>2</sup> = ${a*a} + ${b*b} = ${a*a + b*b}, donc BC = ${toFrenchNumber(c.toFixed(2))} cm`
                                     }
                                 ];
                             },
@@ -1422,7 +2182,7 @@
                                 const [a, b, c] = randChoice(pythTriples);
                                 return {
                                     question: `Un triangle a des côtés de ${a} cm, ${b} cm et ${c} cm. Est-il rectangle ?`,
-                                    answer: `Oui, car ${a}² + ${b}² = ${a*a} + ${b*b} = ${a*a + b*b} = ${c}² = ${c*c}`
+                                    answer: `Oui, car ${a}<sup>2</sup> + ${b}<sup>2</sup> = ${a*a} + ${b*b} = ${a*a + b*b} = ${c}<sup>2</sup> = ${c*c}`
                                 };
                             },
                             () => {
@@ -1456,7 +2216,7 @@
                                     },
                                     {
                                         question: `Application : Dans des triangles en position de Thalès, AB = ${a} cm, AM = ${b} cm, AC = ${c} cm. Si MN // BC, écrire l'égalité de Thalès`,
-                                        answer: `AM/AB = AN/AC = MN/BC soit ${b}/${a} = AN/${c} = MN/BC`
+                                        answer: `${formatFraction("AM", "AB")} = ${formatFraction("AN", "AC")} = ${formatFraction("MN", "BC")} soit ${formatFraction(b, a)} = ${formatFraction("AN", c)} = ${formatFraction("MN", "BC")}`
                                     }
                                 ];
                             },
@@ -1466,7 +2226,7 @@
                             }),
                             () => ({
                                 question: `Dans des triangles en position de Thalès, AB = ${AB}, AC = ${AC}, AM = ${AM}. Si MN // BC, écrire l'égalité de Thalès`,
-                                answer: `AM/AB = AN/AC = MN/BC`
+                                answer: `${formatFraction("AM", "AB")} = ${formatFraction("AN", "AC")} = ${formatFraction("MN", "BC")}`
                             }),
                             () => ({
                                 question: "Citer les conditions d'application du théorème de Thalès",
@@ -1488,17 +2248,17 @@
                                 return [
                                     {
                                         question: "Dans un triangle rectangle, quelle est la formule du cosinus d'un angle aigu ?",
-                                        answer: "cos(angle) = côté adjacent / hypoténuse"
+                                        answer: `cos(angle) = ${formatFraction("côté adjacent", "hypoténuse")}`
                                     },
                                     {
                                         question: `Application : Dans un triangle rectangle, le côté adjacent mesure ${adj} cm et l'hypoténuse ${hyp} cm. Calculer le cosinus de l'angle`,
-                                        answer: `cos = ${adj}/${hyp} = ${toFrenchNumber(cos.toFixed(3))}`
+                                        answer: `cos = ${formatFraction(adj + " cm", hyp + " cm")} = ${formatFraction(adj, hyp)} ≈ ${toFrenchNumber(cos.toFixed(3))}`
                                     }
                                 ];
                             },
                             () => ({
                                 question: "Définir le cosinus d'un angle aigu dans un triangle rectangle",
-                                answer: "cos(angle) = côté adjacent / hypoténuse"
+                                answer: `cos(angle) = ${formatFraction("côté adjacent", "hypoténuse")}`
                             }),
                             () => {
                                 const adj = randInt(3, 8);
@@ -1506,9 +2266,91 @@
                                 const cos = adj / hyp;
                                 return {
                                     question: `Dans un triangle rectangle, le côté adjacent mesure ${adj} cm et l'hypoténuse ${hyp} cm. Calculer le cosinus de l'angle`,
-                                    answer: `cos = ${adj}/${hyp} = ${toFrenchNumber(cos.toFixed(3))}`
+                                    answer: `cos = ${formatFraction(adj + " cm", hyp + " cm")} = ${formatFraction(adj, hyp)} ≈ ${toFrenchNumber(cos.toFixed(3))}`
                                 };
                             }
+                        ];
+                        return randChoice(ops)();
+                    }
+                },
+                {
+                    desc: "Trigonométrie - Sinus et Tangente",
+                    generator: () => {
+                        const ops = [
+                            // SINUS
+                            () => {
+                                // Paire théorie + pratique sinus
+                                const opp = randInt(3, 8);
+                                const hyp = randInt(opp + 2, 12);
+                                const sin = opp / hyp;
+                                return [
+                                    {
+                                        question: "Dans un triangle rectangle, quelle est la formule du sinus d'un angle aigu ?",
+                                        answer: `sin(angle) = ${formatFraction("côté opposé", "hypoténuse")}`
+                                    },
+                                    {
+                                        question: `Application : Dans un triangle rectangle, le côté opposé mesure ${opp} cm et l'hypoténuse ${hyp} cm. Calculer le sinus de l'angle`,
+                                        answer: `sin = ${formatFraction(opp + " cm", hyp + " cm")} = ${formatFraction(opp, hyp)} ≈ ${toFrenchNumber(sin.toFixed(3))}`
+                                    }
+                                ];
+                            },
+                            () => ({
+                                question: "Définir le sinus d'un angle aigu dans un triangle rectangle",
+                                answer: `sin(angle) = ${formatFraction("côté opposé", "hypoténuse")}`
+                            }),
+                            () => {
+                                const opp = randInt(3, 8);
+                                const hyp = randInt(opp + 2, 12);
+                                const sin = opp / hyp;
+                                return {
+                                    question: `Dans un triangle rectangle, le côté opposé mesure ${opp} cm et l'hypoténuse ${hyp} cm. Calculer le sinus de l'angle`,
+                                    answer: `sin = ${formatFraction(opp + " cm", hyp + " cm")} = ${formatFraction(opp, hyp)} ≈ ${toFrenchNumber(sin.toFixed(3))}`
+                                };
+                            },
+                            // TANGENTE
+                            () => {
+                                // Paire théorie + pratique tangente
+                                const opp = randInt(3, 8);
+                                const adj = randInt(3, 8);
+                                const tan = opp / adj;
+                                return [
+                                    {
+                                        question: "Dans un triangle rectangle, quelle est la formule de la tangente d'un angle aigu ?",
+                                        answer: `tan(angle) = ${formatFraction("côté opposé", "côté adjacent")}`
+                                    },
+                                    {
+                                        question: `Application : Dans un triangle rectangle, le côté opposé mesure ${opp} cm et le côté adjacent ${adj} cm. Calculer la tangente de l'angle`,
+                                        answer: `tan = ${formatFraction(opp + " cm", adj + " cm")} = ${formatFraction(opp, adj)} ≈ ${toFrenchNumber(tan.toFixed(3))}`
+                                    }
+                                ];
+                            },
+                            () => ({
+                                question: "Définir la tangente d'un angle aigu dans un triangle rectangle",
+                                answer: `tan(angle) = ${formatFraction("côté opposé", "côté adjacent")}`
+                            }),
+                            () => {
+                                const opp = randInt(3, 8);
+                                const adj = randInt(3, 8);
+                                const tan = opp / adj;
+                                return {
+                                    question: `Dans un triangle rectangle, le côté opposé mesure ${opp} cm et le côté adjacent ${adj} cm. Calculer la tangente de l'angle`,
+                                    answer: `tan = ${formatFraction(opp + " cm", adj + " cm")} = ${formatFraction(opp, adj)} ≈ ${toFrenchNumber(tan.toFixed(3))}`
+                                };
+                            },
+                            // RELATIONS
+                            () => ({
+                                question: "Quelle relation existe entre sinus, cosinus et tangente ?",
+                                answer: `tan(angle) = ${formatFraction("sin(angle)", "cos(angle)")}`
+                            }),
+                            () => ({
+                                question: "Quelle est la relation fondamentale entre sinus et cosinus ?",
+                                answer: "sin<sup>2</sup>(angle) + cos<sup>2</sup>(angle) = 1"
+                            }),
+                            // MNEMOTECHNIQUE
+                            () => ({
+                                question: "Donner le moyen mnémotechnique pour retenir les formules trigonométriques (SOH-CAH-TOA)",
+                                answer: "SOH : Sin = Opposé / Hypoténuse<br>CAH : Cos = Adjacent / Hypoténuse<br>TOA : Tan = Opposé / Adjacent"
+                            })
                         ];
                         return randChoice(ops)();
                     }
@@ -1517,6 +2359,7 @@
                     desc: "Symétries et transformations",
                     generator: () => {
                         const ops = [
+                            // Symétrie centrale
                             () => {
                                 const x = randInt(-5, 5);
                                 const y = randInt(-5, 5);
@@ -1526,17 +2369,55 @@
                                 };
                             },
                             () => ({
+                                question: "Quelles sont les propriétés conservées par une symétrie centrale ?",
+                                answer: "Les distances, les angles, les aires, l'alignement et le parallélisme"
+                            }),
+                            // Symétrie axiale
+                            () => ({
                                 question: "Comment construire le symétrique d'un point par rapport à une droite ?",
                                 answer: "Tracer la perpendiculaire à la droite passant par le point, puis reporter la distance de l'autre côté"
                             }),
                             () => ({
-                                question: "Quelles sont les propriétés conservées par une symétrie centrale ?",
-                                answer: "Les distances, les angles, les aires, l'alignement et le parallélisme"
+                                question: "Quelles sont les propriétés conservées par une symétrie axiale ?",
+                                answer: "Les distances, les angles, les aires. ATTENTION : le sens de parcours est inversé"
+                            }),
+                            // Translation
+                            () => {
+                                const x = randInt(-5, 5);
+                                const y = randInt(-5, 5);
+                                const vx = randInt(1, 5);
+                                const vy = randInt(1, 5);
+                                const resX = x + vx;
+                                const resY = y + vy;
+                                return {
+                                    question: `Par la translation de vecteur (${vx}; ${vy}), quelle est l'image du point A(${x}; ${y}) ?`,
+                                    answer: `A'(${resX}; ${resY})<br>On ajoute les coordonnées du vecteur : (${x} + ${vx}; ${y} + ${vy})`
+                                };
+                            },
+                            () => ({
+                                question: "Quelles sont les propriétés conservées par une translation ?",
+                                answer: "Les distances, les angles, les aires, l'alignement, le parallélisme et les directions"
                             }),
                             () => ({
-                                question: "Construire le symétrique d'un triangle par symétrie axiale",
-                                answer: "Construire le symétrique de chaque sommet par rapport à l'axe, puis relier les points"
-                            })
+                                question: "Quelle transformation permet de passer d'un point A à un point B par un glissement ?",
+                                answer: "La translation de vecteur AB"
+                            }),
+                            () => ({
+                                question: "Dans une translation, que peut-on dire de l'image d'une droite ?",
+                                answer: "L'image d'une droite par translation est une droite parallèle (ou confondue)"
+                            }),
+                            () => {
+                                const x1 = randInt(-5, 5);
+                                const y1 = randInt(-5, 5);
+                                const x2 = randInt(-5, 5);
+                                const y2 = randInt(-5, 5);
+                                const vx = x2 - x1;
+                                const vy = y2 - y1;
+                                return {
+                                    question: `Quelles sont les coordonnées du vecteur de translation qui transforme A(${x1}; ${y1}) en B(${x2}; ${y2}) ?`,
+                                    answer: `(${vx}; ${vy})<br>Calcul : (${x2} - ${x1}; ${y2} - ${y1})`
+                                };
+                            }
                         ];
                         return randChoice(ops)();
                     }
@@ -1550,7 +2431,7 @@
                         const ops = [
                             () => ({
                                 question: "On lance un dé équilibré. Quelle est la probabilité d'obtenir un 6 ?",
-                                answer: "1/6"
+                                answer: formatFraction(1, 6)
                             }),
                             () => {
                                 const r = randInt(2, 6);
@@ -1558,22 +2439,22 @@
                                 const total = r + b;
                                 return {
                                     question: `Dans un sac, il y a ${r} boules rouges et ${b} boules bleues. Quelle est la probabilité de tirer une boule rouge ?`,
-                                    answer: `${r}/${total}`
+                                    answer: formatFraction(r, total)
                                 };
                             },
                             () => ({
                                 question: "On lance une pièce équilibrée. Quelle est la probabilité d'obtenir pile ?",
-                                answer: "1/2 ou 0,5 ou 50%"
+                                answer: `${formatFraction(1, 2)} ou 0,5 ou 50%`
                             }),
                             () => ({
                                 question: "Calculer la probabilité d'obtenir un nombre pair en lançant un dé",
-                                answer: "3/6 = 1/2"
+                                answer: `${formatFraction(3, 6)} = ${formatFraction(1, 2)}`
                             }),
                             () => {
                                 const n = randInt(4, 8);
                                 return {
                                     question: `Dans une situation d'équiprobabilité avec ${n} issues, quelle est la probabilité de chaque issue ?`,
-                                    answer: `1/${n}`
+                                    answer: formatFraction(1, n)
                                 };
                             }
                         ];
@@ -1590,7 +2471,7 @@
                                 const freq = occur / total;
                                 return {
                                     question: `Sur ${total} lancers, on obtient ${occur} fois pile. Calculer la fréquence de pile`,
-                                    answer: `${occur}/${total} = ${toFrenchNumber(freq.toFixed(3))}`
+                                    answer: `${formatFraction(occur, total)} = ${toFrenchNumber(freq.toFixed(3))}`
                                 };
                             },
                             () => {
@@ -1601,11 +2482,11 @@
                                 return [
                                     {
                                         question: "Comment calculer une fréquence ?",
-                                        answer: "Fréquence = nombre de fois où l'événement se produit / nombre total d'essais"
+                                        answer: `Fréquence = ${formatFraction("nombre de fois où l'événement se produit", "nombre total d'essais")}`
                                     },
                                     {
                                         question: `Application : Calculer la fréquence d'un événement qui s'est produit ${occur} fois sur ${total} essais`,
-                                        answer: `Fréquence = ${occur}/${total} = ${toFrenchNumber(freq.toFixed(3))}`
+                                        answer: `Fréquence = ${formatFraction(occur, total)} = ${toFrenchNumber(freq.toFixed(3))}`
                                     }
                                 ];
                             }
@@ -1623,7 +2504,7 @@
                                 const avg = sum / notes.length;
                                 return {
                                     question: `Calculer la moyenne de : ${notes.join(', ')}`,
-                                    answer: `(${notes.join(' + ')}) / ${notes.length} = ${toFrenchNumber(avg.toFixed(2))}`
+                                    answer: `${formatFraction("(" + notes.join(' + ') + ")", notes.length)} = ${formatFraction(sum, notes.length)} = ${toFrenchNumber(avg.toFixed(2))}`
                                 };
                             },
                             () => {
@@ -1634,11 +2515,11 @@
                                 return [
                                     {
                                         question: "Quelle est la formule de la moyenne ?",
-                                        answer: "Moyenne = somme des valeurs / nombre de valeurs"
+                                        answer: `Moyenne = ${formatFraction("somme des valeurs", "nombre de valeurs")}`
                                     },
                                     {
                                         question: `Application : Calculer la moyenne de ${notes.join(', ')}`,
-                                        answer: `Moyenne = (${notes.join(' + ')}) / ${notes.length} = ${sum} / ${notes.length} = ${toFrenchNumber(avg.toFixed(2))}`
+                                        answer: `Moyenne = ${formatFraction("(" + notes.join(' + ') + ")", notes.length)} = ${formatFraction(sum, notes.length)} = ${toFrenchNumber(avg.toFixed(2))}`
                                     }
                                 ];
                             },
@@ -1687,7 +2568,7 @@
                                 const median = (serie[1] + serie[2]) / 2;
                                 return {
                                     question: `Quelle est la médiane de : ${serie.join(', ')} ?`,
-                                    answer: `(${serie[1]} + ${serie[2]}) / 2 = ${toFrenchNumber(median)}`
+                                    answer: `${formatFraction("(" + serie[1] + " + " + serie[2] + ")", 2)} = ${formatFraction(serie[1] + serie[2], 2)} = ${toFrenchNumber(median)}`
                                 };
                             }
                         ];
@@ -1698,10 +2579,6 @@
                     desc: "Lire tableaux et graphiques",
                     generator: () => {
                         const questions = [
-                            {
-                                question: "Comment lire un tableau à double entrée ?",
-                                answer: "Croiser une ligne et une colonne pour trouver la valeur correspondante"
-                            },
                             {
                                 question: "Comment interpréter un diagramme en barres ?",
                                 answer: "La hauteur de chaque barre représente la valeur ou l'effectif de la catégorie"
@@ -1730,9 +2607,11 @@
                                 const c1 = p1 * randInt(2, 4);
                                 const p2 = randInt(6, 10);
                                 const c2 = p2 * (c1 / p1);
+                                const coef = c1/p1;
+                                const questionTable = generateProportionalityTable([p1, p2], [c1, c2], "Poids (kg)", "Prix (€)");
                                 return {
-                                    question: `${p1} kg coûtent ${c1}€, ${p2} kg coûtent ${c2}€. Y a-t-il proportionnalité ?`,
-                                    answer: `Oui, car ${c1}/${p1} = ${c2}/${p2} = ${c1/p1}`
+                                    question: `Ce tableau représente-t-il une situation de proportionnalité ?<br>${questionTable}`,
+                                    answer: `Oui, car ${c1}÷${p1} = ${c2}÷${p2} = ${toFrenchNumber(coef)} (coefficient de proportionnalité constant)`
                                 };
                             },
                             () => ({
@@ -1760,18 +2639,25 @@
                                 const c1 = p1 * randInt(3, 6);
                                 const p2 = randInt(6, 10);
                                 const c2 = (c1 / p1) * p2;
+                                const coef = c1/p1;
+                                const questionTable = generateProportionalityTable([p1, p2], [c1, "?"], "Poids (kg)", "Prix (€)");
+                                const answerTable = generateProportionalityTable([p1, p2], [c1, c2], "Poids (kg)", "Prix (€)");
                                 return {
-                                    question: `Si ${p1} kg coûtent ${c1}€, combien coûtent ${p2} kg ?`,
-                                    answer: `${c2}€ (coefficient : ${c1}/${p1} = ${c1/p1}, donc ${p2} × ${c1/p1} = ${c2})`
+                                    question: `Compléter le tableau de proportionnalité :<br>${questionTable}`,
+                                    answer: `${toFrenchNumber(c2)}€<br>Calcul : coefficient = ${c1}÷${p1} = ${toFrenchNumber(coef)}, donc ${p2} × ${toFrenchNumber(coef)} = ${toFrenchNumber(c2)}<br>${answerTable}`
                                 };
                             },
                             () => {
-                                const art = randInt(4, 8);
-                                const unitPrice = randInt(3, 6);
-                                const total = art * unitPrice;
+                                const art1 = randInt(2, 5);
+                                const total1 = art1 * randInt(3, 6);
+                                const art2 = randInt(6, 10);
+                                const unitPrice = total1 / art1;
+                                const total2 = art2 * unitPrice;
+                                const questionTable = generateProportionalityTable([art1, art2], [total1, "?"], "Nombre d'articles", "Prix (€)");
+                                const answerTable = generateProportionalityTable([art1, art2], [total1, total2], "Nombre d'articles", "Prix (€)");
                                 return {
-                                    question: `${art} articles coûtent ${total}€. Combien coûte 1 article ?`,
-                                    answer: `${total}/${art} = ${unitPrice}€`
+                                    question: `Compléter le tableau de proportionnalité :<br>${questionTable}`,
+                                    answer: `${toFrenchNumber(total2)}€<br>Calcul : ${total1}÷${art1} = ${toFrenchNumber(unitPrice)}€ par article, donc ${art2} × ${toFrenchNumber(unitPrice)} = ${toFrenchNumber(total2)}<br>${answerTable}`
                                 };
                             },
                             () => {
@@ -1780,9 +2666,11 @@
                                 const b = a * coef;
                                 const c = randInt(6, 10);
                                 const d = c * coef;
+                                const questionTable = generateProportionalityTable([a, c], [b, "?"]);
+                                const answerTable = generateProportionalityTable([a, c], [b, d]);
                                 return {
-                                    question: `Compléter le tableau de proportionnalité : ${a}→${b}, ${c}→?`,
-                                    answer: `${d} (coefficient : ${b}/${a} = ${coef}, donc ${c} × ${coef} = ${d})`
+                                    question: `Compléter le tableau de proportionnalité :<br>${questionTable}`,
+                                    answer: `${d}<br>Calcul : coefficient = ${b}÷${a} = ${coef}, donc ${c} × ${coef} = ${d}<br>${answerTable}`
                                 };
                             }
                         ];
@@ -1800,27 +2688,27 @@
                                 const result = prix + augmentation;
                                 return {
                                     question: `Augmenter ${prix}€ de ${pct}%`,
-                                    answer: `${prix} + (${prix} × ${pct}/100) = ${prix} + ${augmentation} = ${result}€`
+                                    answer: `${prix} + (${prix} × ${formatFraction(pct, 100)}) = ${prix} + ${augmentation} = ${result}€`
                                 };
                             },
                             () => {
                                 const prix = randInt(60, 180);
                                 const pct = randChoice([10, 15, 20, 25]);
-                                const reduction = (prix * pct) / 100;
-                                const result = prix - reduction;
+                                const pctRestant = 100 - pct;
+                                const result = (prix * pctRestant) / 100;
                                 return {
                                     question: `Diminuer ${prix}€ de ${pct}%`,
-                                    answer: `${prix} - (${prix} × ${pct}/100) = ${prix} - ${reduction} = ${result}€`
+                                    answer: `Avec ${pct}% de réduction, il reste ${pctRestant}% à payer :<br>${prix} × ${formatFraction(pctRestant, 100)} = ${result}€`
                                 };
                             },
                             () => {
                                 const prix = randInt(40, 120);
                                 const pct = randChoice([15, 20, 30]);
-                                const reduction = (prix * pct) / 100;
-                                const result = prix - reduction;
+                                const pctRestant = 100 - pct;
+                                const result = (prix * pctRestant) / 100;
                                 return {
                                     question: `Appliquer une réduction de ${pct}% sur ${prix}€`,
-                                    answer: `${prix} - (${prix} × ${pct}/100) = ${prix} - ${reduction} = ${result}€`
+                                    answer: `Avec ${pct}% de réduction, il reste ${pctRestant}% à payer :<br>${prix} × ${formatFraction(pctRestant, 100)} = ${result}€`
                                 };
                             }
                         ];
@@ -1830,58 +2718,394 @@
                 {
                     desc: "Exploiter un graphique",
                     generator: () => {
-                        const h = randInt(2, 5);
-                        const x = randInt(3, 8);
-                        const questions = [
-                            {
-                                question: `Sur un graphique distance/temps, lire la distance parcourue après ${h} heures`,
-                                answer: `Tracer une verticale à x = ${h}, puis lire la valeur en ordonnée`
+                        const ops = [
+                            () => {
+                                // Graphique distance/temps (ligne droite)
+                                const vitesse = randChoice([10, 15, 20, 25]);
+                                const temps = randInt(3, 6);
+                                const points = [];
+                                for (let t = 0; t <= 6; t++) {
+                                    points.push({x: t, y: vitesse * t});
+                                }
+                                const distance = vitesse * temps;
+                                const questionGraph = generateGraph(points, "", "Temps (h)", "Distance (km)", null);
+                                const answerGraph = generateGraph(points, "", "Temps (h)", "Distance (km)", {x: temps, y: distance});
+                                return {
+                                    question: `Sur ce graphique distance/temps, lire la distance parcourue après ${temps} heures :<br>${questionGraph}`,
+                                    answer: `${distance} km<br>${answerGraph}`
+                                };
                             },
-                            {
+                            () => {
+                                // Lecture d'ordonnée
+                                const coef = randInt(3, 8);
+                                const x = randInt(2, 5);
+                                const points = [];
+                                for (let t = 0; t <= 7; t++) {
+                                    points.push({x: t, y: coef * t});
+                                }
+                                const y = coef * x;
+                                const questionGraph = generateGraph(points, "", "x", "y", null);
+                                const answerGraph = generateGraph(points, "", "x", "y", {x: x, y: y});
+                                return {
+                                    question: `Lire l'ordonnée correspondant à l'abscisse ${x} :<br>${questionGraph}`,
+                                    answer: `y = ${y}<br>${answerGraph}`
+                                };
+                            },
+                            () => ({
                                 question: "Comment interpréter la pente d'une droite sur un graphique ?",
                                 answer: "La pente représente le taux de variation (vitesse, coefficient de proportionnalité, etc.)"
-                            },
-                            {
-                                question: `Lire l'ordonnée correspondant à l'abscisse ${x}`,
-                                answer: `Tracer une verticale à x = ${x}, puis lire la valeur sur l'axe des ordonnées`
-                            },
-                            {
+                            }),
+                            () => ({
                                 question: "Comment identifier un maximum sur un graphique ?",
                                 answer: "Le maximum est le point le plus haut de la courbe (ordonnée la plus grande)"
-                            }
+                            })
                         ];
-                        return randChoice(questions);
+                        return randChoice(ops)();
                     }
                 }
             ],
 
             "Algorithmique et programmation": [
                 {
-                    desc: "Interpréter un programme",
+                    desc: "Variables et affectations",
                     generator: () => {
                         const ops = [
                             () => {
+                                // Variable simple
+                                const x = randInt(5, 15);
+                                const scratchCode = `mettre [x v] à (${x})`;
+                                return {
+                                    question: `Que vaut la variable x après l'exécution de ce programme ?<br>${generateScratchBlocks(scratchCode)}`,
+                                    answer: `x = ${x}`
+                                };
+                            },
+                            () => {
+                                // Addition à une variable
+                                const x = randInt(3, 8);
+                                const add = randInt(3, 7);
+                                const result = x + add;
+                                const scratchCode = `mettre [x v] à (${x})
+ajouter (${add}) à [x v]`;
+                                return {
+                                    question: `Que vaut la variable x à la fin du programme ?<br>${generateScratchBlocks(scratchCode)}`,
+                                    answer: `x = ${x} + ${add} = ${result}`
+                                };
+                            },
+                            () => {
+                                // Deux opérations successives
+                                const x = randInt(2, 5);
+                                const mult = randInt(2, 4);
+                                const add = randInt(5, 10);
+                                const result = x * mult + add;
+                                const scratchCode = `mettre [x v] à (${x})
+mettre [x v] à ((x) * (${mult}))
+ajouter (${add}) à [x v]`;
+                                return {
+                                    question: `Quelle est la valeur finale de x ?<br>${generateScratchBlocks(scratchCode)}`,
+                                    answer: `x = ${x} × ${mult} + ${add} = ${x * mult} + ${add} = ${result}`
+                                };
+                            }
+                        ];
+                        return randChoice(ops)();
+                    }
+                },
+                {
+                    desc: "Conditions (Si...alors...sinon)",
+                    generator: () => {
+                        const ops = [
+                            () => {
+                                // Test simple
+                                const x = randInt(5, 20);
+                                const threshold = 10;
+                                const result = x > threshold ? "Grand" : "Petit";
+                                const scratchCode = `mettre [x v] à (${x})
+si <(x) > (10)> alors
+  dire [Grand] pendant (2) secondes
+sinon
+  dire [Petit] pendant (2) secondes
+end`;
+                                return {
+                                    question: `Qu'affiche ce programme ?<br>${generateScratchBlocks(scratchCode)}`,
+                                    answer: `Le programme affiche "${result}" car x = ${x} ${x > threshold ? '>' : '≤'} 10`
+                                };
+                            },
+                            () => {
+                                // Test pair/impair
+                                const x = randInt(3, 15);
+                                const isPair = x % 2 === 0;
+                                const result = isPair ? "pair" : "impair";
+                                const scratchCode = `mettre [x v] à (${x})
+si <((x) mod (2)) = (0)> alors
+  dire [pair] pendant (2) secondes
+sinon
+  dire [impair] pendant (2) secondes
+end`;
+                                return {
+                                    question: `Qu'affiche ce programme ?<br>${generateScratchBlocks(scratchCode)}`,
+                                    answer: `Le programme affiche "${result}" car ${x} est ${result}`
+                                };
+                            }
+                        ];
+                        return randChoice(ops)();
+                    }
+                },
+                {
+                    desc: "Boucles et répétitions",
+                    generator: () => {
+                        const ops = [
+                            () => {
+                                // Boucle simple
+                                const x = randInt(0, 3);
+                                const repeat = randInt(4, 8);
+                                const result = x + repeat;
+                                const scratchCode = `mettre [x v] à (${x})
+répéter (${repeat}) fois
+  ajouter (1) à [x v]
+end`;
+                                return {
+                                    question: `Quelle est la valeur finale de x ?<br>${generateScratchBlocks(scratchCode)}`,
+                                    answer: `x = ${x} + ${repeat} = ${result}`
+                                };
+                            },
+                            () => {
+                                // Boucle avec multiplication
+                                const x = randInt(1, 3);
+                                const repeat = randInt(3, 6);
+                                const add = randInt(2, 4);
+                                const result = x + (repeat * add);
+                                const scratchCode = `mettre [x v] à (${x})
+répéter (${repeat}) fois
+  ajouter (${add}) à [x v]
+end`;
+                                return {
+                                    question: `Que vaut x à la fin ?<br>${generateScratchBlocks(scratchCode)}`,
+                                    answer: `x = ${x} + (${repeat} × ${add}) = ${x} + ${repeat * add} = ${result}`
+                                };
+                            },
+                            () => {
+                                // Programme très facile : juste multiplier
+                                const x = randInt(3, 10);
+                                const mult = randInt(2, 5);
+                                const result = x * mult;
+                                return {
+                                    question: `Programme :<ul style="margin: 10px 0; padding-left: 25px;"><li>Choisir un nombre</li><li>Multiplier par ${mult}</li></ul>Pour x = ${x}, quel est le résultat ?`,
+                                    answer: `<ul style="margin: 10px 0; padding-left: 25px;"><li>Nombre choisi : ${x}</li><li>Multiplier par ${mult} : ${x} × ${mult} = ${result}</li></ul><strong>Résultat : ${result}</strong>`
+                                };
+                            },
+                            () => {
+                                // Programme très facile : juste ajouter
+                                const x = randInt(3, 10);
+                                const add = randInt(5, 15);
+                                const result = x + add;
+                                return {
+                                    question: `Programme :<ul style="margin: 10px 0; padding-left: 25px;"><li>Choisir un nombre</li><li>Ajouter ${add}</li></ul>Pour x = ${x}, quel est le résultat ?`,
+                                    answer: `<ul style="margin: 10px 0; padding-left: 25px;"><li>Nombre choisi : ${x}</li><li>Ajouter ${add} : ${x} + ${add} = ${result}</li></ul><strong>Résultat : ${result}</strong>`
+                                };
+                            },
+                            () => {
+                                // Programme très facile : juste le carré
+                                const x = randInt(2, 8);
+                                const result = x * x;
+                                return {
+                                    question: `Programme :<ul style="margin: 10px 0; padding-left: 25px;"><li>Choisir un nombre</li><li>Élever au carré</li></ul>Pour x = ${x}, quel est le résultat ?`,
+                                    answer: `<ul style="margin: 10px 0; padding-left: 25px;"><li>Nombre choisi : ${x}</li><li>Élever au carré : ${x}² = ${result}</li></ul><strong>Résultat : ${result}</strong>`
+                                };
+                            },
+                            () => {
+                                // Programme simple : multiplier par a, ajouter b
                                 const x = randInt(3, 10);
                                 const mult = randInt(2, 5);
                                 const add = randInt(3, 8);
-                                const result = x * mult + add;
+                                const step1 = x * mult;
+                                const result = step1 + add;
                                 return {
-                                    question: `Programme : Choisir un nombre, multiplier par ${mult}, ajouter ${add}. Pour x = ${x}, quel est le résultat ?`,
-                                    answer: `${x} × ${mult} + ${add} = ${x * mult} + ${add} = ${result}`
+                                    question: `Programme :<ul style="margin: 10px 0; padding-left: 25px;"><li>Choisir un nombre</li><li>Multiplier par ${mult}</li><li>Ajouter ${add}</li></ul>Pour x = ${x}, quel est le résultat ?`,
+                                    answer: `<ul style="margin: 10px 0; padding-left: 25px;"><li>Nombre choisi : ${x}</li><li>Multiplier par ${mult} : ${x} × ${mult} = ${step1}</li><li>Ajouter ${add} : ${step1} + ${add} = ${result}</li></ul><strong>Résultat : ${result}</strong>`
                                 };
                             },
-                            () => ({
-                                question: "Comment exécuter pas à pas un algorithme ?",
-                                answer: "Suivre chaque instruction l'une après l'autre en notant les valeurs des variables à chaque étape"
-                            }),
                             () => {
-                                const x = randInt(2, 8);
-                                const a = randInt(2, 4);
-                                const b = randInt(3, 7);
-                                const result = a * x + b;
+                                // Programme avec nombre de départ : multiplier par a, ajouter le nombre de départ
+                                const x = randInt(3, 10);
+                                const mult = randInt(2, 5);
+                                const step1 = x * mult;
+                                const result = step1 + x;
                                 return {
-                                    question: `Programme : x → ${a}x + ${b}. Pour x = ${x}, calculer le résultat`,
-                                    answer: `${a} × ${x} + ${b} = ${a * x} + ${b} = ${result}`
+                                    question: `Programme :<ul style="margin: 10px 0; padding-left: 25px;"><li>Choisir un nombre</li><li>Multiplier par ${mult}</li><li>Ajouter le nombre de départ</li></ul>Pour x = ${x}, quel est le résultat ?`,
+                                    answer: `<ul style="margin: 10px 0; padding-left: 25px;"><li>Nombre choisi : ${x}</li><li>Multiplier par ${mult} : ${x} × ${mult} = ${step1}</li><li>Ajouter le nombre de départ : ${step1} + ${x} = ${result}</li></ul><strong>Résultat : ${result}</strong>`
+                                };
+                            },
+                            () => {
+                                // Programme avec carré : multiplier par a, ajouter le carré du nombre
+                                const x = randInt(2, 6);
+                                const mult = randInt(2, 4);
+                                const step1 = x * mult;
+                                const step2 = x * x;
+                                const result = step1 + step2;
+                                return {
+                                    question: `Programme :<ul style="margin: 10px 0; padding-left: 25px;"><li>Choisir un nombre</li><li>Multiplier par ${mult}</li><li>Ajouter le carré du nombre de départ</li></ul>Pour x = ${x}, quel est le résultat ?`,
+                                    answer: `<ul style="margin: 10px 0; padding-left: 25px;"><li>Nombre choisi : ${x}</li><li>Multiplier par ${mult} : ${x} × ${mult} = ${step1}</li><li>Carré du nombre de départ : ${x}² = ${step2}</li><li>Ajouter le carré : ${step1} + ${step2} = ${result}</li></ul><strong>Résultat : ${result}</strong>`
+                                };
+                            },
+                            () => {
+                                // Programme plus complexe : au carré, multiplier par a, soustraire le nombre de départ
+                                const x = randInt(2, 6);
+                                const mult = randInt(2, 4);
+                                const step1 = x * x;
+                                const step2 = step1 * mult;
+                                const result = step2 - x;
+                                return {
+                                    question: `Programme :<ul style="margin: 10px 0; padding-left: 25px;"><li>Choisir un nombre</li><li>Élever au carré</li><li>Multiplier par ${mult}</li><li>Soustraire le nombre de départ</li></ul>Pour x = ${x}, quel est le résultat ?`,
+                                    answer: `<ul style="margin: 10px 0; padding-left: 25px;"><li>Nombre choisi : ${x}</li><li>Élever au carré : ${x}² = ${step1}</li><li>Multiplier par ${mult} : ${step1} × ${mult} = ${step2}</li><li>Soustraire le nombre de départ : ${step2} - ${x} = ${result}</li></ul><strong>Résultat : ${result}</strong>`
+                                };
+                            },
+                            () => {
+                                // Expression littérale : demander l'expression finale
+                                const mult = randInt(2, 5);
+                                const add = randInt(3, 8);
+                                return {
+                                    question: `Programme :<ul style="margin: 10px 0; padding-left: 25px;"><li>Choisir un nombre x</li><li>Multiplier par ${mult}</li><li>Ajouter ${add}</li></ul>Quelle est l'expression finale en fonction de x ?`,
+                                    answer: `${mult}x + ${add}`
+                                };
+                            },
+                            () => {
+                                // Expression littérale avec nombre de départ
+                                const mult = randInt(2, 5);
+                                const coef = mult + 1;
+                                return {
+                                    question: `Programme :<ul style="margin: 10px 0; padding-left: 25px;"><li>Choisir un nombre x</li><li>Multiplier par ${mult}</li><li>Ajouter le nombre de départ</li></ul>Quelle est l'expression finale en fonction de x ?`,
+                                    answer: `${mult}x + x = ${coef}x`
+                                };
+                            },
+                            () => {
+                                // Expression littérale avec carré
+                                const mult = randInt(2, 4);
+                                return {
+                                    question: `Programme :<ul style="margin: 10px 0; padding-left: 25px;"><li>Choisir un nombre x</li><li>Multiplier par ${mult}</li><li>Ajouter le carré du nombre de départ</li></ul>Quelle est l'expression finale en fonction de x ?`,
+                                    answer: `${mult}x + x<sup>2</sup>`
+                                };
+                            }
+                        ];
+                        return randChoice(ops)();
+                    }
+                },
+                {
+                    desc: "Géométrie avec Scratch",
+                    generator: () => {
+                        const ops = [
+                            () => {
+                                // Dessiner un carré - compléter le programme
+                                const cote = randInt(50, 150);
+                                const scratchCode = `stylo en position d'écriture
+répéter (4) fois
+  avancer de (${cote})
+  tourner droite de (?) degrés
+end`;
+                                return {
+                                    question: `Compléter ce programme Scratch pour dessiner un carré de côté ${cote} :<br>${generateScratchBlocks(scratchCode)}`,
+                                    answer: `90 degrés<br><em>Explication : Un carré a 4 angles droits de 90°</em>`
+                                };
+                            },
+                            () => {
+                                // Dessiner un triangle équilatéral
+                                const cote = randInt(60, 120);
+                                const scratchCode = `stylo en position d'écriture
+répéter (3) fois
+  avancer de (${cote})
+  tourner droite de (?) degrés
+end`;
+                                return {
+                                    question: `Compléter ce programme pour dessiner un triangle équilatéral :<br>${generateScratchBlocks(scratchCode)}`,
+                                    answer: `120 degrés<br><em>Explication : Angle extérieur = 360° ÷ 3 = 120°</em>`
+                                };
+                            },
+                            () => {
+                                // Calculer l'angle pour un polygone régulier
+                                const nbCotes = randChoice([5, 6, 8, 10]);
+                                const angle = 360 / nbCotes;
+                                const noms = {5: "pentagone", 6: "hexagone", 8: "octogone", 10: "décagone"};
+                                return {
+                                    question: `Pour dessiner un ${noms[nbCotes]} régulier avec Scratch, de quel angle doit-on tourner à chaque sommet ?`,
+                                    answer: `360° ÷ ${nbCotes} = ${angle}°`
+                                };
+                            },
+                            () => {
+                                // Calculer le périmètre d'un carré avec Scratch
+                                const cote = randInt(5, 15);
+                                const perimetre = 4 * cote;
+                                const scratchCode = `mettre [côté v] à (${cote})
+mettre [périmètre v] à ((côté) * (?))`;
+                                return {
+                                    question: `Compléter ce programme qui calcule le périmètre d'un carré :<br>${generateScratchBlocks(scratchCode)}`,
+                                    answer: `4<br>Périmètre = ${cote} cm × 4 = ${perimetre} cm`
+                                };
+                            },
+                            () => {
+                                // Calculer l'aire d'un rectangle
+                                const longueur = randInt(8, 15);
+                                const largeur = randInt(4, 10);
+                                const aire = longueur * largeur;
+                                const scratchCode = `mettre [longueur v] à (${longueur})
+mettre [largeur v] à (${largeur})
+mettre [aire v] à ((longueur) * (?))`;
+                                return {
+                                    question: `Compléter ce programme qui calcule l'aire d'un rectangle :<br>${generateScratchBlocks(scratchCode)}`,
+                                    answer: `largeur<br>Aire = ${longueur} cm × ${largeur} cm = ${aire} cm²`
+                                };
+                            },
+                            () => {
+                                // Dessiner un hexagone - quel est l'angle ?
+                                const cote = randInt(60, 100);
+                                return {
+                                    question: `Pour dessiner un hexagone régulier (6 côtés) de côté ${cote} avec Scratch, quel angle de rotation faut-il utiliser ?`,
+                                    answer: `360° ÷ 6 = 60°`
+                                };
+                            },
+                            () => {
+                                // Périmètre d'un triangle équilatéral
+                                const cote = randInt(6, 12);
+                                const perimetre = 3 * cote;
+                                const scratchCode = `mettre [côté v] à (${cote})
+mettre [périmètre v] à ((côté) * (3))
+dire (rejoindre [Le périmètre est ] (rejoindre (périmètre) [ cm]))`;
+                                return {
+                                    question: `Quelle valeur affichera ce programme ?<br>${generateScratchBlocks(scratchCode)}`,
+                                    answer: `Le périmètre est ${perimetre} cm<br>Calcul : ${cote} cm × 3 = ${perimetre} cm`
+                                };
+                            },
+                            () => {
+                                // Aire d'un carré
+                                const cote = randInt(5, 12);
+                                const aire = cote * cote;
+                                const scratchCode = `mettre [côté v] à (${cote})
+mettre [aire v] à ((côté) * (côté))`;
+                                return {
+                                    question: `Quelle sera la valeur de la variable "aire" ?<br>${generateScratchBlocks(scratchCode)}`,
+                                    answer: `${aire} cm²<br>Aire = ${cote} cm × ${cote} cm = ${aire} cm²`
+                                };
+                            },
+                            () => {
+                                // Dessiner une étoile à 5 branches
+                                const scratchCode = `stylo en position d'écriture
+répéter (5) fois
+  avancer de (100)
+  tourner droite de (?) degrés
+end`;
+                                return {
+                                    question: `Pour dessiner une étoile à 5 branches, on doit tourner de combien de degrés à chaque pointe ?<br>${generateScratchBlocks(scratchCode)}`,
+                                    answer: `144 degrés<br><em>Explication : Pour une étoile à 5 branches, on fait 2 tours complets : 720° ÷ 5 = 144°</em>`
+                                };
+                            },
+                            () => {
+                                // Périmètre d'un rectangle
+                                const longueur = randInt(10, 18);
+                                const largeur = randInt(5, 9);
+                                const perimetre = 2 * (longueur + largeur);
+                                const scratchCode = `mettre [longueur v] à (${longueur})
+mettre [largeur v] à (${largeur})
+mettre [périmètre v] à (((longueur) + (largeur)) * (2))`;
+                                return {
+                                    question: `Quelle sera la valeur de "périmètre" ?<br>${generateScratchBlocks(scratchCode)}`,
+                                    answer: `${perimetre} cm<br>Périmètre = (${longueur} cm + ${largeur} cm) × 2 = ${longueur + largeur} cm × 2 = ${perimetre} cm`
                                 };
                             }
                         ];
@@ -2023,6 +3247,13 @@
             document.getElementById('statsSection').style.display = 'flex';
             document.getElementById('questionsCount').textContent = questionsGenerated;
             document.getElementById('printButtons').classList.add('active');
+
+            // Rendre les blocs Scratch visuels
+            setTimeout(() => {
+                if (typeof scratchblocks !== 'undefined') {
+                    scratchblocks.renderMatching('pre.blocks');
+                }
+            }, 100);
         }
 
         function toggleAnswers() {
@@ -2069,6 +3300,11 @@
         }
 
         function resetStats() {
+            // Si le mode examen est actif, l'arrêter d'abord
+            if (examModeActive) {
+                stopExamMode();
+            }
+
             questionsGenerated = 0;
             document.getElementById('questionsCount').textContent = '0';
             document.getElementById('questionsContainer').innerHTML = '';
@@ -2076,6 +3312,97 @@
             document.getElementById('statsSection').style.display = 'none';
             document.getElementById('printButtons').classList.remove('active');
             document.getElementById('questionCount').value = '1';
+        }
+
+        // Variables pour le mode examen
+        let examTimerInterval = null;
+        let examTimeRemaining = 0; // En secondes
+        let examModeActive = false;
+
+        function startExamMode() {
+            if (examModeActive) {
+                return;
+            }
+
+            // Demander confirmation
+            const confirmed = confirm('Le mode examen blanc va générer 12 questions aléatoires avec un chronomètre de 20 minutes.\n\nVoulez-vous commencer ?');
+            if (!confirmed) {
+                return;
+            }
+
+            // Activer le mode examen
+            examModeActive = true;
+            document.body.classList.add('exam-mode-active');
+
+            // Sélectionner tous les thèmes
+            selectAllThemes();
+
+            // Configurer 12 questions
+            document.getElementById('questionCount').value = '12';
+
+            // Générer les questions
+            generateQuestions();
+
+            // Cacher le bouton "Mode Examen" et afficher "Arrêter l'examen"
+            document.getElementById('examButton').style.display = 'none';
+            document.getElementById('stopExamButton').style.display = 'inline-block';
+
+            // Démarrer le chronomètre de 20 minutes
+            examTimeRemaining = 20 * 60; // 20 minutes en secondes
+            document.getElementById('examTimer').classList.add('active');
+            updateTimerDisplay();
+
+            examTimerInterval = setInterval(() => {
+                examTimeRemaining--;
+                updateTimerDisplay();
+
+                // Vérifier les seuils d'alerte
+                if (examTimeRemaining === 5 * 60) {
+                    // 5 minutes restantes
+                    document.getElementById('examTimer').classList.add('warning');
+                    alert('⚠️ Il vous reste 5 minutes !');
+                } else if (examTimeRemaining === 1 * 60) {
+                    // 1 minute restante
+                    document.getElementById('examTimer').classList.remove('warning');
+                    document.getElementById('examTimer').classList.add('critical');
+                    alert('🚨 Il vous reste 1 minute !');
+                } else if (examTimeRemaining === 0) {
+                    // Temps écoulé
+                    clearInterval(examTimerInterval);
+                    alert('⏰ Temps écoulé ! L\'examen est terminé.');
+                    stopExamMode();
+                }
+            }, 1000);
+        }
+
+        function stopExamMode() {
+            // Arrêter le chronomètre
+            if (examTimerInterval) {
+                clearInterval(examTimerInterval);
+                examTimerInterval = null;
+            }
+
+            // Désactiver le mode examen
+            examModeActive = false;
+            document.body.classList.remove('exam-mode-active');
+
+            // Masquer le timer
+            const timer = document.getElementById('examTimer');
+            timer.classList.remove('active', 'warning', 'critical');
+
+            // Réafficher le bouton "Mode Examen" et masquer "Arrêter l'examen"
+            document.getElementById('examButton').style.display = 'inline-block';
+            document.getElementById('stopExamButton').style.display = 'none';
+
+            // Réinitialiser le temps
+            examTimeRemaining = 0;
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(examTimeRemaining / 60);
+            const seconds = examTimeRemaining % 60;
+            const display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('timerDisplay').textContent = display;
         }
 
         // Initialiser au chargement
