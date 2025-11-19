@@ -3261,22 +3261,76 @@ set [périmètre v] to (((longueur) + (largeur)) * (2))`;
                     scratchblocks.renderMatching('pre.blocks');
                     console.log('✓ Rendu Scratch terminé');
 
-                    // Mettre les ? en rouge uniquement
+                    // Mettre les ? en rouge et traduire en français
                     setTimeout(() => {
-                        document.querySelectorAll('pre.blocks').forEach(block => {
-                            const texts = block.querySelectorAll('text, tspan');
-                            texts.forEach(text => {
-                                const content = text.textContent.trim();
+                        // Dictionnaire de traduction anglais → français (mots-clés Scratch uniquement)
+                        const translations = {
+                            'set': 'mettre',
+                            'to': 'à',
+                            'change': 'ajouter',
+                            'by': 'de',
+                            'if': 'si',
+                            'then': 'alors',
+                            'else': 'sinon',
+                            'end': 'fin',
+                            'repeat': 'répéter',
+                            'say': 'dire',
+                            'for': 'pendant',
+                            'secs': 'secondes',
+                            'move': 'avancer de',
+                            'steps': 'pas',
+                            'turn': 'tourner',
+                            'right': 'droite',
+                            'left': 'gauche',
+                            'degrees': 'degrés',
+                            'pen': 'stylo',
+                            'down': 'baissé',
+                            'up': 'levé',
+                            'join': 'regrouper'
+                        };
 
-                                // Mettre SEULEMENT les ? en rouge
-                                if (content === '?') {
-                                    text.style.fill = 'red';
-                                    text.style.fontWeight = 'bold';
-                                    text.setAttribute('font-size', parseInt(text.getAttribute('font-size') || 12) + 2);
+                        document.querySelectorAll('pre.blocks').forEach(block => {
+                            const texts = block.querySelectorAll('text');
+                            texts.forEach(text => {
+                                // Vérifier d'abord les tspan enfants
+                                const tspans = text.querySelectorAll('tspan');
+                                tspans.forEach(tspan => {
+                                    const content = tspan.textContent.trim().toLowerCase();
+
+                                    // Mettre les ? en rouge
+                                    if (content === '?') {
+                                        tspan.style.fill = 'red';
+                                        tspan.style.fontWeight = 'bold';
+                                        const currentSize = parseInt(tspan.getAttribute('font-size') || 12);
+                                        tspan.setAttribute('font-size', currentSize + 2);
+                                    }
+
+                                    // Traduire les mots-clés
+                                    if (translations[content] && tspan.childNodes.length === 1) {
+                                        tspan.textContent = translations[content];
+                                    }
+                                });
+
+                                // Si pas de tspan, traiter le text directement
+                                if (tspans.length === 0) {
+                                    const content = text.textContent.trim().toLowerCase();
+
+                                    // Mettre les ? en rouge
+                                    if (content === '?') {
+                                        text.style.fill = 'red';
+                                        text.style.fontWeight = 'bold';
+                                        const currentSize = parseInt(text.getAttribute('font-size') || 12);
+                                        text.setAttribute('font-size', currentSize + 2);
+                                    }
+
+                                    // Traduire les mots-clés
+                                    if (translations[content] && text.childNodes.length === 1) {
+                                        text.textContent = translations[content];
+                                    }
                                 }
                             });
                         });
-                        console.log('✓ ? mis en rouge');
+                        console.log('✓ ? mis en rouge et traduit en français');
                     }, 200);
                 } else {
                     console.error('✗ Scratchblocks NON chargé !');
@@ -3439,7 +3493,7 @@ set [périmètre v] to (((longueur) + (largeur)) * (2))`;
 
     <!-- Indicateur de version pour vérifier le cache -->
     <div style="position: fixed; bottom: 5px; right: 5px; background: rgba(0,0,0,0.7); color: white; padding: 3px 8px; border-radius: 5px; font-size: 11px; z-index: 9999;">
-        v2024-11-19-22h00-FINAL
+        v2024-11-19-22h30-FR
     </div>
 </body>
 </html>
