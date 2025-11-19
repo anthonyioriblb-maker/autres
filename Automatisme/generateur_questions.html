@@ -721,44 +721,11 @@
             return `<span class="fraction"><span class="numerator">${numerator}</span><span class="denominator">${denominator}</span></span>`;
         }
 
-        // Fonction pour traduire le code Scratch français en anglais
-        function translateScratchToEnglish(code) {
-            const translations = {
-                'mettre': 'set',
-                'à': 'to',
-                'ajouter': 'change',
-                'dire': 'say',
-                'pendant': 'for',
-                'secondes': 'secs',
-                'si': 'if',
-                'alors': 'then',
-                'sinon': 'else',
-                'répéter': 'repeat',
-                'fois': 'times',
-                'avancer de': 'move',
-                'tourner droite de': 'turn right',
-                'tourner gauche de': 'turn left',
-                'degrés': 'degrees',
-                'stylo en position d\'écriture': 'pen down',
-                'relever le stylo': 'pen up',
-                'rejoindre': 'join'
-            };
-
-            let translated = code;
-            for (const [fr, en] of Object.entries(translations)) {
-                const regex = new RegExp(fr, 'gi');
-                translated = translated.replace(regex, en);
-            }
-            return translated;
-        }
-
         // Fonction pour générer des blocs Scratch visuels
         function generateScratchBlocks(code) {
             const blockId = 'scratch-' + Math.random().toString(36).substr(2, 9);
-            // Traduire le code français en anglais pour scratchblocks
-            const translatedCode = translateScratchToEnglish(code);
-            // Retourner le code dans une div avec classe scratch
-            return `<pre class="blocks" id="${blockId}" style="margin: 15px auto; max-width: 600px;">${translatedCode}</pre>`;
+            // Le code est déjà en anglais (syntaxe scratchblocks native)
+            return `<pre class="blocks" id="${blockId}" style="margin: 15px auto; max-width: 600px;">${code}</pre>`;
         }
 
         // Fonction pour générer un tableau HTML de proportionnalité
@@ -2812,7 +2779,7 @@
                             () => {
                                 // Variable simple
                                 const x = randInt(5, 15);
-                                const scratchCode = `mettre [x v] à (${x})`;
+                                const scratchCode = `set [x v] to (${x})`;
                                 return {
                                     question: `Que vaut la variable x après l'exécution de ce programme ?<br>${generateScratchBlocks(scratchCode)}`,
                                     answer: `x = ${x}`
@@ -2823,8 +2790,8 @@
                                 const x = randInt(3, 8);
                                 const add = randInt(3, 7);
                                 const result = x + add;
-                                const scratchCode = `mettre [x v] à (${x})
-ajouter (${add}) à [x v]`;
+                                const scratchCode = `set [x v] to (${x})
+change [x v] by (${add})`;
                                 return {
                                     question: `Que vaut la variable x à la fin du programme ?<br>${generateScratchBlocks(scratchCode)}`,
                                     answer: `x = ${x} + ${add} = ${result}`
@@ -2836,9 +2803,9 @@ ajouter (${add}) à [x v]`;
                                 const mult = randInt(2, 4);
                                 const add = randInt(5, 10);
                                 const result = x * mult + add;
-                                const scratchCode = `mettre [x v] à (${x})
-mettre [x v] à ((x) * (${mult}))
-ajouter (${add}) à [x v]`;
+                                const scratchCode = `set [x v] to (${x})
+set [x v] to ((x) * (${mult}))
+change [x v] by (${add})`;
                                 return {
                                     question: `Quelle est la valeur finale de x ?<br>${generateScratchBlocks(scratchCode)}`,
                                     answer: `x = ${x} × ${mult} + ${add} = ${x * mult} + ${add} = ${result}`
@@ -2857,11 +2824,11 @@ ajouter (${add}) à [x v]`;
                                 const x = randInt(5, 20);
                                 const threshold = 10;
                                 const result = x > threshold ? "Grand" : "Petit";
-                                const scratchCode = `mettre [x v] à (${x})
-si <(x) > (10)> alors
-  dire [Grand] pendant (2) secondes
-sinon
-  dire [Petit] pendant (2) secondes
+                                const scratchCode = `set [x v] to (${x})
+if <(x) > (10)> then
+  say [Grand] for (2) secs
+else
+  say [Petit] for (2) secs
 end`;
                                 return {
                                     question: `Qu'affiche ce programme ?<br>${generateScratchBlocks(scratchCode)}`,
@@ -2873,11 +2840,11 @@ end`;
                                 const x = randInt(3, 15);
                                 const isPair = x % 2 === 0;
                                 const result = isPair ? "pair" : "impair";
-                                const scratchCode = `mettre [x v] à (${x})
-si <((x) mod (2)) = (0)> alors
-  dire [pair] pendant (2) secondes
-sinon
-  dire [impair] pendant (2) secondes
+                                const scratchCode = `set [x v] to (${x})
+if <((x) mod (2)) = (0)> then
+  say [pair] for (2) secs
+else
+  say [impair] for (2) secs
 end`;
                                 return {
                                     question: `Qu'affiche ce programme ?<br>${generateScratchBlocks(scratchCode)}`,
@@ -2897,9 +2864,9 @@ end`;
                                 const x = randInt(0, 3);
                                 const repeat = randInt(4, 8);
                                 const result = x + repeat;
-                                const scratchCode = `mettre [x v] à (${x})
-répéter (${repeat}) fois
-  ajouter (1) à [x v]
+                                const scratchCode = `set [x v] to (${x})
+repeat (${repeat})
+  change [x v] by (1)
 end`;
                                 return {
                                     question: `Quelle est la valeur finale de x ?<br>${generateScratchBlocks(scratchCode)}`,
@@ -2912,9 +2879,9 @@ end`;
                                 const repeat = randInt(3, 6);
                                 const add = randInt(2, 4);
                                 const result = x + (repeat * add);
-                                const scratchCode = `mettre [x v] à (${x})
-répéter (${repeat}) fois
-  ajouter (${add}) à [x v]
+                                const scratchCode = `set [x v] to (${x})
+repeat (${repeat})
+  change [x v] by (${add})
 end`;
                                 return {
                                     question: `Que vaut x à la fin ?<br>${generateScratchBlocks(scratchCode)}`,
@@ -3034,10 +3001,10 @@ end`;
                             () => {
                                 // Dessiner un carré - compléter le programme
                                 const cote = randInt(50, 150);
-                                const scratchCode = `stylo en position d'écriture
-répéter (4) fois
-  avancer de (${cote})
-  tourner droite de (?) degrés
+                                const scratchCode = `pen down
+repeat (4)
+  move (${cote}) steps
+  turn right (?) degrees
 end`;
                                 return {
                                     question: `Compléter ce programme Scratch pour dessiner un carré de côté ${cote} :<br>${generateScratchBlocks(scratchCode)}`,
@@ -3047,10 +3014,10 @@ end`;
                             () => {
                                 // Dessiner un triangle équilatéral
                                 const cote = randInt(60, 120);
-                                const scratchCode = `stylo en position d'écriture
-répéter (3) fois
-  avancer de (${cote})
-  tourner droite de (?) degrés
+                                const scratchCode = `pen down
+repeat (3)
+  move (${cote}) steps
+  turn right (?) degrees
 end`;
                                 return {
                                     question: `Compléter ce programme pour dessiner un triangle équilatéral :<br>${generateScratchBlocks(scratchCode)}`,
@@ -3071,8 +3038,8 @@ end`;
                                 // Calculer le périmètre d'un carré avec Scratch
                                 const cote = randInt(5, 15);
                                 const perimetre = 4 * cote;
-                                const scratchCode = `mettre [côté v] à (${cote})
-mettre [périmètre v] à ((côté) * (?))`;
+                                const scratchCode = `set [côté v] to (${cote})
+set [périmètre v] to ((côté) * (?))`;
                                 return {
                                     question: `Compléter ce programme qui calcule le périmètre d'un carré :<br>${generateScratchBlocks(scratchCode)}`,
                                     answer: `4<br>Périmètre = ${cote} cm × 4 = ${perimetre} cm`
@@ -3083,9 +3050,9 @@ mettre [périmètre v] à ((côté) * (?))`;
                                 const longueur = randInt(8, 15);
                                 const largeur = randInt(4, 10);
                                 const aire = longueur * largeur;
-                                const scratchCode = `mettre [longueur v] à (${longueur})
-mettre [largeur v] à (${largeur})
-mettre [aire v] à ((longueur) * (?))`;
+                                const scratchCode = `set [longueur v] to (${longueur})
+set [largeur v] to (${largeur})
+set [aire v] to ((longueur) * (?))`;
                                 return {
                                     question: `Compléter ce programme qui calcule l'aire d'un rectangle :<br>${generateScratchBlocks(scratchCode)}`,
                                     answer: `largeur<br>Aire = ${longueur} cm × ${largeur} cm = ${aire} cm²`
@@ -3103,9 +3070,9 @@ mettre [aire v] à ((longueur) * (?))`;
                                 // Périmètre d'un triangle équilatéral
                                 const cote = randInt(6, 12);
                                 const perimetre = 3 * cote;
-                                const scratchCode = `mettre [côté v] à (${cote})
-mettre [périmètre v] à ((côté) * (3))
-dire (rejoindre [Le périmètre est ] (rejoindre (périmètre) [ cm]))`;
+                                const scratchCode = `set [côté v] to (${cote})
+set [périmètre v] to ((côté) * (3))
+say (join [Le périmètre est ] (join (périmètre) [ cm]))`;
                                 return {
                                     question: `Quelle valeur affichera ce programme ?<br>${generateScratchBlocks(scratchCode)}`,
                                     answer: `Le périmètre est ${perimetre} cm<br>Calcul : ${cote} cm × 3 = ${perimetre} cm`
@@ -3115,8 +3082,8 @@ dire (rejoindre [Le périmètre est ] (rejoindre (périmètre) [ cm]))`;
                                 // Aire d'un carré
                                 const cote = randInt(5, 12);
                                 const aire = cote * cote;
-                                const scratchCode = `mettre [côté v] à (${cote})
-mettre [aire v] à ((côté) * (côté))`;
+                                const scratchCode = `set [côté v] to (${cote})
+set [aire v] to ((côté) * (côté))`;
                                 return {
                                     question: `Quelle sera la valeur de la variable "aire" ?<br>${generateScratchBlocks(scratchCode)}`,
                                     answer: `${aire} cm²<br>Aire = ${cote} cm × ${cote} cm = ${aire} cm²`
@@ -3124,10 +3091,10 @@ mettre [aire v] à ((côté) * (côté))`;
                             },
                             () => {
                                 // Dessiner une étoile à 5 branches
-                                const scratchCode = `stylo en position d'écriture
-répéter (5) fois
-  avancer de (100)
-  tourner droite de (?) degrés
+                                const scratchCode = `pen down
+repeat (5)
+  move (100) steps
+  turn right (?) degrees
 end`;
                                 return {
                                     question: `Pour dessiner une étoile à 5 branches, on doit tourner de combien de degrés à chaque pointe ?<br>${generateScratchBlocks(scratchCode)}`,
@@ -3139,9 +3106,9 @@ end`;
                                 const longueur = randInt(10, 18);
                                 const largeur = randInt(5, 9);
                                 const perimetre = 2 * (longueur + largeur);
-                                const scratchCode = `mettre [longueur v] à (${longueur})
-mettre [largeur v] à (${largeur})
-mettre [périmètre v] à (((longueur) + (largeur)) * (2))`;
+                                const scratchCode = `set [longueur v] to (${longueur})
+set [largeur v] to (${largeur})
+set [périmètre v] to (((longueur) + (largeur)) * (2))`;
                                 return {
                                     question: `Quelle sera la valeur de "périmètre" ?<br>${generateScratchBlocks(scratchCode)}`,
                                     answer: `${perimetre} cm<br>Périmètre = (${longueur} cm + ${largeur} cm) × 2 = ${longueur + largeur} cm × 2 = ${perimetre} cm`
@@ -3294,49 +3261,22 @@ mettre [périmètre v] à (((longueur) + (largeur)) * (2))`;
                     scratchblocks.renderMatching('pre.blocks');
                     console.log('✓ Rendu Scratch terminé');
 
-                    // Mettre les ? en rouge et traduire en français
+                    // Mettre les ? en rouge uniquement
                     setTimeout(() => {
-                        // Dictionnaire de traduction anglais -> français
-                        const frenchLabels = {
-                            'if': 'si',
-                            'then': 'alors',
-                            'else': 'sinon',
-                            'repeat': 'répéter',
-                            'times': 'fois',
-                            'set': 'mettre',
-                            'to': 'à',
-                            'change': 'ajouter',
-                            'say': 'dire',
-                            'for': 'pendant',
-                            'secs': 'secondes',
-                            'move': 'avancer de',
-                            'turn right': 'tourner droite de',
-                            'turn left': 'tourner gauche de',
-                            'degrees': 'degrés',
-                            'pen down': 'stylo en position d\'écriture',
-                            'pen up': 'relever le stylo',
-                            'join': 'rejoindre'
-                        };
-
                         document.querySelectorAll('pre.blocks').forEach(block => {
                             const texts = block.querySelectorAll('text, tspan');
                             texts.forEach(text => {
                                 const content = text.textContent.trim();
 
-                                // Mettre les ? en rouge
+                                // Mettre SEULEMENT les ? en rouge
                                 if (content === '?') {
                                     text.style.fill = 'red';
                                     text.style.fontWeight = 'bold';
                                     text.setAttribute('font-size', parseInt(text.getAttribute('font-size') || 12) + 2);
                                 }
-
-                                // Traduire les mots-clés anglais en français
-                                if (frenchLabels[content.toLowerCase()]) {
-                                    text.textContent = frenchLabels[content.toLowerCase()];
-                                }
                             });
                         });
-                        console.log('✓ ? mis en rouge et textes traduits en français');
+                        console.log('✓ ? mis en rouge');
                     }, 200);
                 } else {
                     console.error('✗ Scratchblocks NON chargé !');
@@ -3499,7 +3439,7 @@ mettre [périmètre v] à (((longueur) + (largeur)) * (2))`;
 
     <!-- Indicateur de version pour vérifier le cache -->
     <div style="position: fixed; bottom: 5px; right: 5px; background: rgba(0,0,0,0.7); color: white; padding: 3px 8px; border-radius: 5px; font-size: 11px; z-index: 9999;">
-        v2024-11-19-21h00
+        v2024-11-19-22h00-FINAL
     </div>
 </body>
 </html>
