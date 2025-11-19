@@ -720,23 +720,8 @@
         // Fonction pour générer des blocs Scratch visuels
         function generateScratchBlocks(code) {
             const blockId = 'scratch-' + Math.random().toString(36).substr(2, 9);
-            // Retourner le code dans une div avec classe scratch + script pour mettre les ? en rouge
-            return `<pre class="blocks" id="${blockId}" style="margin: 15px auto; max-width: 600px;">${code}</pre><script>
-setTimeout(() => {
-    const block = document.getElementById('${blockId}');
-    if (block) {
-        // Scratchblocks génère du SVG, on cible les éléments text qui contiennent ?
-        const texts = block.querySelectorAll('text, tspan');
-        texts.forEach(text => {
-            if (text.textContent.includes('?')) {
-                text.style.fill = 'red';
-                text.style.fontWeight = 'bold';
-                text.setAttribute('font-size', parseInt(text.getAttribute('font-size') || 12) + 2);
-            }
-        });
-    }
-}, 200);
-</script>`;
+            // Retourner le code dans une div avec classe scratch
+            return `<pre class="blocks" id="${blockId}" style="margin: 15px auto; max-width: 600px;">${code}</pre>`;
         }
 
         // Fonction pour générer un tableau HTML de proportionnalité
@@ -3269,6 +3254,20 @@ mettre [périmètre v] à (((longueur) + (largeur)) * (2))`;
             setTimeout(() => {
                 if (typeof scratchblocks !== 'undefined') {
                     scratchblocks.renderMatching('pre.blocks');
+
+                    // Mettre les ? en rouge dans les blocs Scratch
+                    setTimeout(() => {
+                        document.querySelectorAll('pre.blocks').forEach(block => {
+                            const texts = block.querySelectorAll('text, tspan');
+                            texts.forEach(text => {
+                                if (text.textContent.includes('?')) {
+                                    text.style.fill = 'red';
+                                    text.style.fontWeight = 'bold';
+                                    text.setAttribute('font-size', parseInt(text.getAttribute('font-size') || 12) + 2);
+                                }
+                            });
+                        });
+                    }, 200);
                 }
             }, 100);
         }
