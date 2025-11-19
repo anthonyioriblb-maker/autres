@@ -9,8 +9,11 @@
     <meta http-equiv="Expires" content="0">
     <title>Générateur de Questions - Automatismes DNB</title>
     <!-- Bibliothèque scratchblocks pour afficher les blocs Scratch via jsDelivr CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/scratchblocks@3.6.4/build/scratchblocks.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scratchblocks@3.6.4/build/scratchblocks.min.css">
+    <!-- Essai avec la dernière version disponible -->
+    <script src="https://cdn.jsdelivr.net/npm/scratchblocks@latest/scratchblocks-v3.6-min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scratchblocks@latest/scratchblocks-v3.6-min.css">
+    <!-- Fichier de traduction française -->
+    <script src="https://cdn.jsdelivr.net/npm/scratchblocks@latest/locales/fr.js"></script>
     <style>
         * {
             margin: 0;
@@ -3258,100 +3261,31 @@ set [périmètre v] to (((longueur) + (largeur)) * (2))`;
             setTimeout(() => {
                 if (typeof scratchblocks !== 'undefined') {
                     console.log('✓ Scratchblocks chargé, rendu en cours...');
-                    scratchblocks.renderMatching('pre.blocks');
-                    console.log('✓ Rendu Scratch terminé');
 
-                    // Mettre les ? en rouge et traduire en français
+                    // Configurer la langue française
+                    scratchblocks.renderMatching('pre.blocks', {
+                        languages: ['fr', 'en'],
+                        style: 'scratch3'
+                    });
+                    console.log('✓ Rendu Scratch terminé en français');
+
+                    // Mettre les ? en rouge uniquement
                     setTimeout(() => {
-                        // Dictionnaire de traduction anglais → français (mots-clés Scratch uniquement)
-                        const translations = {
-                            'set': 'mettre',
-                            'to': 'à',
-                            'change': 'ajouter',
-                            'by': 'de',
-                            'if': 'si',
-                            'then': 'alors',
-                            'else': 'sinon',
-                            'end': 'fin',
-                            'repeat': 'répéter',
-                            'say': 'dire',
-                            'for': 'pendant',
-                            'secs': 'secondes',
-                            'move': 'avancer de',
-                            'steps': 'pas',
-                            'turn': 'tourner',
-                            'right': 'droite',
-                            'left': 'gauche',
-                            'degrees': 'degrés',
-                            'pen': 'stylo',
-                            'down': 'baissé',
-                            'up': 'levé',
-                            'join': 'regrouper'
-                        };
-
                         document.querySelectorAll('pre.blocks').forEach(block => {
-                            // Élargir le SVG pour accommoder les mots français plus longs
-                            const svg = block.querySelector('svg');
-                            if (svg) {
-                                const currentWidth = parseInt(svg.getAttribute('width') || 100);
-                                svg.setAttribute('width', currentWidth * 1.5);
-                                svg.style.maxWidth = 'none';
-
-                                // Élargir TOUS les rectangles (blocs) de 50%
-                                const rects = svg.querySelectorAll('rect');
-                                rects.forEach(rect => {
-                                    const currentW = parseFloat(rect.getAttribute('width') || 0);
-                                    if (currentW > 0) {
-                                        rect.setAttribute('width', currentW * 1.5);
-                                    }
-                                });
-                            }
-
-                            const texts = block.querySelectorAll('text');
+                            const texts = block.querySelectorAll('text, tspan');
                             texts.forEach(text => {
-                                // Vérifier d'abord les tspan enfants
-                                const tspans = text.querySelectorAll('tspan');
-                                tspans.forEach(tspan => {
-                                    const content = tspan.textContent.trim().toLowerCase();
+                                const content = text.textContent.trim();
 
-                                    // Mettre les ? en rouge
-                                    if (content === '?') {
-                                        tspan.style.fill = 'red';
-                                        tspan.style.fontWeight = 'bold';
-                                        const currentSize = parseInt(tspan.getAttribute('font-size') || 12);
-                                        tspan.setAttribute('font-size', currentSize + 2);
-                                    }
-
-                                    // Traduire les mots-clés
-                                    if (translations[content] && tspan.childNodes.length === 1) {
-                                        const translated = translations[content];
-                                        tspan.textContent = translated;
-                                        // Ne pas réduire la taille - les rectangles sont maintenant plus larges
-                                    }
-                                });
-
-                                // Si pas de tspan, traiter le text directement
-                                if (tspans.length === 0) {
-                                    const content = text.textContent.trim().toLowerCase();
-
-                                    // Mettre les ? en rouge
-                                    if (content === '?') {
-                                        text.style.fill = 'red';
-                                        text.style.fontWeight = 'bold';
-                                        const currentSize = parseInt(text.getAttribute('font-size') || 12);
-                                        text.setAttribute('font-size', currentSize + 2);
-                                    }
-
-                                    // Traduire les mots-clés
-                                    if (translations[content] && text.childNodes.length === 1) {
-                                        const translated = translations[content];
-                                        text.textContent = translated;
-                                        // Ne pas réduire la taille - les rectangles sont maintenant plus larges
-                                    }
+                                // Mettre SEULEMENT les ? en rouge
+                                if (content === '?') {
+                                    text.style.fill = 'red';
+                                    text.style.fontWeight = 'bold';
+                                    const currentSize = parseInt(text.getAttribute('font-size') || 12);
+                                    text.setAttribute('font-size', currentSize + 2);
                                 }
                             });
                         });
-                        console.log('✓ ? mis en rouge et traduit en français');
+                        console.log('✓ ? mis en rouge (avec support natif du français)');
                     }, 200);
                 } else {
                     console.error('✗ Scratchblocks NON chargé !');
@@ -3514,7 +3448,7 @@ set [périmètre v] to (((longueur) + (largeur)) * (2))`;
 
     <!-- Indicateur de version pour vérifier le cache -->
     <div style="position: fixed; bottom: 5px; right: 5px; background: rgba(0,0,0,0.7); color: white; padding: 3px 8px; border-radius: 5px; font-size: 11px; z-index: 9999;">
-        v2024-11-19-23h30-RECT
+        v2024-11-20-00h00-FR-NATIF
     </div>
 </body>
 </html>
