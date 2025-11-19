@@ -3066,7 +3066,7 @@ mettre [aire v] à ((longueur) * (?))`;
                                 const perimetre = 3 * cote;
                                 const scratchCode = `mettre [côté v] à (${cote})
 mettre [périmètre v] à ((côté) * (3))
-dire (rejoindre [Le périmètre est ] (rejoindre (périmètre) [ cm]))`;
+dire (regroupe [Le périmètre est ] (regroupe (périmètre) [ cm]))`;
                                 return {
                                     question: `Quelle valeur affichera ce programme ?<br>${generateScratchBlocks(scratchCode)}`,
                                     answer: `Le périmètre est ${perimetre} cm<br>Calcul : ${cote} cm × 3 = ${perimetre} cm`
