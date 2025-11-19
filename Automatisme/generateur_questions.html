@@ -750,7 +750,8 @@ setTimeout(() => {
             }
             for (let val of row1Values) {
                 const displayVal = val === "?" ? "?" : (typeof val === 'number' && val % 1 !== 0 ? toFrenchNumber(val) : val);
-                table += `<td style="border: 2px solid #667eea; padding: 8px 12px; background: #f8f9fa;">${displayVal}</td>`;
+                const cellContent = displayVal === "?" ? `<span style="color: red; font-weight: bold; font-size: 1.3em;">${displayVal}</span>` : displayVal;
+                table += `<td style="border: 2px solid #667eea; padding: 8px 12px; background: #f8f9fa;">${cellContent}</td>`;
             }
             table += `</tr>`;
 
@@ -761,7 +762,8 @@ setTimeout(() => {
             }
             for (let val of row2Values) {
                 const displayVal = val === "?" ? "?" : (typeof val === 'number' && val % 1 !== 0 ? toFrenchNumber(val) : val);
-                table += `<td style="border: 2px solid #667eea; padding: 8px 12px; background: #f8f9fa;">${displayVal}</td>`;
+                const cellContent = displayVal === "?" ? `<span style="color: red; font-weight: bold; font-size: 1.3em;">${displayVal}</span>` : displayVal;
+                table += `<td style="border: 2px solid #667eea; padding: 8px 12px; background: #f8f9fa;">${cellContent}</td>`;
             }
             table += `</tr>`;
 
