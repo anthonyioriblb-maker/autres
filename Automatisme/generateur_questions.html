@@ -9,11 +9,8 @@
     <meta http-equiv="Expires" content="0">
     <title>Générateur de Questions - Automatismes DNB</title>
     <!-- Bibliothèque scratchblocks pour afficher les blocs Scratch via jsDelivr CDN -->
-    <!-- Essai avec la dernière version disponible -->
-    <script src="https://cdn.jsdelivr.net/npm/scratchblocks@latest/scratchblocks-v3.6-min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scratchblocks@latest/scratchblocks-v3.6-min.css">
-    <!-- Fichier de traduction française -->
-    <script src="https://cdn.jsdelivr.net/npm/scratchblocks@latest/locales/fr.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/scratchblocks@3.6.4/build/scratchblocks.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scratchblocks@3.6.4/build/scratchblocks.min.css">
     <style>
         * {
             margin: 0;
@@ -728,7 +725,18 @@
         function generateScratchBlocks(code) {
             const blockId = 'scratch-' + Math.random().toString(36).substr(2, 9);
             // Le code est déjà en anglais (syntaxe scratchblocks native)
-            return `<pre class="blocks" id="${blockId}" style="margin: 15px auto; max-width: 600px;">${code}</pre>`;
+            // Ajout d'une légende de traduction pour les élèves
+            const legend = `<div style="background: #f0f8ff; border-left: 4px solid #4a90e2; padding: 8px 12px; margin: 10px auto; max-width: 600px; font-size: 0.85em; color: #333;">
+                <strong>📘 Traduction :</strong>
+                <span style="display: inline-block; margin: 2px 8px;"><code>set</code> = mettre</span>
+                <span style="display: inline-block; margin: 2px 8px;"><code>if/then/else</code> = si/alors/sinon</span>
+                <span style="display: inline-block; margin: 2px 8px;"><code>repeat</code> = répéter</span>
+                <span style="display: inline-block; margin: 2px 8px;"><code>say</code> = dire</span>
+                <span style="display: inline-block; margin: 2px 8px;"><code>move</code> = avancer</span>
+                <span style="display: inline-block; margin: 2px 8px;"><code>turn</code> = tourner</span>
+                <span style="display: inline-block; margin: 2px 8px;"><code>change</code> = ajouter</span>
+            </div>`;
+            return legend + `<pre class="blocks" id="${blockId}" style="margin: 15px auto; max-width: 600px;">${code}</pre>`;
         }
 
         // Fonction pour générer un tableau HTML de proportionnalité
@@ -3261,13 +3269,8 @@ set [périmètre v] to (((longueur) + (largeur)) * (2))`;
             setTimeout(() => {
                 if (typeof scratchblocks !== 'undefined') {
                     console.log('✓ Scratchblocks chargé, rendu en cours...');
-
-                    // Configurer la langue française
-                    scratchblocks.renderMatching('pre.blocks', {
-                        languages: ['fr', 'en'],
-                        style: 'scratch3'
-                    });
-                    console.log('✓ Rendu Scratch terminé en français');
+                    scratchblocks.renderMatching('pre.blocks');
+                    console.log('✓ Rendu Scratch terminé');
 
                     // Mettre les ? en rouge uniquement
                     setTimeout(() => {
@@ -3448,7 +3451,7 @@ set [périmètre v] to (((longueur) + (largeur)) * (2))`;
 
     <!-- Indicateur de version pour vérifier le cache -->
     <div style="position: fixed; bottom: 5px; right: 5px; background: rgba(0,0,0,0.7); color: white; padding: 3px 8px; border-radius: 5px; font-size: 11px; z-index: 9999;">
-        v2024-11-20-00h00-FR-NATIF
+        v2024-11-20-00h30-LEGENDE
     </div>
 </body>
 </html>
