@@ -3258,7 +3258,25 @@ mettre [périmètre v] à (((longueur) + (largeur)) * (2))`;
             setTimeout(() => {
                 if (typeof scratchblocks !== 'undefined') {
                     console.log('✓ Scratchblocks chargé, rendu en cours...');
-                    scratchblocks.renderMatching('pre.blocks');
+
+                    // Configurer la langue française pour scratchblocks
+                    if (scratchblocks.loadLanguages) {
+                        scratchblocks.loadLanguages({
+                            fr: {
+                                commands: {},
+                                aliases: {
+                                    'si': 'if',
+                                    'alors': 'then',
+                                    'sinon': 'else',
+                                    'répéter': 'repeat',
+                                    'fois': 'times',
+                                    'end': 'end'
+                                }
+                            }
+                        });
+                    }
+
+                    scratchblocks.renderMatching('pre.blocks', {languages: ['fr', 'en']});
                     console.log('✓ Rendu Scratch terminé');
 
                     // Mettre les ? en rouge dans les blocs Scratch
@@ -3437,7 +3455,7 @@ mettre [périmètre v] à (((longueur) + (largeur)) * (2))`;
 
     <!-- Indicateur de version pour vérifier le cache -->
     <div style="position: fixed; bottom: 5px; right: 5px; background: rgba(0,0,0,0.7); color: white; padding: 3px 8px; border-radius: 5px; font-size: 11px; z-index: 9999;">
-        v2024-11-19-20h15
+        v2024-11-19-20h30
     </div>
 </body>
 </html>
