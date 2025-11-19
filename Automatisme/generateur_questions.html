@@ -3294,20 +3294,49 @@ mettre [périmètre v] à (((longueur) + (largeur)) * (2))`;
                     scratchblocks.renderMatching('pre.blocks');
                     console.log('✓ Rendu Scratch terminé');
 
-                    // Mettre les ? en rouge dans les blocs Scratch
+                    // Mettre les ? en rouge et traduire en français
                     setTimeout(() => {
+                        // Dictionnaire de traduction anglais -> français
+                        const frenchLabels = {
+                            'if': 'si',
+                            'then': 'alors',
+                            'else': 'sinon',
+                            'repeat': 'répéter',
+                            'times': 'fois',
+                            'set': 'mettre',
+                            'to': 'à',
+                            'change': 'ajouter',
+                            'say': 'dire',
+                            'for': 'pendant',
+                            'secs': 'secondes',
+                            'move': 'avancer de',
+                            'turn right': 'tourner droite de',
+                            'turn left': 'tourner gauche de',
+                            'degrees': 'degrés',
+                            'pen down': 'stylo en position d\'écriture',
+                            'pen up': 'relever le stylo',
+                            'join': 'rejoindre'
+                        };
+
                         document.querySelectorAll('pre.blocks').forEach(block => {
                             const texts = block.querySelectorAll('text, tspan');
                             texts.forEach(text => {
-                                // Vérifier si le texte est EXACTEMENT "?" (pas juste contient)
-                                if (text.textContent.trim() === '?') {
+                                const content = text.textContent.trim();
+
+                                // Mettre les ? en rouge
+                                if (content === '?') {
                                     text.style.fill = 'red';
                                     text.style.fontWeight = 'bold';
                                     text.setAttribute('font-size', parseInt(text.getAttribute('font-size') || 12) + 2);
                                 }
+
+                                // Traduire les mots-clés anglais en français
+                                if (frenchLabels[content.toLowerCase()]) {
+                                    text.textContent = frenchLabels[content.toLowerCase()];
+                                }
                             });
                         });
-                        console.log('✓ ? mis en rouge');
+                        console.log('✓ ? mis en rouge et textes traduits en français');
                     }, 200);
                 } else {
                     console.error('✗ Scratchblocks NON chargé !');
@@ -3470,7 +3499,7 @@ mettre [périmètre v] à (((longueur) + (largeur)) * (2))`;
 
     <!-- Indicateur de version pour vérifier le cache -->
     <div style="position: fixed; bottom: 5px; right: 5px; background: rgba(0,0,0,0.7); color: white; padding: 3px 8px; border-radius: 5px; font-size: 11px; z-index: 9999;">
-        v2024-11-19-20h45
+        v2024-11-19-21h00
     </div>
 </body>
 </html>
