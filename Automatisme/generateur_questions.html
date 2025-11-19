@@ -2814,9 +2814,10 @@ change [x v] by (${add})`;
                                 const mult = randInt(2, 4);
                                 const add = randInt(5, 10);
                                 const result = x * mult + add;
-                                const scratchCode = `set [x v] to (${x})
-set [x v] to ((x) * (${mult}))
-change [x v] by (${add})`;
+                                // TEST : Essayer en français pur
+                                const scratchCode = `mettre [x v] à (${x})
+mettre [x v] à ((x) * (${mult}))
+ajouter (${add}) à [x v]`;
                                 return {
                                     question: `Quelle est la valeur finale de x ?<br>${generateScratchBlocks(scratchCode)}`,
                                     answer: `x = ${x} × ${mult} + ${add} = ${x * mult} + ${add} = ${result}`
@@ -3451,7 +3452,7 @@ set [périmètre v] to (((longueur) + (largeur)) * (2))`;
 
     <!-- Indicateur de version pour vérifier le cache -->
     <div style="position: fixed; bottom: 5px; right: 5px; background: rgba(0,0,0,0.7); color: white; padding: 3px 8px; border-radius: 5px; font-size: 11px; z-index: 9999;">
-        v2024-11-20-00h30-LEGENDE
+        v2024-11-20-00h45-TEST-FR
     </div>
 </body>
 </html>
