@@ -8,9 +8,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Générateur de Questions - Automatismes DNB</title>
-    <!-- Bibliothèque scratchblocks pour afficher les blocs Scratch via jsDelivr CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/scratchblocks@3.6.4/build/scratchblocks.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scratchblocks@3.6.4/build/scratchblocks.min.css">
+    <!-- Rendu Scratch en HTML/CSS pur - Pas besoin de bibliothèque externe ! -->
     <style>
         * {
             margin: 0;
@@ -721,22 +719,99 @@
             return `<span class="fraction"><span class="numerator">${numerator}</span><span class="denominator">${denominator}</span></span>`;
         }
 
-        // Fonction pour générer des blocs Scratch visuels
+        // Fonction pour générer des blocs Scratch visuels en HTML/CSS pur
         function generateScratchBlocks(code) {
             const blockId = 'scratch-' + Math.random().toString(36).substr(2, 9);
-            // Le code est déjà en anglais (syntaxe scratchblocks native)
-            // Ajout d'une légende de traduction pour les élèves
-            const legend = `<div style="background: #f0f8ff; border-left: 4px solid #4a90e2; padding: 8px 12px; margin: 10px auto; max-width: 600px; font-size: 0.85em; color: #333;">
-                <strong>📘 Traduction :</strong>
-                <span style="display: inline-block; margin: 2px 8px;"><code>set</code> = mettre</span>
-                <span style="display: inline-block; margin: 2px 8px;"><code>if/then/else</code> = si/alors/sinon</span>
-                <span style="display: inline-block; margin: 2px 8px;"><code>repeat</code> = répéter</span>
-                <span style="display: inline-block; margin: 2px 8px;"><code>say</code> = dire</span>
-                <span style="display: inline-block; margin: 2px 8px;"><code>move</code> = avancer</span>
-                <span style="display: inline-block; margin: 2px 8px;"><code>turn</code> = tourner</span>
-                <span style="display: inline-block; margin: 2px 8px;"><code>change</code> = ajouter</span>
-            </div>`;
-            return legend + `<pre class="blocks" id="${blockId}" style="margin: 15px auto; max-width: 600px;">${code}</pre>`;
+
+            // Traduire le code anglais en français si nécessaire
+            code = code.replace(/set /g, 'mettre ')
+                       .replace(/ to /g, ' à ')
+                       .replace(/change /g, 'ajouter ')
+                       .replace(/ by /g, ' de ')
+                       .replace(/if </g, 'si <')
+                       .replace(/> then/g, '> alors')
+                       .replace(/else/g, 'sinon')
+                       .replace(/end/g, 'fin')
+                       .replace(/repeat /g, 'répéter ')
+                       .replace(/say /g, 'dire ')
+                       .replace(/for /g, 'pendant ')
+                       .replace(/ secs/g, ' secondes')
+                       .replace(/move /g, 'avancer de ')
+                       .replace(/ steps/g, ' pas')
+                       .replace(/turn right /g, 'tourner droite de ')
+                       .replace(/turn left /g, 'tourner gauche de ')
+                       .replace(/ degrees/g, ' degrés')
+                       .replace(/pen down/g, 'stylo baissé')
+                       .replace(/join /g, 'regrouper ');
+
+            let html = `<div id="${blockId}" style="font-family: 'Helvetica Neue', Arial, sans-serif; margin: 15px auto; max-width: 700px; font-size: 13px;">`;
+
+            const lines = code.split('\n');
+            let indentLevel = 0;
+
+            for (let line of lines) {
+                line = line.trim();
+                if (!line) continue;
+
+                // Gérer l'indentation
+                if (line === 'fin' || line === 'sinon') {
+                    indentLevel = Math.max(0, indentLevel - 1);
+                }
+
+                const indent = indentLevel * 20;
+
+                // Déterminer le type de bloc et sa couleur
+                let bgColor = '#9966FF'; // Violet par défaut (contrôle)
+                let blockStyle = 'block';
+
+                if (line.startsWith('mettre') || line.startsWith('ajouter')) {
+                    bgColor = '#FF8C1A'; // Orange (variables)
+                } else if (line.startsWith('dire')) {
+                    bgColor = '#9966FF'; // Violet (apparence)
+                } else if (line.startsWith('avancer') || line.startsWith('tourner')) {
+                    bgColor = '#4C97FF'; // Bleu (mouvement)
+                } else if (line.startsWith('stylo')) {
+                    bgColor = '#0FBD8C'; // Vert (stylo)
+                } else if (line === 'sinon' || line === 'fin') {
+                    blockStyle = 'cap';
+                }
+
+                // Mettre les ? en rouge
+                line = line.replace(/\?/g, '<span style="color: red; font-weight: bold; font-size: 1.4em;">?</span>');
+
+                // Mettre les variables en orange
+                line = line.replace(/\[([^\]]+) v\]/g, '<span style="background: #FF8C1A; color: white; padding: 2px 6px; border-radius: 10px; font-weight: 500;">$1</span>');
+
+                // Mettre les nombres en blanc
+                line = line.replace(/\((\d+)\)/g, '<span style="background: white; color: #575E75; padding: 2px 8px; border-radius: 10px; font-weight: 500;">$1</span>');
+
+                // Mettre les expressions mathématiques en vert
+                line = line.replace(/\(([^)]*[+\-*/]([^)]*))\)/g, '<span style="background: #59C059; color: white; padding: 2px 8px; border-radius: 10px;">$1</span>');
+
+                // Mettre les comparaisons en vert
+                line = line.replace(/<([^>]+)>/g, '<span style="background: #59C059; color: white; padding: 2px 8px; border-radius: 12px;">$1</span>');
+
+                // Mettre les textes en violet clair
+                line = line.replace(/\[([^\]]+)\]/g, '<span style="background: #9966FF; color: white; padding: 2px 6px; border-radius: 10px;">$1</span>');
+
+                if (blockStyle === 'cap') {
+                    html += `<div style="margin-left: ${indent}px; padding: 8px 12px; background: ${bgColor}; color: white; border-radius: 4px; margin-bottom: 2px; font-weight: 500; width: fit-content; min-width: 60px;">${line}</div>`;
+                } else {
+                    html += `<div style="margin-left: ${indent}px; padding: 10px 12px; background: ${bgColor}; color: white; border-radius: 4px; margin-bottom: 2px; font-weight: 500; width: fit-content; min-width: 150px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">${line}</div>`;
+                }
+
+                // Augmenter l'indentation après certains blocs
+                if (line.includes('si ') || line.includes('répéter') || line.includes('sinon')) {
+                    indentLevel++;
+                }
+
+                if (line === 'fin') {
+                    indentLevel = Math.max(0, indentLevel - 1);
+                }
+            }
+
+            html += '</div>';
+            return html;
         }
 
         // Fonction pour générer un tableau HTML de proportionnalité
@@ -3266,35 +3341,8 @@ set [périmètre v] to (((longueur) + (largeur)) * (2))`;
             document.getElementById('questionsCount').textContent = questionsGenerated;
             document.getElementById('printButtons').classList.add('active');
 
-            // Rendre les blocs Scratch visuels
-            setTimeout(() => {
-                if (typeof scratchblocks !== 'undefined') {
-                    console.log('✓ Scratchblocks chargé, rendu en cours...');
-                    scratchblocks.renderMatching('pre.blocks');
-                    console.log('✓ Rendu Scratch terminé');
-
-                    // Mettre les ? en rouge uniquement
-                    setTimeout(() => {
-                        document.querySelectorAll('pre.blocks').forEach(block => {
-                            const texts = block.querySelectorAll('text, tspan');
-                            texts.forEach(text => {
-                                const content = text.textContent.trim();
-
-                                // Mettre SEULEMENT les ? en rouge
-                                if (content === '?') {
-                                    text.style.fill = 'red';
-                                    text.style.fontWeight = 'bold';
-                                    const currentSize = parseInt(text.getAttribute('font-size') || 12);
-                                    text.setAttribute('font-size', currentSize + 2);
-                                }
-                            });
-                        });
-                        console.log('✓ ? mis en rouge (avec support natif du français)');
-                    }, 200);
-                } else {
-                    console.error('✗ Scratchblocks NON chargé !');
-                }
-            }, 100);
+            // Plus besoin de scratchblocks - rendu HTML/CSS pur en français !
+            console.log('✓ Blocs Scratch générés en HTML/CSS français natif');
         }
 
         function toggleAnswers() {
@@ -3452,7 +3500,7 @@ set [périmètre v] to (((longueur) + (largeur)) * (2))`;
 
     <!-- Indicateur de version pour vérifier le cache -->
     <div style="position: fixed; bottom: 5px; right: 5px; background: rgba(0,0,0,0.7); color: white; padding: 3px 8px; border-radius: 5px; font-size: 11px; z-index: 9999;">
-        v2024-11-20-00h45-TEST-FR
+        v2024-11-20-01h00-HTML-FR
     </div>
 </body>
 </html>
