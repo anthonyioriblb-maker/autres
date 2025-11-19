@@ -3294,8 +3294,17 @@ set [périmètre v] to (((longueur) + (largeur)) * (2))`;
                             const svg = block.querySelector('svg');
                             if (svg) {
                                 const currentWidth = parseInt(svg.getAttribute('width') || 100);
-                                svg.setAttribute('width', currentWidth * 1.3);
+                                svg.setAttribute('width', currentWidth * 1.5);
                                 svg.style.maxWidth = 'none';
+
+                                // Élargir TOUS les rectangles (blocs) de 50%
+                                const rects = svg.querySelectorAll('rect');
+                                rects.forEach(rect => {
+                                    const currentW = parseFloat(rect.getAttribute('width') || 0);
+                                    if (currentW > 0) {
+                                        rect.setAttribute('width', currentW * 1.5);
+                                    }
+                                });
                             }
 
                             const texts = block.querySelectorAll('text');
@@ -3315,17 +3324,9 @@ set [périmètre v] to (((longueur) + (largeur)) * (2))`;
 
                                     // Traduire les mots-clés
                                     if (translations[content] && tspan.childNodes.length === 1) {
-                                        const original = content;
                                         const translated = translations[content];
                                         tspan.textContent = translated;
-
-                                        // Si le mot français est plus long, réduire la taille de police
-                                        if (translated.length > original.length) {
-                                            const ratio = original.length / translated.length;
-                                            const currentSize = parseInt(tspan.getAttribute('font-size') || 10);
-                                            const newSize = Math.max(8, Math.floor(currentSize * ratio * 1.1));
-                                            tspan.setAttribute('font-size', newSize);
-                                        }
+                                        // Ne pas réduire la taille - les rectangles sont maintenant plus larges
                                     }
                                 });
 
@@ -3343,17 +3344,9 @@ set [périmètre v] to (((longueur) + (largeur)) * (2))`;
 
                                     // Traduire les mots-clés
                                     if (translations[content] && text.childNodes.length === 1) {
-                                        const original = content;
                                         const translated = translations[content];
                                         text.textContent = translated;
-
-                                        // Si le mot français est plus long, réduire la taille de police
-                                        if (translated.length > original.length) {
-                                            const ratio = original.length / translated.length;
-                                            const currentSize = parseInt(text.getAttribute('font-size') || 10);
-                                            const newSize = Math.max(8, Math.floor(currentSize * ratio * 1.1));
-                                            text.setAttribute('font-size', newSize);
-                                        }
+                                        // Ne pas réduire la taille - les rectangles sont maintenant plus larges
                                     }
                                 }
                             });
@@ -3521,7 +3514,7 @@ set [périmètre v] to (((longueur) + (largeur)) * (2))`;
 
     <!-- Indicateur de version pour vérifier le cache -->
     <div style="position: fixed; bottom: 5px; right: 5px; background: rgba(0,0,0,0.7); color: white; padding: 3px 8px; border-radius: 5px; font-size: 11px; z-index: 9999;">
-        v2024-11-19-23h00-FIX
+        v2024-11-19-23h30-RECT
     </div>
 </body>
 </html>
