@@ -753,8 +753,11 @@
                 line = line.trim();
                 if (!line) continue;
 
+                // Sauvegarder la ligne originale AVANT tout traitement
+                const originalLine = line;
+
                 // Gérer l'indentation
-                if (line === 'fin' || line === 'sinon') {
+                if (originalLine === 'fin' || originalLine === 'sinon') {
                     indentLevel = Math.max(0, indentLevel - 1);
                 }
 
@@ -764,35 +767,74 @@
                 let bgColor = '#9966FF'; // Violet par défaut (contrôle)
                 let blockStyle = 'block';
 
-                if (line.startsWith('mettre') || line.startsWith('ajouter')) {
+                if (originalLine.startsWith('mettre') || originalLine.startsWith('ajouter')) {
                     bgColor = '#FF8C1A'; // Orange (variables)
-                } else if (line.startsWith('dire')) {
+                } else if (originalLine.startsWith('dire')) {
                     bgColor = '#9966FF'; // Violet (apparence)
-                } else if (line.startsWith('avancer') || line.startsWith('tourner')) {
+                } else if (originalLine.startsWith('avancer') || originalLine.startsWith('tourner')) {
                     bgColor = '#4C97FF'; // Bleu (mouvement)
-                } else if (line.startsWith('stylo')) {
+                } else if (originalLine.startsWith('stylo')) {
                     bgColor = '#0FBD8C'; // Vert (stylo)
-                } else if (line === 'sinon' || line === 'fin') {
+                } else if (originalLine === 'sinon' || originalLine === 'fin') {
                     blockStyle = 'cap';
                 }
 
+                // ÉTAPE 1 : Remplacer avec des placeholders pour éviter les conflits
+                const placeholders = [];
+                let placeholderIndex = 0;
+
                 // Mettre les ? en rouge
-                line = line.replace(/\?/g, '<span style="color: red; font-weight: bold; font-size: 1.4em;">?</span>');
+                line = line.replace(/\?/g, () => {
+                    const placeholder = `__PLACEHOLDER_${placeholderIndex}__`;
+                    placeholders[placeholderIndex] = '<span style="color: red; font-weight: bold; font-size: 1.4em;">?</span>';
+                    placeholderIndex++;
+                    return placeholder;
+                });
 
-                // Mettre les variables en orange
-                line = line.replace(/\[([^\]]+) v\]/g, '<span style="background: #FF8C1A; color: white; padding: 2px 6px; border-radius: 10px; font-weight: 500;">$1</span>');
-
-                // Mettre les nombres en blanc
-                line = line.replace(/\((\d+)\)/g, '<span style="background: white; color: #575E75; padding: 2px 8px; border-radius: 10px; font-weight: 500;">$1</span>');
+                // Mettre les comparaisons en vert (AVANT les autres pour éviter confusion avec <, >)
+                line = line.replace(/<([^>]+)>/g, (match, content) => {
+                    const placeholder = `__PLACEHOLDER_${placeholderIndex}__`;
+                    placeholders[placeholderIndex] = `<span style="background: #59C059; color: white; padding: 2px 8px; border-radius: 12px;">${content}</span>`;
+                    placeholderIndex++;
+                    return placeholder;
+                });
 
                 // Mettre les expressions mathématiques en vert
-                line = line.replace(/\(([^)]*[+\-*/]([^)]*))\)/g, '<span style="background: #59C059; color: white; padding: 2px 8px; border-radius: 10px;">$1</span>');
+                line = line.replace(/\(([^)]*[+\-*/mod][^)]*)\)/g, (match, content) => {
+                    const placeholder = `__PLACEHOLDER_${placeholderIndex}__`;
+                    placeholders[placeholderIndex] = `<span style="background: #59C059; color: white; padding: 2px 8px; border-radius: 10px;">${content}</span>`;
+                    placeholderIndex++;
+                    return placeholder;
+                });
 
-                // Mettre les comparaisons en vert
-                line = line.replace(/<([^>]+)>/g, '<span style="background: #59C059; color: white; padding: 2px 8px; border-radius: 12px;">$1</span>');
+                // Mettre les variables en orange
+                line = line.replace(/\[([^\]]+) v\]/g, (match, varName) => {
+                    const placeholder = `__PLACEHOLDER_${placeholderIndex}__`;
+                    placeholders[placeholderIndex] = `<span style="background: #FF8C1A; color: white; padding: 2px 6px; border-radius: 10px; font-weight: 500;">${varName}</span>`;
+                    placeholderIndex++;
+                    return placeholder;
+                });
 
                 // Mettre les textes en violet clair
-                line = line.replace(/\[([^\]]+)\]/g, '<span style="background: #9966FF; color: white; padding: 2px 6px; border-radius: 10px;">$1</span>');
+                line = line.replace(/\[([^\]]+)\]/g, (match, text) => {
+                    const placeholder = `__PLACEHOLDER_${placeholderIndex}__`;
+                    placeholders[placeholderIndex] = `<span style="background: #9966FF; color: white; padding: 2px 6px; border-radius: 10px;">${text}</span>`;
+                    placeholderIndex++;
+                    return placeholder;
+                });
+
+                // Mettre les nombres en blanc
+                line = line.replace(/\((\d+)\)/g, (match, number) => {
+                    const placeholder = `__PLACEHOLDER_${placeholderIndex}__`;
+                    placeholders[placeholderIndex] = `<span style="background: white; color: #575E75; padding: 2px 8px; border-radius: 10px; font-weight: 500;">${number}</span>`;
+                    placeholderIndex++;
+                    return placeholder;
+                });
+
+                // ÉTAPE 2 : Restaurer tous les placeholders
+                for (let i = 0; i < placeholderIndex; i++) {
+                    line = line.replace(`__PLACEHOLDER_${i}__`, placeholders[i]);
+                }
 
                 if (blockStyle === 'cap') {
                     html += `<div style="margin-left: ${indent}px; padding: 8px 12px; background: ${bgColor}; color: white; border-radius: 4px; margin-bottom: 2px; font-weight: 500; width: fit-content; min-width: 60px;">${line}</div>`;
@@ -800,12 +842,12 @@
                     html += `<div style="margin-left: ${indent}px; padding: 10px 12px; background: ${bgColor}; color: white; border-radius: 4px; margin-bottom: 2px; font-weight: 500; width: fit-content; min-width: 150px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">${line}</div>`;
                 }
 
-                // Augmenter l'indentation après certains blocs
-                if (line.includes('si ') || line.includes('répéter') || line.includes('sinon')) {
+                // Augmenter l'indentation après certains blocs (utiliser originalLine)
+                if (originalLine.includes('si ') || originalLine.includes('répéter') || originalLine.includes('sinon')) {
                     indentLevel++;
                 }
 
-                if (line === 'fin') {
+                if (originalLine === 'fin') {
                     indentLevel = Math.max(0, indentLevel - 1);
                 }
             }
@@ -3500,7 +3542,7 @@ set [périmètre v] to (((longueur) + (largeur)) * (2))`;
 
     <!-- Indicateur de version pour vérifier le cache -->
     <div style="position: fixed; bottom: 5px; right: 5px; background: rgba(0,0,0,0.7); color: white; padding: 3px 8px; border-radius: 5px; font-size: 11px; z-index: 9999;">
-        v2024-11-20-01h00-HTML-FR
+        v2024-11-20-01h30-FIX
     </div>
 </body>
 </html>
