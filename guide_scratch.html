@@ -7,7 +7,7 @@
     <style>
         @media print {
             body {
-                margin: 1cm;
+                margin: 0.5cm;
             }
             .page-break {
                 page-break-after: always;
@@ -18,44 +18,45 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             max-width: 21cm;
             margin: 0 auto;
-            padding: 1cm;
-            line-height: 1.4;
+            padding: 0.5cm;
+            line-height: 1.2;
+            font-size: 11px;
         }
 
         h1 {
             color: #FF6B35;
-            border-bottom: 3px solid #FF6B35;
-            padding-bottom: 10px;
-            font-size: 28px;
-            margin-bottom: 20px;
+            border-bottom: 2px solid #FF6B35;
+            padding-bottom: 5px;
+            font-size: 20px;
+            margin-bottom: 10px;
         }
 
         h2 {
             color: #4C97FF;
-            font-size: 20px;
-            margin-top: 25px;
-            margin-bottom: 12px;
+            font-size: 15px;
+            margin-top: 10px;
+            margin-bottom: 6px;
         }
 
         h3 {
             color: #333;
-            font-size: 16px;
-            margin-top: 15px;
-            margin-bottom: 8px;
+            font-size: 13px;
+            margin-top: 8px;
+            margin-bottom: 4px;
         }
 
         .section {
-            margin-bottom: 25px;
+            margin-bottom: 12px;
         }
 
         .color-badge {
             display: inline-block;
-            padding: 3px 10px;
-            border-radius: 15px;
+            padding: 2px 6px;
+            border-radius: 10px;
             color: white;
-            font-size: 12px;
+            font-size: 10px;
             font-weight: bold;
-            margin-right: 8px;
+            margin-right: 5px;
         }
 
         .motion { background: #4C97FF; }
@@ -71,89 +72,90 @@
 
         .note {
             background: #FFF9E6;
-            border-left: 4px solid #FFD500;
-            padding: 12px;
-            margin: 15px 0;
-            font-size: 14px;
+            border-left: 3px solid #FFD500;
+            padding: 6px;
+            margin: 8px 0;
+            font-size: 10px;
         }
 
         .important {
             background: #FFE6E6;
-            border-left: 4px solid #FF6B35;
-            padding: 12px;
-            margin: 15px 0;
-            font-size: 14px;
+            border-left: 3px solid #FF6B35;
+            padding: 6px;
+            margin: 8px 0;
+            font-size: 10px;
             font-weight: bold;
         }
 
         ul {
-            margin: 8px 0;
-            padding-left: 25px;
+            margin: 4px 0;
+            padding-left: 18px;
         }
 
         li {
-            margin: 5px 0;
+            margin: 2px 0;
         }
 
         img {
             max-width: 100%;
             height: auto;
             border: 1px solid #ddd;
-            border-radius: 5px;
-            margin: 10px 0;
+            border-radius: 3px;
+            margin: 5px 0;
         }
 
         .interface-container {
             position: relative;
-            margin: 20px 0;
+            margin: 8px 0;
         }
 
         .interface-legend {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 15px;
-            font-size: 14px;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 5px;
+            margin-top: 8px;
+            font-size: 10px;
         }
 
         .legend-item {
             display: flex;
             align-items: center;
             background: #f9f9f9;
-            padding: 8px;
-            border-radius: 5px;
+            padding: 4px;
+            border-radius: 3px;
         }
 
         .legend-number {
             background: #FF6B35;
             color: white;
-            width: 28px;
-            height: 28px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            margin-right: 10px;
+            margin-right: 5px;
             flex-shrink: 0;
+            font-size: 11px;
         }
 
         .categories-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin: 15px 0;
+            gap: 8px;
+            margin: 8px 0;
         }
 
         .category-box {
             background: #f9f9f9;
-            padding: 10px;
-            border-radius: 5px;
-            border-left: 4px solid;
+            padding: 6px;
+            border-radius: 3px;
+            border-left: 3px solid;
         }
 
         .category-box ul {
-            font-size: 13px;
+            font-size: 10px;
         }
 
         .category-box.motion { border-left-color: #4C97FF; }
@@ -170,41 +172,51 @@
         .rotation-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin: 20px 0;
+            gap: 8px;
+            margin: 8px 0;
         }
 
         .rotation-box {
             background: #f5f5f5;
-            padding: 15px;
-            border-radius: 5px;
+            padding: 8px;
+            border-radius: 3px;
             text-align: center;
         }
 
         .rotation-box h3 {
             color: #4C97FF;
             margin-top: 0;
+            font-size: 12px;
+        }
+
+        .rotation-box p {
+            font-size: 10px;
+            margin: 4px 0;
         }
 
         .rotation-example {
             background: white;
-            padding: 10px;
+            padding: 5px;
             border-radius: 3px;
-            margin: 10px 0;
+            margin: 5px 0;
             font-family: monospace;
-            font-size: 13px;
+            font-size: 10px;
         }
 
         .extension-steps {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin: 15px 0;
+            gap: 8px;
+            margin: 8px 0;
         }
 
         .extension-steps img {
-            max-height: 200px;
+            max-height: 120px;
             object-fit: contain;
+        }
+
+        .extension-steps h3 {
+            font-size: 11px;
         }
     </style>
 </head>
@@ -270,10 +282,9 @@
             <div class="category-box looks">
                 <h3><span class="color-badge looks">Apparence</span></h3>
                 <ul>
-                    <li><strong>dire [Bonjour] pendant (2) s</strong> → Bulle de texte temporaire</li>
-                    <li><strong>dire [Bonjour]</strong> → Bulle de texte permanente</li>
+                    <li><strong>dire [Bonjour] pendant (2) s</strong> → Bulle temporaire</li>
                     <li><strong>basculer sur le costume</strong> → Change l'apparence</li>
-                    <li><strong>montrer / cacher</strong> → Rend visible ou invisible</li>
+                    <li><strong>montrer / cacher</strong> → Visibilité</li>
                     <li><strong>mettre la taille à (100) %</strong> → Change la taille</li>
                 </ul>
             </div>
@@ -281,30 +292,27 @@
             <div class="category-box sound">
                 <h3><span class="color-badge sound">Son</span></h3>
                 <ul>
-                    <li><strong>jouer le son [Miaou]</strong> → Joue un son sans attendre</li>
-                    <li><strong>jouer le son [Miaou] jusqu'au bout</strong> → Attend la fin</li>
-                    <li><strong>arrêter tous les sons</strong> → Coupe tous les sons</li>
-                    <li><strong>mettre le volume à (100) %</strong> → Règle le volume</li>
+                    <li><strong>jouer le son [Miaou]</strong> → Joue sans attendre</li>
+                    <li><strong>jouer [Miaou] jusqu'au bout</strong> → Attend la fin</li>
+                    <li><strong>mettre le volume à (100) %</strong> → Règle volume</li>
                 </ul>
             </div>
 
             <div class="category-box events">
                 <h3><span class="color-badge events">Événements</span></h3>
                 <ul>
-                    <li><strong>quand 🏴 est cliqué</strong> → Démarre au clic sur drapeau vert</li>
-                    <li><strong>quand ce lutin est cliqué</strong> → Démarre au clic sur le lutin</li>
-                    <li><strong>quand [espace] est pressé</strong> → Démarre à l'appui d'une touche</li>
-                    <li><strong>envoyer [message1]</strong> → Envoie un signal</li>
+                    <li><strong>quand 🏴 est cliqué</strong> → Démarre au drapeau vert</li>
+                    <li><strong>quand ce lutin est cliqué</strong> → Clic sur le lutin</li>
+                    <li><strong>quand [espace] est pressé</strong> → Touche clavier</li>
                 </ul>
             </div>
 
             <div class="category-box control">
                 <h3><span class="color-badge control">Contrôle</span></h3>
                 <ul>
-                    <li><strong>répéter (4) fois</strong> → Boucle avec nombre fixe</li>
+                    <li><strong>répéter (4) fois</strong> → Boucle nombre fixe</li>
                     <li><strong>répéter indéfiniment</strong> → Boucle infinie</li>
-                    <li><strong>si... alors</strong> → Condition simple</li>
-                    <li><strong>si... alors... sinon</strong> → Condition double</li>
+                    <li><strong>si... alors... sinon</strong> → Condition</li>
                     <li><strong>attendre (1) secondes</strong> → Pause</li>
                 </ul>
             </div>
@@ -312,11 +320,10 @@
             <div class="category-box sensing">
                 <h3><span class="color-badge sensing">Capteurs</span></h3>
                 <ul>
-                    <li><strong>touche [espace] pressée ?</strong> → Détecte touche clavier</li>
-                    <li><strong>souris pressée ?</strong> → Détecte clic souris</li>
-                    <li><strong>distance de [pointeur de souris]</strong> → Mesure distance</li>
-                    <li><strong>demander [Quel est ton nom ?]</strong> → Pose une question</li>
-                    <li><strong>réponse</strong> → Récupère la réponse de l'utilisateur</li>
+                    <li><strong>touche [espace] pressée ?</strong> → Détecte clavier</li>
+                    <li><strong>souris pressée ?</strong> → Détecte clic</li>
+                    <li><strong>demander [Ton nom ?]</strong> → Pose question</li>
+                    <li><strong>réponse</strong> → Récupère la réponse</li>
                 </ul>
             </div>
 
@@ -326,8 +333,7 @@
                     <li><strong>(10) + (5)</strong> → Addition</li>
                     <li><strong>(10) - (5)</strong> → Soustraction</li>
                     <li><strong>(10) × (5)</strong> → Multiplication</li>
-                    <li><strong>(10) ÷ (5)</strong> → Division</li>
-                    <li><strong>nombre aléatoire entre (1) et (10)</strong> → Hasard</li>
+                    <li><strong>aléatoire entre (1) et (10)</strong> → Hasard</li>
                 </ul>
             </div>
 
@@ -344,19 +350,18 @@
             <div class="category-box myblocks">
                 <h3><span class="color-badge myblocks">Mes Blocs</span></h3>
                 <ul>
-                    <li><strong>Créer un bloc</strong> → Invente ton propre bloc</li>
-                    <li>Permet de créer des fonctions personnalisées</li>
-                    <li>Utile pour ne pas répéter le même code</li>
+                    <li><strong>Créer un bloc</strong> → Fonction personnalisée</li>
+                    <li>Utile pour ne pas répéter le code</li>
                 </ul>
             </div>
 
             <div class="category-box pen">
                 <h3><span class="color-badge pen">Stylo</span> (Extension)</h3>
                 <ul>
-                    <li><strong>effacer tout</strong> → Efface tous les dessins</li>
-                    <li><strong>stylo en position d'écriture</strong> → Dessine en se déplaçant</li>
-                    <li><strong>relever le stylo</strong> → Se déplace sans dessiner</li>
-                    <li><strong>mettre la couleur / taille du stylo</strong> → Personnalise</li>
+                    <li><strong>effacer tout</strong> → Efface dessins</li>
+                    <li><strong>stylo en position d'écriture</strong> → Dessine</li>
+                    <li><strong>relever le stylo</strong> → Ne dessine plus</li>
+                    <li><strong>mettre couleur / taille</strong> → Personnalise</li>
                 </ul>
             </div>
         </div>
@@ -393,17 +398,9 @@
 
     <!-- SECTION 3: Blocs essentiels du stylo -->
     <div class="section">
-        <h2>3. Utiliser le stylo pour dessiner</h2>
-
-        <h3>Les 3 blocs indispensables :</h3>
-        <ul>
-            <li><strong>effacer tout</strong> → Nettoie la scène avant de commencer</li>
-            <li><strong>stylo en position d'écriture</strong> → Le lutin laisse une trace quand il se déplace</li>
-            <li><strong>relever le stylo</strong> → Le lutin ne dessine plus</li>
-        </ul>
-
+        <h2>3. Utiliser le stylo</h2>
         <div class="note">
-            💡 Le lutin doit bouger avec les blocs <span class="color-badge motion">Mouvement</span> pour tracer un dessin.
+            💡 Le lutin dessine quand le stylo est en position d'écriture et qu'il se déplace avec les blocs <span class="color-badge motion">Mouvement</span>.
         </div>
     </div>
 
@@ -414,45 +411,32 @@
         <div class="rotation-grid">
             <div class="rotation-box">
                 <h3>↻ Tourner à droite</h3>
-                <div class="rotation-example">
-                    tourner ↻ de (90) degrés
-                </div>
-                <p>Tourne dans le sens des aiguilles d'une montre (sens horaire)</p>
-                <p><strong>Exemple :</strong> Si le lutin regarde en haut (0°) et tourne de 90° à droite, il regardera à droite (90°)</p>
+                <div class="rotation-example">tourner ↻ de (90) degrés</div>
+                <p>Sens horaire ⟳</p>
             </div>
 
             <div class="rotation-box">
                 <h3>↺ Tourner à gauche</h3>
-                <div class="rotation-example">
-                    tourner ↺ de (90) degrés
-                </div>
-                <p>Tourne dans le sens inverse des aiguilles d'une montre (sens anti-horaire)</p>
-                <p><strong>Exemple :</strong> Si le lutin regarde en haut (0°) et tourne de 90° à gauche, il regardera à gauche (-90°)</p>
+                <div class="rotation-example">tourner ↺ de (90) degrés</div>
+                <p>Sens anti-horaire ⟲</p>
             </div>
         </div>
 
-        <h3 style="margin-top: 20px;">S'orienter vers une direction précise</h3>
-        <div style="background: #f5f5f5; padding: 15px; border-radius: 5px; margin: 15px 0;">
+        <h3 style="margin-top: 8px;">S'orienter vers une direction précise</h3>
+        <div style="background: #f5f5f5; padding: 8px; border-radius: 3px; margin: 8px 0; font-size: 10px;">
             <div class="rotation-example" style="text-align: center;">
                 s'orienter à (0) degrés
             </div>
-            <p style="margin: 10px 0;"><strong>Permet de définir directement la direction du lutin :</strong></p>
-            <ul style="margin: 10px 0;">
-                <li><strong>0°</strong> → Haut ⬆️</li>
-                <li><strong>90°</strong> → Droite ➡️</li>
-                <li><strong>180°</strong> → Bas ⬇️</li>
-                <li><strong>-90° ou 270°</strong> → Gauche ⬅️</li>
-            </ul>
-            <p style="margin-top: 10px;"><strong>Exemple :</strong> Si le lutin regarde vers la droite (90°) et qu'on utilise "s'orienter à (0)°", le lutin regardera immédiatement vers le haut, sans rotation progressive.</p>
+            <p style="margin: 4px 0;"><strong>Fixe directement la direction :</strong> 0°=Haut ⬆️, 90°=Droite ➡️, 180°=Bas ⬇️, -90°=Gauche ⬅️</p>
         </div>
 
         <div class="note">
-            💡 <strong>Différence importante :</strong> "Tourner" ajoute des degrés à la direction actuelle, tandis que "s'orienter à" fixe directement une nouvelle direction.
+            💡 "Tourner" ajoute des degrés, "s'orienter à" fixe une direction précise.
         </div>
     </div>
 
     <!-- Footer -->
-    <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #eee; text-align: center; color: #888; font-size: 12px;">
+    <div style="margin-top: 10px; padding-top: 5px; border-top: 1px solid #eee; text-align: center; color: #888; font-size: 9px;">
         Guide Scratch - Référence Rapide
     </div>
 </body>
