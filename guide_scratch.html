@@ -59,9 +59,15 @@
         }
 
         .motion { background: #4C97FF; }
+        .looks { background: #9966FF; }
+        .sound { background: #D65CD6; }
+        .events { background: #FFD500; color: #333; }
         .control { background: #FFAB19; }
-        .pen { background: #0FBD8C; }
+        .sensing { background: #4CBFE6; }
+        .operators { background: #40BF4A; }
         .data { background: #FF8C1A; }
+        .myblocks { background: #FF6680; }
+        .pen { background: #0FBD8C; }
 
         .note {
             background: #FFF9E6;
@@ -135,21 +141,31 @@
         .categories-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 15px;
             margin: 15px 0;
         }
 
         .category-box {
             background: #f9f9f9;
-            padding: 12px;
+            padding: 10px;
             border-radius: 5px;
             border-left: 4px solid;
         }
 
+        .category-box ul {
+            font-size: 13px;
+        }
+
         .category-box.motion { border-left-color: #4C97FF; }
+        .category-box.looks { border-left-color: #9966FF; }
+        .category-box.sound { border-left-color: #D65CD6; }
+        .category-box.events { border-left-color: #FFD500; }
         .category-box.control { border-left-color: #FFAB19; }
-        .category-box.pen { border-left-color: #0FBD8C; }
+        .category-box.sensing { border-left-color: #4CBFE6; }
+        .category-box.operators { border-left-color: #40BF4A; }
         .category-box.data { border-left-color: #FF8C1A; }
+        .category-box.myblocks { border-left-color: #FF6680; }
+        .category-box.pen { border-left-color: #0FBD8C; }
 
         .rotation-grid {
             display: grid;
@@ -226,61 +242,118 @@
         </div>
     </div>
 
-    <!-- SECTION 1: Catégories de blocs -->
+    <!-- SECTION 1: Les 10 catégories de blocs -->
     <div class="section">
-        <h2>1. Les catégories de blocs</h2>
+        <h2>1. Les 10 catégories de blocs Scratch</h2>
 
         <div class="categories-grid">
             <div class="category-box motion">
                 <h3><span class="color-badge motion">Mouvement</span></h3>
                 <ul>
-                    <li><strong>avancer de (50) pas</strong> → Déplace le lutin vers l'avant</li>
-                    <li><strong>tourner ↻ de (90) degrés</strong> → Tourne à droite (sens horaire)</li>
-                    <li><strong>tourner ↺ de (90) degrés</strong> → Tourne à gauche (sens anti-horaire)</li>
-                    <li><strong>s'orienter à (0)°</strong> → Dirige vers le haut</li>
-                    <li><strong>aller à x: (0) y: (0)</strong> → Va au centre de la scène</li>
-                    <li><strong>glisser en (1) s à x: (100) y: (100)</strong> → Déplacement progressif</li>
+                    <li><strong>avancer de (50) pas</strong> → Déplace le lutin</li>
+                    <li><strong>tourner ↻ de (90) degrés</strong> → Tourne à droite</li>
+                    <li><strong>tourner ↺ de (90) degrés</strong> → Tourne à gauche</li>
+                    <li><strong>s'orienter à (0)°</strong> → Dirige vers une direction précise</li>
+                    <li><strong>aller à x: (0) y: (0)</strong> → Va à une position</li>
+                </ul>
+            </div>
+
+            <div class="category-box looks">
+                <h3><span class="color-badge looks">Apparence</span></h3>
+                <ul>
+                    <li><strong>dire [Bonjour] pendant (2) s</strong> → Bulle de texte temporaire</li>
+                    <li><strong>dire [Bonjour]</strong> → Bulle de texte permanente</li>
+                    <li><strong>basculer sur le costume</strong> → Change l'apparence</li>
+                    <li><strong>montrer / cacher</strong> → Rend visible ou invisible</li>
+                    <li><strong>mettre la taille à (100) %</strong> → Change la taille</li>
+                </ul>
+            </div>
+
+            <div class="category-box sound">
+                <h3><span class="color-badge sound">Son</span></h3>
+                <ul>
+                    <li><strong>jouer le son [Miaou]</strong> → Joue un son sans attendre</li>
+                    <li><strong>jouer le son [Miaou] jusqu'au bout</strong> → Attend la fin</li>
+                    <li><strong>arrêter tous les sons</strong> → Coupe tous les sons</li>
+                    <li><strong>mettre le volume à (100) %</strong> → Règle le volume</li>
+                </ul>
+            </div>
+
+            <div class="category-box events">
+                <h3><span class="color-badge events">Événements</span></h3>
+                <ul>
+                    <li><strong>quand 🏴 est cliqué</strong> → Démarre au clic sur drapeau vert</li>
+                    <li><strong>quand ce lutin est cliqué</strong> → Démarre au clic sur le lutin</li>
+                    <li><strong>quand [espace] est pressé</strong> → Démarre à l'appui d'une touche</li>
+                    <li><strong>envoyer [message1]</strong> → Envoie un signal</li>
                 </ul>
             </div>
 
             <div class="category-box control">
                 <h3><span class="color-badge control">Contrôle</span></h3>
                 <ul>
-                    <li><strong>répéter (4) fois</strong> → Répète les blocs à l'intérieur 4 fois</li>
-                    <li><strong>répéter indéfiniment</strong> → Boucle sans fin</li>
-                    <li><strong>si... alors</strong> → Exécute si la condition est vraie</li>
-                    <li><strong>si... alors... sinon</strong> → Deux chemins possibles</li>
-                    <li><strong>attendre (1) secondes</strong> → Pause le programme</li>
-                    <li><strong>stop [tout]</strong> → Arrête le programme</li>
+                    <li><strong>répéter (4) fois</strong> → Boucle avec nombre fixe</li>
+                    <li><strong>répéter indéfiniment</strong> → Boucle infinie</li>
+                    <li><strong>si... alors</strong> → Condition simple</li>
+                    <li><strong>si... alors... sinon</strong> → Condition double</li>
+                    <li><strong>attendre (1) secondes</strong> → Pause</li>
                 </ul>
             </div>
 
-            <div class="category-box pen">
-                <h3><span class="color-badge pen">Stylo</span></h3>
+            <div class="category-box sensing">
+                <h3><span class="color-badge sensing">Capteurs</span></h3>
                 <ul>
-                    <li><strong>effacer tout</strong> → Efface tous les dessins de la scène</li>
-                    <li><strong>stylo en position d'écriture</strong> → Le lutin dessine en se déplaçant</li>
-                    <li><strong>relever le stylo</strong> → Le lutin se déplace sans dessiner</li>
-                    <li><strong>mettre la couleur du stylo à</strong> → Change la couleur du trait</li>
-                    <li><strong>mettre la taille du stylo à (5)</strong> → Change l'épaisseur (1=fin, 10=gros)</li>
-                    <li><strong>estampiller</strong> → Imprime une copie du lutin sur la scène</li>
+                    <li><strong>touche [espace] pressée ?</strong> → Détecte touche clavier</li>
+                    <li><strong>souris pressée ?</strong> → Détecte clic souris</li>
+                    <li><strong>distance de [pointeur de souris]</strong> → Mesure distance</li>
+                    <li><strong>demander [Quel est ton nom ?]</strong> → Pose une question</li>
+                    <li><strong>réponse</strong> → Récupère la réponse de l'utilisateur</li>
+                </ul>
+            </div>
+
+            <div class="category-box operators">
+                <h3><span class="color-badge operators">Opérateurs</span></h3>
+                <ul>
+                    <li><strong>(10) + (5)</strong> → Addition</li>
+                    <li><strong>(10) - (5)</strong> → Soustraction</li>
+                    <li><strong>(10) × (5)</strong> → Multiplication</li>
+                    <li><strong>(10) ÷ (5)</strong> → Division</li>
+                    <li><strong>nombre aléatoire entre (1) et (10)</strong> → Hasard</li>
                 </ul>
             </div>
 
             <div class="category-box data">
                 <h3><span class="color-badge data">Variables</span></h3>
                 <ul>
-                    <li><strong>mettre [côté] à (100)</strong> → Stocke la valeur 100 dans la variable</li>
-                    <li><strong>ajouter (10) à [côté]</strong> → Augmente la variable de 10</li>
-                    <li><strong>[côté]</strong> → Utilise la valeur stockée dans les calculs</li>
-                    <li><strong>afficher [côté]</strong> → Montre la variable sur la scène</li>
-                    <li><strong>cacher [côté]</strong> → Cache la variable de la scène</li>
+                    <li><strong>mettre [côté] à (100)</strong> → Stocke une valeur</li>
+                    <li><strong>ajouter (10) à [côté]</strong> → Augmente</li>
+                    <li><strong>[côté]</strong> → Utilise la valeur</li>
+                    <li><strong>afficher / cacher [côté]</strong> → Visibilité</li>
+                </ul>
+            </div>
+
+            <div class="category-box myblocks">
+                <h3><span class="color-badge myblocks">Mes Blocs</span></h3>
+                <ul>
+                    <li><strong>Créer un bloc</strong> → Invente ton propre bloc</li>
+                    <li>Permet de créer des fonctions personnalisées</li>
+                    <li>Utile pour ne pas répéter le même code</li>
+                </ul>
+            </div>
+
+            <div class="category-box pen">
+                <h3><span class="color-badge pen">Stylo</span> (Extension)</h3>
+                <ul>
+                    <li><strong>effacer tout</strong> → Efface tous les dessins</li>
+                    <li><strong>stylo en position d'écriture</strong> → Dessine en se déplaçant</li>
+                    <li><strong>relever le stylo</strong> → Se déplace sans dessiner</li>
+                    <li><strong>mettre la couleur / taille du stylo</strong> → Personnalise</li>
                 </ul>
             </div>
         </div>
 
         <div class="note">
-            💡 <strong>Astuce :</strong> Les blocs de <span class="color-badge pen">Stylo</span> n'apparaissent qu'après avoir activé l'extension (voir section suivante).
+            💡 <strong>Important :</strong> La catégorie <span class="color-badge pen">Stylo</span> n'apparaît qu'après avoir activé l'extension (voir section suivante).
         </div>
     </div>
 
@@ -325,9 +398,9 @@
         </div>
     </div>
 
-    <!-- SECTION 4: Les deux rotations -->
+    <!-- SECTION 4: Les rotations et orientations -->
     <div class="section page-break">
-        <h2>4. Les deux types de rotation</h2>
+        <h2>4. Les rotations et orientations</h2>
 
         <div class="rotation-grid">
             <div class="rotation-box">
@@ -335,7 +408,7 @@
                 <div class="rotation-example">
                     tourner ↻ de (90) degrés
                 </div>
-                <p>Tourne dans le sens des aiguilles d'une montre</p>
+                <p>Tourne dans le sens des aiguilles d'une montre (sens horaire)</p>
                 <p><strong>Exemple :</strong> Si le lutin regarde en haut (0°) et tourne de 90° à droite, il regardera à droite (90°)</p>
             </div>
 
@@ -344,12 +417,31 @@
                 <div class="rotation-example">
                     tourner ↺ de (90) degrés
                 </div>
-                <p>Tourne dans le sens inverse des aiguilles d'une montre</p>
+                <p>Tourne dans le sens inverse des aiguilles d'une montre (sens anti-horaire)</p>
                 <p><strong>Exemple :</strong> Si le lutin regarde en haut (0°) et tourne de 90° à gauche, il regardera à gauche (-90°)</p>
             </div>
         </div>
 
+        <h3 style="margin-top: 20px;">S'orienter vers une direction précise</h3>
+        <div style="background: #f5f5f5; padding: 15px; border-radius: 5px; margin: 15px 0;">
+            <div class="rotation-example" style="text-align: center;">
+                s'orienter à (0) degrés
+            </div>
+            <p style="margin: 10px 0;"><strong>Permet de définir directement la direction du lutin :</strong></p>
+            <ul style="margin: 10px 0;">
+                <li><strong>0°</strong> → Haut ⬆️</li>
+                <li><strong>90°</strong> → Droite ➡️</li>
+                <li><strong>180°</strong> → Bas ⬇️</li>
+                <li><strong>-90° ou 270°</strong> → Gauche ⬅️</li>
+            </ul>
+            <p style="margin-top: 10px;"><strong>Exemple :</strong> Si le lutin regarde vers la droite (90°) et qu'on utilise "s'orienter à (0)°", le lutin regardera immédiatement vers le haut, sans rotation progressive.</p>
+        </div>
+
         <div class="note">
+            💡 <strong>Différence importante :</strong> "Tourner" ajoute des degrés à la direction actuelle, tandis que "s'orienter à" fixe directement une nouvelle direction.
+        </div>
+
+        <div class="note" style="margin-top: 10px;">
             💡 <strong>Pour dessiner un carré :</strong> On peut tourner 4 fois de 90° à droite OU 4 fois de 90° à gauche !
         </div>
     </div>
