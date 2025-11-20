@@ -97,20 +97,33 @@
             color: white;
         }
 
-        .hint {
-            background: #FFF9E6;
-            border-left: 3px solid #FFD500;
+        .concept {
+            background: #E8F5E9;
+            border-left: 3px solid #40BF4A;
             padding: 10px;
+            margin: 15px 0;
+        }
+
+        .concept strong {
+            color: #2E7D32;
+        }
+
+        .note {
+            background: #FFF3E0;
+            padding: 10px;
+            border-radius: 5px;
             margin: 10px 0;
             font-size: 11px;
         }
 
-        .solution {
-            background: #E6F7FF;
-            border-left: 3px solid #4C97FF;
-            padding: 10px;
-            margin: 10px 0;
-            font-size: 11px;
+        .math-formula {
+            background: white;
+            border: 1px dashed #999;
+            padding: 8px;
+            margin: 8px 0;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
         }
 
         .scratch-block {
@@ -146,17 +159,6 @@
         .scratch-block.events { background: #FFD500; border-color: #CC9900; }
         .scratch-block.data { background: #FF8C1A; border-color: #DB6E00; }
 
-        .concept {
-            background: #E8F5E9;
-            border-left: 3px solid #40BF4A;
-            padding: 10px;
-            margin: 15px 0;
-        }
-
-        .concept strong {
-            color: #2E7D32;
-        }
-
         ul {
             margin: 8px 0;
             padding-left: 25px;
@@ -166,42 +168,12 @@
             margin: 5px 0;
         }
 
-        .note {
-            background: #FFF3E0;
+        .answer-space {
+            border: 1px dashed #ccc;
+            min-height: 80px;
             padding: 10px;
-            border-radius: 5px;
             margin: 10px 0;
-            font-size: 11px;
-        }
-
-        .math-formula {
             background: white;
-            border: 1px dashed #999;
-            padding: 8px;
-            margin: 8px 0;
-            text-align: center;
-            font-family: 'Courier New', monospace;
-            font-size: 13px;
-        }
-
-        .progression {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin: 15px 0;
-        }
-
-        .progression-item {
-            text-align: center;
-            padding: 10px;
-            background: white;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-        }
-
-        .progression-item.current {
-            border-color: #4C97FF;
-            background: #E6F7FF;
         }
     </style>
 </head>
@@ -210,7 +182,7 @@
     <p style="font-size: 14px; color: #666; margin-bottom: 20px;">Niveau 4ème - Dessiner avec le stylo</p>
 
     <div class="concept">
-        <strong>🎯 Prérequis :</strong> Avant de commencer, assure-toi d'avoir activé l'extension <strong>Stylo</strong> dans Scratch (voir guide de prise en main).
+        <strong>🎯 Prérequis :</strong> Avant de commencer, assure-toi d'avoir activé l'extension <strong>Stylo</strong> dans Scratch.
     </div>
 
     <!-- ========== NIVEAU 1 : FIGURES SIMPLES ========== -->
@@ -225,19 +197,14 @@
         <h3>Dessiner un carré de côté 100</h3>
         <p><strong>Objectif :</strong> Tracer un carré avec des côtés de 100 pas.</p>
 
-        <div class="hint">
-            💡 <strong>Indices :</strong>
-            <ul>
-                <li>Un carré a 4 côtés égaux</li>
-                <li>À chaque sommet, on tourne de 90° (angle extérieur)</li>
-                <li>Utilise une boucle <span class="scratch-block control">répéter <span class="scratch-value">4</span> fois</span></li>
-                <li>N'oublie pas : <span class="scratch-block pen">stylo en position d'écriture</span></li>
-            </ul>
-        </div>
+        <p><strong>Questions :</strong></p>
+        <ul>
+            <li>Combien de côtés a un carré ? ___________</li>
+            <li>Quel est l'angle à chaque sommet ? ___________</li>
+            <li>Quel bloc utiliser pour répéter 4 fois ? ___________</li>
+        </ul>
 
-        <div class="concept">
-            <strong>📐 Mathématiques :</strong> Dans un carré, l'angle extérieur à chaque sommet = 360° ÷ 4 = 90°
-        </div>
+        <div class="answer-space"></div>
     </div>
 
     <!-- Exercice 2 : Triangle équilatéral -->
@@ -249,18 +216,14 @@
         <h3>Dessiner un triangle équilatéral de côté 120</h3>
         <p><strong>Objectif :</strong> Tracer un triangle avec 3 côtés égaux de 120 pas.</p>
 
-        <div class="hint">
-            💡 <strong>Indices :</strong>
-            <ul>
-                <li>Un triangle équilatéral a 3 côtés égaux</li>
-                <li>Angle extérieur : 360° ÷ 3 = 120°</li>
-                <li>Utilise <span class="scratch-block control">répéter <span class="scratch-value">3</span> fois</span></li>
-            </ul>
-        </div>
+        <p><strong>Questions :</strong></p>
+        <ul>
+            <li>Combien de sommets a un triangle équilatéral ? ___________</li>
+            <li>Quel est l'angle intérieur d'un triangle équilatéral ? ___________</li>
+            <li>Calcule l'angle extérieur (l'angle de rotation) : 180° - _____ = _____</li>
+        </ul>
 
-        <div class="math-formula">
-            Angle extérieur = 360° ÷ nombre de côtés = 360° ÷ 3 = 120°
-        </div>
+        <div class="answer-space"></div>
     </div>
 
     <!-- Exercice 3 : Rectangle -->
@@ -272,14 +235,14 @@
         <h3>Dessiner un rectangle (longueur 150, largeur 80)</h3>
         <p><strong>Objectif :</strong> Tracer un rectangle avec longueur 150 et largeur 80.</p>
 
-        <div class="hint">
-            💡 <strong>Indices :</strong>
-            <ul>
-                <li>Un rectangle a 2 longueurs et 2 largeurs</li>
-                <li>On tourne toujours de 90° aux coins</li>
-                <li>Utilise <span class="scratch-block control">répéter <span class="scratch-value">2</span> fois</span> pour les 2 paires de côtés</li>
-            </ul>
-        </div>
+        <p><strong>Questions :</strong></p>
+        <ul>
+            <li>Combien de côtés différents faut-il dessiner ? ___________</li>
+            <li>Quel est l'angle à chaque sommet ? ___________</li>
+            <li>Quelle boucle utiliser pour éviter de répéter le code ? ___________</li>
+        </ul>
+
+        <div class="answer-space"></div>
     </div>
 
     <!-- Exercice 4 : Hexagone -->
@@ -291,27 +254,19 @@
         <h3>Dessiner un hexagone régulier de côté 80</h3>
         <p><strong>Objectif :</strong> Tracer un hexagone (6 côtés) régulier.</p>
 
-        <div class="hint">
-            💡 <strong>Calcul à faire :</strong>
-            <ul>
-                <li>Combien de côtés ? <strong>6</strong></li>
-                <li>Quel est l'angle extérieur ? 360° ÷ ... = ?</li>
-            </ul>
-        </div>
+        <p><strong>Questions :</strong></p>
+        <ul>
+            <li>Combien de sommets a un hexagone ? ___________</li>
+            <li>Calcule l'angle extérieur : 360° ÷ _____ = _____</li>
+        </ul>
 
-        <div class="math-formula">
-            Angle extérieur = 360° ÷ 6 = ?
-        </div>
+        <div class="answer-space"></div>
     </div>
 
     <div class="page-break"></div>
 
     <!-- ========== NIVEAU 2 : FIGURES AVEC VARIABLES ========== -->
     <h2>📗 Niveau 2 : Polygones réguliers avec variables</h2>
-
-    <div class="concept">
-        <strong>💡 Astuce programmation :</strong> Pour dessiner n'importe quel polygone régulier, on peut utiliser des <strong>variables</strong> pour le nombre de côtés et la longueur.
-    </div>
 
     <!-- Exercice 5 : Polygone paramétré -->
     <div class="exercise">
@@ -322,24 +277,15 @@
         <h3>Polygone régulier paramétré</h3>
         <p><strong>Objectif :</strong> Créer un programme qui dessine n'importe quel polygone régulier.</p>
 
-        <div class="hint">
-            💡 <strong>Méthode :</strong>
-            <ol>
-                <li>Crée deux variables : <span class="scratch-block data">côtés</span> et <span class="scratch-block data">longueur</span></li>
-                <li>Demande au début : "Combien de côtés ?" → stock dans <span class="scratch-block data">côtés</span></li>
-                <li>Demande : "Quelle longueur ?" → stock dans <span class="scratch-block data">longueur</span></li>
-                <li>Calcule l'angle : <span class="scratch-block data">mettre angle à</span> <span class="scratch-block data"><span class="scratch-value">360</span> / côtés</span></li>
-                <li>Répète <span class="scratch-block data">côtés</span> fois : avancer + tourner de <span class="scratch-block data">angle</span></li>
-            </ol>
-        </div>
+        <p><strong>Consignes :</strong></p>
+        <ul>
+            <li>Crée deux variables : <span class="scratch-block data">côtés</span> et <span class="scratch-block data">longueur</span></li>
+            <li>Demande à l'utilisateur le nombre de côtés et la longueur</li>
+            <li>Calcule l'angle de rotation en fonction du nombre de côtés</li>
+            <li>Dessine le polygone avec une boucle</li>
+        </ul>
 
-        <div class="concept">
-            <strong>✅ Test ton programme :</strong>
-            <ul>
-                <li>côtés = 5, longueur = 100 → doit dessiner un pentagone</li>
-                <li>côtés = 8, longueur = 60 → doit dessiner un octogone</li>
-            </ul>
-        </div>
+        <div class="answer-space"></div>
     </div>
 
     <!-- Exercice 6 : Série de carrés -->
@@ -351,19 +297,14 @@
         <h3>Série de carrés emboîtés</h3>
         <p><strong>Objectif :</strong> Dessiner 4 carrés de tailles différentes, les uns dans les autres.</p>
 
-        <div class="hint">
-            💡 <strong>Indices :</strong>
-            <ul>
-                <li>Crée une variable <span class="scratch-block data">taille</span> qui commence à 50</li>
-                <li>Répète 4 fois :
-                    <ul>
-                        <li>Dessine un carré de côté <span class="scratch-block data">taille</span></li>
-                        <li>Augmente <span class="scratch-block data">taille</span> de 30</li>
-                        <li>Repositionne le lutin au centre avant le prochain carré</li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
+        <p><strong>Questions :</strong></p>
+        <ul>
+            <li>Quelle variable faut-il créer pour la taille ? ___________</li>
+            <li>De combien augmenter la taille à chaque fois ? ___________</li>
+            <li>Comment se repositionner au centre entre chaque carré ? ___________</li>
+        </ul>
+
+        <div class="answer-space"></div>
     </div>
 
     <!-- ========== NIVEAU 3 : FIGURES COMPLEXES ========== -->
@@ -378,28 +319,13 @@
         <h3>Étoile à 5 branches</h3>
         <p><strong>Objectif :</strong> Dessiner une étoile à 5 branches.</p>
 
-        <div class="hint">
-            💡 <strong>Méthode :</strong>
-            <ul>
-                <li>Pour une étoile à 5 branches, on trace 5 segments</li>
-                <li>Mais on tourne de 144° (et non 72°) à chaque fois !</li>
-                <li>Formule : angle = 360° ÷ 5 × 2 = 144°</li>
-            </ul>
-        </div>
+        <p><strong>Rappel :</strong> Pour une étoile, l'angle de rotation n'est pas le même que pour un pentagone !</p>
 
         <div class="math-formula">
-            Pour une étoile à N branches : angle = 360° × 2 ÷ N
+            Angle pour une étoile à N branches = ?
         </div>
 
-        <div class="solution">
-            ✅ <strong>Structure du programme :</strong><br>
-            <span class="scratch-block events">quand ⚑ cliqué</span><br>
-            <span class="scratch-block pen">effacer tout</span><br>
-            <span class="scratch-block pen">stylo en position d'écriture</span><br>
-            <span class="scratch-block control">répéter <span class="scratch-value">5</span> fois</span><br>
-            → <span class="scratch-block motion">avancer de <span class="scratch-value">100</span> pas</span><br>
-            → <span class="scratch-block motion">tourner ↻ de <span class="scratch-value">144</span> degrés</span>
-        </div>
+        <div class="answer-space"></div>
     </div>
 
     <!-- Exercice 8 : Rosace -->
@@ -411,23 +337,15 @@
         <h3>Rosace de 12 carrés</h3>
         <p><strong>Objectif :</strong> Dessiner 12 carrés disposés en cercle (rosace).</p>
 
-        <div class="hint">
-            💡 <strong>Méthode :</strong>
-            <ul>
-                <li>Répète 12 fois :
-                    <ul>
-                        <li>Dessine un carré (avec une boucle interne)</li>
-                        <li>Tourne de 30° (360° ÷ 12)</li>
-                    </ul>
-                </li>
-                <li>Tu auras donc <strong>2 boucles imbriquées</strong> !</li>
-            </ul>
-        </div>
+        <p><strong>Questions :</strong></p>
+        <ul>
+            <li>Combien de boucles imbriquées faut-il ? ___________</li>
+            <li>Quelle est la boucle extérieure ? ___________</li>
+            <li>Quelle est la boucle intérieure ? ___________</li>
+            <li>De combien tourner entre chaque carré ? ___________</li>
+        </ul>
 
-        <div class="concept">
-            <strong>🔄 Boucles imbriquées :</strong> Une boucle dans une autre boucle<br>
-            Boucle extérieure (12 fois) → Boucle intérieure (4 fois pour le carré)
-        </div>
+        <div class="answer-space"></div>
     </div>
 
     <!-- Exercice 9 : Spirale carrée -->
@@ -439,19 +357,14 @@
         <h3>Spirale carrée</h3>
         <p><strong>Objectif :</strong> Créer une spirale en augmentant progressivement la longueur.</p>
 
-        <div class="hint">
-            💡 <strong>Méthode :</strong>
-            <ul>
-                <li>Crée une variable <span class="scratch-block data">distance</span> = 10</li>
-                <li>Répète 40 fois :
-                    <ul>
-                        <li>Avance de <span class="scratch-block data">distance</span> pas</li>
-                        <li>Tourne de 90°</li>
-                        <li>Ajoute 5 à <span class="scratch-block data">distance</span></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
+        <p><strong>Consignes :</strong></p>
+        <ul>
+            <li>Utilise une variable pour la distance</li>
+            <li>Augmente cette distance à chaque itération</li>
+            <li>Tourne de 90° à chaque fois</li>
+        </ul>
+
+        <div class="answer-space"></div>
     </div>
 
     <div class="page-break"></div>
@@ -468,19 +381,15 @@
         <h3>Dessiner une maison</h3>
         <p><strong>Objectif :</strong> Combiner plusieurs figures pour dessiner une maison.</p>
 
-        <div class="hint">
-            💡 <strong>Éléments à combiner :</strong>
-            <ul>
-                <li>Un carré pour la base (côté 100)</li>
-                <li>Un triangle pour le toit</li>
-                <li>Un rectangle pour la porte</li>
-                <li>Des carrés pour les fenêtres</li>
-            </ul>
-        </div>
+        <p><strong>Éléments à dessiner :</strong></p>
+        <ul>
+            <li>Un carré pour la base (côté 100)</li>
+            <li>Un triangle pour le toit</li>
+            <li>Un rectangle pour la porte</li>
+            <li>Des carrés pour les fenêtres</li>
+        </ul>
 
-        <div class="concept">
-            <strong>🎨 Astuce :</strong> Utilise <span class="scratch-block pen">relever le stylo</span> pour te déplacer sans dessiner entre chaque forme.
-        </div>
+        <div class="answer-space"></div>
     </div>
 
     <!-- Exercice 11 : Flocon de neige -->
@@ -489,21 +398,17 @@
             <div class="exercise-number">Exercice 11</div>
             <div class="difficulty difficile">⭐⭐⭐ Difficile</div>
         </div>
-        <h3>Flocon de neige (fractale simple)</h3>
+        <h3>Flocon de neige</h3>
         <p><strong>Objectif :</strong> Créer un motif en forme de flocon avec 6 branches.</p>
 
-        <div class="hint">
-            💡 <strong>Méthode :</strong>
-            <ul>
-                <li>Répète 6 fois :
-                    <ul>
-                        <li>Avance de 80</li>
-                        <li>Recule de 80 (pour revenir au centre)</li>
-                        <li>Tourne de 60° (360° ÷ 6)</li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
+        <p><strong>Questions :</strong></p>
+        <ul>
+            <li>Combien de branches ? ___________</li>
+            <li>De combien tourner entre chaque branche ? ___________</li>
+            <li>Comment revenir au centre après chaque branche ? ___________</li>
+        </ul>
+
+        <div class="answer-space"></div>
     </div>
 
     <!-- Exercice 12 : Création libre -->
@@ -515,19 +420,14 @@
         <h3>Création libre : Ton motif personnel</h3>
         <p><strong>Objectif :</strong> Invente ton propre motif géométrique !</p>
 
-        <div class="concept">
-            <strong>💡 Idées :</strong>
-            <ul>
-                <li>Combine plusieurs polygones réguliers</li>
-                <li>Utilise des couleurs différentes (bloc <span class="scratch-block pen">mettre la couleur du stylo à</span>)</li>
-                <li>Crée des motifs répétés en cercle</li>
-                <li>Expérimente avec des spirales et des tailles variables</li>
-            </ul>
-        </div>
+        <p><strong>Contraintes :</strong></p>
+        <ul>
+            <li>Utilise au moins 2 boucles imbriquées</li>
+            <li>Utilise au moins 1 variable</li>
+            <li>Combine plusieurs polygones ou crée des motifs répétés</li>
+        </ul>
 
-        <div class="note">
-            🎯 <strong>Challenge :</strong> Utilise au moins 2 boucles imbriquées et 1 variable !
-        </div>
+        <div class="answer-space"></div>
     </div>
 
     <!-- ========== AIDE-MÉMOIRE ========== -->
@@ -540,6 +440,7 @@
                 <tr style="background: #4C97FF; color: white;">
                     <th style="padding: 8px; border: 1px solid #ddd;">Figure</th>
                     <th style="padding: 8px; border: 1px solid #ddd;">Nb côtés</th>
+                    <th style="padding: 8px; border: 1px solid #ddd;">Nb sommets</th>
                     <th style="padding: 8px; border: 1px solid #ddd;">Angle extérieur</th>
                     <th style="padding: 8px; border: 1px solid #ddd;">Calcul</th>
                 </tr>
@@ -548,17 +449,20 @@
                 <tr>
                     <td style="padding: 8px; border: 1px solid #ddd;">Triangle équilatéral</td>
                     <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">3</td>
+                    <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">3</td>
                     <td style="padding: 8px; border: 1px solid #ddd; text-align: center;"><strong>120°</strong></td>
                     <td style="padding: 8px; border: 1px solid #ddd;">360° ÷ 3</td>
                 </tr>
                 <tr style="background: #f9f9f9;">
                     <td style="padding: 8px; border: 1px solid #ddd;">Carré</td>
                     <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">4</td>
+                    <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">4</td>
                     <td style="padding: 8px; border: 1px solid #ddd; text-align: center;"><strong>90°</strong></td>
-                    <td style="padding: 8px; border: 8px; border: 1px solid #ddd;">360° ÷ 4</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">360° ÷ 4</td>
                 </tr>
                 <tr>
                     <td style="padding: 8px; border: 1px solid #ddd;">Pentagone</td>
+                    <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">5</td>
                     <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">5</td>
                     <td style="padding: 8px; border: 1px solid #ddd; text-align: center;"><strong>72°</strong></td>
                     <td style="padding: 8px; border: 1px solid #ddd;">360° ÷ 5</td>
@@ -566,11 +470,13 @@
                 <tr style="background: #f9f9f9;">
                     <td style="padding: 8px; border: 1px solid #ddd;">Hexagone</td>
                     <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">6</td>
+                    <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">6</td>
                     <td style="padding: 8px; border: 1px solid #ddd; text-align: center;"><strong>60°</strong></td>
                     <td style="padding: 8px; border: 1px solid #ddd;">360° ÷ 6</td>
                 </tr>
                 <tr>
                     <td style="padding: 8px; border: 1px solid #ddd;">Octogone</td>
+                    <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">8</td>
                     <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">8</td>
                     <td style="padding: 8px; border: 1px solid #ddd; text-align: center;"><strong>45°</strong></td>
                     <td style="padding: 8px; border: 1px solid #ddd;">360° ÷ 8</td>
@@ -578,11 +484,13 @@
                 <tr style="background: #f9f9f9;">
                     <td style="padding: 8px; border: 1px solid #ddd;">Décagone</td>
                     <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">10</td>
+                    <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">10</td>
                     <td style="padding: 8px; border: 1px solid #ddd; text-align: center;"><strong>36°</strong></td>
                     <td style="padding: 8px; border: 1px solid #ddd;">360° ÷ 10</td>
                 </tr>
                 <tr>
                     <td style="padding: 8px; border: 1px solid #ddd;">Dodécagone</td>
+                    <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">12</td>
                     <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">12</td>
                     <td style="padding: 8px; border: 1px solid #ddd; text-align: center;"><strong>30°</strong></td>
                     <td style="padding: 8px; border: 1px solid #ddd;">360° ÷ 12</td>
@@ -598,8 +506,11 @@
         </div>
     </div>
 
-    <div class="note" style="margin-top: 15px;">
-        💡 <strong>Pour aller plus loin :</strong> Essaie de dessiner un cercle en utilisant un polygone à 36 côtés (angle = 10°) !
+    <div class="concept" style="margin-top: 10px;">
+        <strong>📐 Relation angle intérieur / angle extérieur :</strong><br>
+        <div class="math-formula">
+            Angle extérieur = 180° - Angle intérieur
+        </div>
     </div>
 
 </body>
