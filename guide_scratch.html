@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guide Scratch - Référence Rapide</title>
+    <title>Prise en main de Scratch</title>
     <style>
         @media print {
             body {
@@ -195,25 +195,12 @@
         }
 
         .rotation-example {
-            background: #4C97FF;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 15px;
-            margin: 8px auto;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            font-size: 11px;
-            font-weight: bold;
-            display: inline-block;
-            box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
-        }
-
-        .scratch-value {
             background: white;
-            color: #333;
-            padding: 3px 8px;
-            border-radius: 10px;
-            display: inline-block;
-            margin: 0 3px;
+            padding: 5px;
+            border-radius: 3px;
+            margin: 5px 0;
+            font-family: monospace;
+            font-size: 10px;
         }
 
         .extension-steps {
@@ -234,7 +221,7 @@
     </style>
 </head>
 <body>
-    <h1>🎨 Guide Scratch - Référence Rapide</h1>
+    <h1>🎨 Prise en main de Scratch</h1>
 
     <!-- SECTION 0: Interface -->
     <div class="section">
@@ -339,7 +326,9 @@
                     <li><strong>réponse</strong> → Récupère la réponse</li>
                 </ul>
             </div>
-
+        </div>
+        <br><br><br><br><br><br>
+        <div class="categories-grid">
             <div class="category-box operators">
                 <h3><span class="color-badge operators">Opérateurs</span></h3>
                 <ul>
@@ -424,60 +413,23 @@
         <div class="rotation-grid">
             <div class="rotation-box">
                 <h3>↻ Tourner à droite</h3>
-                <div class="rotation-example">tourner ↻ de <span class="scratch-value">90</span> degrés</div>
+                <div class="rotation-example">tourner ↻ de (90) degrés</div>
                 <p>Sens horaire ⟳</p>
             </div>
 
             <div class="rotation-box">
                 <h3>↺ Tourner à gauche</h3>
-                <div class="rotation-example">tourner ↺ de <span class="scratch-value">90</span> degrés</div>
+                <div class="rotation-example">tourner ↺ de (90) degrés</div>
                 <p>Sens anti-horaire ⟲</p>
             </div>
         </div>
 
         <h3 style="margin-top: 8px;">S'orienter vers une direction précise</h3>
-        <div style="background: #f5f5f5; padding: 8px; border-radius: 3px; margin: 8px 0; font-size: 10px; text-align: center;">
-            <div class="rotation-example">
-                s'orienter à <span class="scratch-value">0</span> degrés
+        <div style="background: #f5f5f5; padding: 8px; border-radius: 3px; margin: 8px 0; font-size: 10px;">
+            <div class="rotation-example" style="text-align: center;">
+                s'orienter à (0) degrés
             </div>
-
-            <!-- Diagramme des directions Scratch -->
-            <svg width="280" height="280" xmlns="http://www.w3.org/2000/svg" style="display: block; margin: 10px auto;">
-                <!-- Cercle de fond -->
-                <circle cx="140" cy="140" r="110" fill="#ffffff" stroke="#ddd" stroke-width="2"/>
-
-                <!-- Flèche 0° (Haut) -->
-                <line x1="140" y1="140" x2="140" y2="50" stroke="#4C97FF" stroke-width="3" marker-end="url(#arrowblue)"/>
-                <text x="145" y="45" font-size="14" fill="#4C97FF" font-weight="bold">0°</text>
-
-                <!-- Flèche 90° (Droite) -->
-                <line x1="140" y1="140" x2="230" y2="140" stroke="#4C97FF" stroke-width="3" marker-end="url(#arrowblue)"/>
-                <text x="235" y="145" font-size="14" fill="#4C97FF" font-weight="bold">90°</text>
-
-                <!-- Flèche 180° (Bas) -->
-                <line x1="140" y1="140" x2="140" y2="230" stroke="#4C97FF" stroke-width="3" marker-end="url(#arrowblue)"/>
-                <text x="145" y="250" font-size="14" fill="#4C97FF" font-weight="bold">180°</text>
-
-                <!-- Flèche -90° (Gauche) -->
-                <line x1="140" y1="140" x2="50" y2="140" stroke="#4C97FF" stroke-width="3" marker-end="url(#arrowblue)"/>
-                <text x="10" y="145" font-size="14" fill="#4C97FF" font-weight="bold">-90°</text>
-
-                <!-- Lutin au centre (chat Scratch simplifié) -->
-                <circle cx="140" cy="140" r="20" fill="#FF8C1A"/>
-                <circle cx="135" cy="135" r="3" fill="#000"/>
-                <circle cx="145" cy="135" r="3" fill="#000"/>
-                <path d="M 125 120 L 130 125 L 135 120" stroke="#FF8C1A" stroke-width="2" fill="none"/>
-                <path d="M 145 120 L 150 125 L 155 120" stroke="#FF8C1A" stroke-width="2" fill="none"/>
-
-                <!-- Définition des flèches -->
-                <defs>
-                    <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-                        <path d="M0,0 L0,6 L9,3 z" fill="#4C97FF" />
-                    </marker>
-                </defs>
-            </svg>
-
-            <p style="margin: 4px 0; text-align: center;"><strong>Les 4 directions principales du lutin</strong></p>
+            <p style="margin: 4px 0;"><strong>Fixe directement la direction :</strong> 0°=Haut ⬆️, 90°=Droite ➡️, 180°=Bas ⬇️, -90°=Gauche ⬅️</p>
         </div>
 
         <div class="note">
@@ -485,9 +437,5 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <div style="margin-top: 10px; padding-top: 5px; border-top: 1px solid #eee; text-align: center; color: #888; font-size: 9px;">
-        Guide Scratch - Référence Rapide
-    </div>
 </body>
 </html>
