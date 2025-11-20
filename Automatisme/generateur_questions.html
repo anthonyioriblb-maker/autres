@@ -862,18 +862,14 @@
                     return placeholder;
                 });
 
+                // Mettre les textes littéraux entre crochets SANS fond (juste enlever les crochets)
+                // Ils s'afficheront en blanc sur le fond du bloc principal
+                line = line.replace(/\[([^\]]+)\]/g, '$1');
+
                 // Mettre les variables simples (nomVar) en orange si ce sont des lettres
                 line = line.replace(/\(([a-zéèêàâùôîç]+)\)/gi, (match, varName) => {
                     const placeholder = `__PLACEHOLDER_${placeholderIndex}__`;
                     placeholders[placeholderIndex] = `<span style="background: #FF8C1A; color: white; padding: 2px 6px; border-radius: 10px; font-weight: 500;">${varName}</span>`;
-                    placeholderIndex++;
-                    return placeholder;
-                });
-
-                // Mettre les textes entre crochets en violet
-                line = line.replace(/\[([^\]]+)\]/g, (match, text) => {
-                    const placeholder = `__PLACEHOLDER_${placeholderIndex}__`;
-                    placeholders[placeholderIndex] = `<span style="background: #9966FF; color: white; padding: 2px 6px; border-radius: 10px;">${text}</span>`;
                     placeholderIndex++;
                     return placeholder;
                 });
@@ -3604,9 +3600,8 @@ set [périmètre v] to (((longueur) + (largeur)) * (2))`;
     </script>
 
     <!-- Indicateur de version pour vérifier le cache -->
-    <!-- FIX CACHE : Pas de marqueurs de conflit Git ! -->
     <div style="position: fixed; bottom: 5px; right: 5px; background: rgba(0,0,0,0.7); color: white; padding: 3px 8px; border-radius: 5px; font-size: 11px; z-index: 9999;">
-        v2024-11-20-02h45-CLEAN
+        v2024-11-20-03h00-DIRE
     </div>
 </body>
 </html>
