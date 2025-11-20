@@ -808,13 +808,15 @@
                     let formatted = match;
                     // ORDRE IMPORTANT : Opérateurs EN PREMIER pour éviter de casser les spans HTML
                     formatted = formatted.replace(/([+\-*\/])/g, ' <strong>$1</strong> ');
-                    // Variables en orange
+                    // Variables en orange (enlève les parenthèses)
                     formatted = formatted.replace(/\(([a-zéèêàâùôîç]+)\)/gi, '<span style="background: #FF8C1A; color: white; padding: 2px 6px; border-radius: 10px; font-weight: 500;">$1</span>');
-                    // Nombres en blanc
+                    // Nombres en blanc (enlève les parenthèses)
                     formatted = formatted.replace(/\((\d+)\)/g, '<span style="background: white; color: #575E75; padding: 2px 6px; border-radius: 10px; font-weight: 500;">$1</span>');
                     formatted = formatted.replace(/(\d+)/g, '<span style="background: white; color: #575E75; padding: 2px 6px; border-radius: 10px; font-weight: 500;">$1</span>');
                     // ? en rouge
                     formatted = formatted.replace(/\?/g, '<span style="color: red; font-weight: bold; font-size: 1.2em;">?</span>');
+                    // Enlever toutes les parenthèses restantes
+                    formatted = formatted.replace(/[()]/g, '');
                     placeholders[placeholderIndex] = `<span style="background: #59C059; color: white; padding: 4px 10px; border-radius: 10px;">${formatted}</span>`;
                     placeholderIndex++;
                     return placeholder;
@@ -826,12 +828,14 @@
                     let formatted = match;
                     // mod en gras
                     formatted = formatted.replace(/\bmod\b/gi, ' <strong>mod</strong> ');
-                    // Variables en orange
+                    // Variables en orange (enlève les parenthèses)
                     formatted = formatted.replace(/\(([a-zéèêàâùôîç]+)\)/gi, '<span style="background: #FF8C1A; color: white; padding: 2px 6px; border-radius: 10px; font-weight: 500;">$1</span>');
-                    // Nombres en blanc
+                    // Nombres en blanc (enlève les parenthèses)
                     formatted = formatted.replace(/\((\d+)\)/g, '<span style="background: white; color: #575E75; padding: 2px 6px; border-radius: 10px; font-weight: 500;">$1</span>');
                     // ? en rouge
                     formatted = formatted.replace(/\?/g, '<span style="color: red; font-weight: bold; font-size: 1.2em;">?</span>');
+                    // Enlever toutes les parenthèses restantes
+                    formatted = formatted.replace(/[()]/g, '');
                     placeholders[placeholderIndex] = `<span style="background: #59C059; color: white; padding: 4px 10px; border-radius: 10px;">${formatted}</span>`;
                     placeholderIndex++;
                     return placeholder;
@@ -843,12 +847,14 @@
                     let formatted = match;
                     // ORDRE IMPORTANT : Opérateurs EN PREMIER
                     formatted = formatted.replace(/([+\-*\/])/g, ' <strong>$1</strong> ');
-                    // Variables en orange
+                    // Variables en orange (enlève les parenthèses)
                     formatted = formatted.replace(/\(([a-zéèêàâùôîç]+)\)/gi, '<span style="background: #FF8C1A; color: white; padding: 2px 6px; border-radius: 10px; font-weight: 500;">$1</span>');
-                    // Nombres en blanc
+                    // Nombres en blanc (enlève les parenthèses)
                     formatted = formatted.replace(/\((\d+)\)/g, '<span style="background: white; color: #575E75; padding: 2px 6px; border-radius: 10px; font-weight: 500;">$1</span>');
                     // ? en rouge
                     formatted = formatted.replace(/\?/g, '<span style="color: red; font-weight: bold; font-size: 1.2em;">?</span>');
+                    // Enlever toutes les parenthèses restantes
+                    formatted = formatted.replace(/[()]/g, '');
                     placeholders[placeholderIndex] = `<span style="background: #59C059; color: white; padding: 4px 10px; border-radius: 10px;">${formatted}</span>`;
                     placeholderIndex++;
                     return placeholder;
@@ -3601,7 +3607,7 @@ set [périmètre v] to (((longueur) + (largeur)) * (2))`;
 
     <!-- Indicateur de version pour vérifier le cache -->
     <div style="position: fixed; bottom: 5px; right: 5px; background: rgba(0,0,0,0.7); color: white; padding: 3px 8px; border-radius: 5px; font-size: 11px; z-index: 9999;">
-        v2024-11-20-03h00-DIRE
+        v2024-11-20-03h10-NOPARENS
     </div>
 </body>
 </html>
