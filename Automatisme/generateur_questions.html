@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Empêcher la mise en cache du fichier -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Générateur de Questions - Automatismes DNB</title>
+    <!-- Rendu Scratch en HTML/CSS pur - Pas besoin de bibliothèque externe ! -->
     <style>
         * {
             margin: 0;
@@ -588,117 +593,6 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(0,0,0,0.3);
         }
-
-        /* Styles pour les blocs Scratch personnalisés */
-        .scratch-blocks {
-            background: #f9f9f9;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 15px auto;
-            max-width: 600px;
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .scratch-block {
-            background: #9966FF;
-            color: white;
-            padding: 8px 12px;
-            margin: 4px 0;
-            border-radius: 4px;
-            display: block;
-            font-weight: 500;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
-            width: fit-content;
-        }
-
-        .scratch-block-control {
-            background: #FFAB19;
-        }
-
-        .scratch-block-motion {
-            background: #4C97FF;
-        }
-
-        .scratch-block-pen {
-            background: #0FBD8C;
-        }
-
-        .scratch-block-data {
-            background: #FF8C1A;
-        }
-
-        .scratch-indent {
-            margin-left: 30px;
-            padding-left: 15px;
-            border-left: 3px solid #ccc;
-            margin-top: 2px;
-            margin-bottom: 2px;
-        }
-
-        .scratch-input {
-            background: white;
-            color: #333;
-            padding: 2px 8px;
-            border-radius: 8px;
-            display: inline-block;
-            margin: 0 2px;
-            font-weight: bold;
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
-        }
-
-        /* Ovale pour les variables (reporter blocks) */
-        .scratch-variable {
-            background: #FF8C1A;
-            color: white;
-            padding: 4px 14px;
-            border-radius: 50%;
-            display: inline-block;
-            margin: 0 3px;
-            font-weight: bold;
-            min-width: 35px;
-            text-align: center;
-            box-shadow: 0 2px 3px rgba(0,0,0,0.2);
-        }
-
-        /* Ovale vert pour les opérateurs mathématiques (+, -, *, /, mod) */
-        .scratch-operator {
-            background: #59C059;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 50%;
-            display: inline-block;
-            margin: 0 3px;
-            font-weight: bold;
-            box-shadow: 0 2px 3px rgba(0,0,0,0.2);
-        }
-
-        /* Hexagone vert pour les comparaisons booléennes (<, >, =, et, ou) */
-        .scratch-boolean {
-            background: #59C059;
-            color: white;
-            padding: 4px 12px;
-            display: inline-block;
-            margin: 0 3px;
-            font-weight: bold;
-            clip-path: polygon(20% 0%, 80% 0%, 100% 50%, 80% 100%, 20% 100%, 0% 50%);
-            box-shadow: 0 2px 3px rgba(0,0,0,0.2);
-            min-width: 50px;
-            text-align: center;
-        }
-
-        .scratch-question-mark {
-            background: #FF6680;
-            color: white;
-            padding: 2px 10px;
-            border-radius: 8px;
-            display: inline-block;
-            margin: 0 2px;
-            font-weight: bold;
-            font-size: 15px;
-        }
     </style>
 </head>
 <body>
@@ -825,226 +719,201 @@
             return `<span class="fraction"><span class="numerator">${numerator}</span><span class="denominator">${denominator}</span></span>`;
         }
 
-        // Fonction pour générer des blocs Scratch visuels
+        // Fonction pour générer des blocs Scratch visuels en HTML/CSS pur
         function generateScratchBlocks(code) {
-            // Convertir le code textuel en blocs HTML stylisés
-            const lines = code.trim().split('\n');
-            let html = '<div class="scratch-blocks">';
+            const blockId = 'scratch-' + Math.random().toString(36).substr(2, 9);
+
+            // Traduire le code anglais en français si nécessaire
+            code = code.replace(/set /g, 'mettre ')
+                       .replace(/ to /g, ' à ')
+                       .replace(/change /g, 'ajouter ')
+                       .replace(/ by /g, ' de ')
+                       .replace(/if </g, 'si <')
+                       .replace(/> then/g, '> alors')
+                       .replace(/else/g, 'sinon')
+                       .replace(/end/g, 'fin')
+                       .replace(/repeat /g, 'répéter ')
+                       .replace(/say /g, 'dire ')
+                       .replace(/for /g, 'pendant ')
+                       .replace(/ secs/g, ' secondes')
+                       .replace(/move /g, 'avancer de ')
+                       .replace(/ steps/g, ' pas')
+                       .replace(/turn right /g, 'tourner à droite de ')
+                       .replace(/turn left /g, 'tourner à gauche de ')
+                       .replace(/ degrees/g, ' degrés')
+                       .replace(/pen down/g, 'stylo baissé')
+                       .replace(/join /g, 'regrouper ');
+
+            let html = `<div id="${blockId}" style="font-family: 'Helvetica Neue', Arial, sans-serif; margin: 15px auto; max-width: 700px; font-size: 13px;">`;
+
+            const lines = code.split('\n');
             let indentLevel = 0;
 
-            // Fonction auxiliaire pour nettoyer les variables [x v] → x
-            function cleanVariable(text) {
-                return text.replace(/\[([^\]]+?) v\]/g, '$1');
-            }
+            for (let line of lines) {
+                line = line.trim();
+                if (!line) continue;
 
-            // Fonction pour formater les valeurs et expressions
-            function formatExpression(expr) {
-                expr = cleanVariable(expr);
+                // Sauvegarder la ligne originale AVANT tout traitement
+                const originalLine = line;
 
-                // Fonction récursive pour traiter les expressions imbriquées
-                function processParentheses(text) {
-                    // Traiter de l'intérieur vers l'extérieur
-                    let hasParens = true;
-                    while (hasParens) {
-                        hasParens = false;
-                        text = text.replace(/\(([^()]+?)\)/g, (match, inner) => {
-                            hasParens = true;
-                            inner = inner.trim();
-
-                            // Cas 1 : Nombre pur
-                            if (/^\d+(\.\d+)?$/.test(inner)) {
-                                return `<span class="scratch-input">${inner}</span>`;
-                            }
-
-                            // Cas 2 : Variable seule
-                            if (/^[a-zA-Zéèêàâôîç]+$/.test(inner)) {
-                                return `<span class="scratch-variable">${inner}</span>`;
-                            }
-
-                            // Cas 3 : Opération mathématique (ex: "x + 1", "côté * 3")
-                            if (/[\+\-\*\/]|mod/.test(inner)) {
-                                // Détecter l'opérateur
-                                const opMatch = inner.match(/(.+?)\s*([\+\-\*\/]|mod)\s*(.+)/);
-                                if (opMatch) {
-                                    const left = opMatch[1].trim();
-                                    const operator = opMatch[2].trim();
-                                    const right = opMatch[3].trim();
-
-                                    // Formater les opérandes
-                                    const formattedLeft = formatOperand(left);
-                                    const formattedRight = formatOperand(right);
-
-                                    // Opérateur en ovale vert
-                                    return `<span class="scratch-operator">${formattedLeft} ${operator} ${formattedRight}</span>`;
-                                }
-                            }
-
-                            // Cas 4 : Expression complexe sans opérateur clair
-                            // Remplacer variables et nombres
-                            inner = inner.replace(/<span[^>]*>.*?<\/span>/g, (m) => m); // Garder les spans existants
-                            inner = inner.replace(/\b([a-zA-Zéèêàâôîç]+)\b/g, (m) => {
-                                if (m.includes('span')) return m;
-                                return `<span class="scratch-variable">${m}</span>`;
-                            });
-                            inner = inner.replace(/\b(\d+)\b/g, (m) => {
-                                if (m.includes('span')) return m;
-                                return `<span class="scratch-input">${m}</span>`;
-                            });
-
-                            return inner;
-                        });
-                    }
-                    return text;
-                }
-
-                // Fonction pour formater un opérande (peut contenir des spans)
-                function formatOperand(operand) {
-                    if (operand.includes('span')) return operand;
-                    if (/^\d+(\.\d+)?$/.test(operand)) {
-                        return `<span class="scratch-input">${operand}</span>`;
-                    }
-                    if (/^[a-zA-Zéèêàâôîç]+$/.test(operand)) {
-                        return `<span class="scratch-variable">${operand}</span>`;
-                    }
-                    return operand;
-                }
-
-                return processParentheses(expr);
-            }
-
-            lines.forEach((line, index) => {
-                const trimmedLine = line.trim();
-                if (!trimmedLine) return;
-
-                let blockHtml = '';
-                let shouldIndent = indentLevel > 0;
-
-                // Gérer la désindentation avant "sinon" et "end"
-                if (trimmedLine === 'sinon' || trimmedLine === 'end') {
+                // Gérer l'indentation
+                if (originalLine === 'fin' || originalLine === 'sinon') {
                     indentLevel = Math.max(0, indentLevel - 1);
-                    shouldIndent = indentLevel > 0;
                 }
 
-                // Créer l'indentation
-                const indentHtml = shouldIndent ? '<div class="scratch-indent">' : '';
-                const indentCloseHtml = shouldIndent ? '</div>' : '';
+                const indent = indentLevel * 20;
 
-                // Stylo
-                if (trimmedLine.startsWith('stylo en position')) {
-                    blockHtml = '<div class="scratch-block scratch-block-pen">stylo en position d\'écriture</div>';
+                // Déterminer le type de bloc et sa couleur
+                let bgColor = '#9966FF'; // Violet par défaut (contrôle)
+                let blockStyle = 'block';
+
+                if (originalLine.startsWith('mettre') || originalLine.startsWith('ajouter')) {
+                    bgColor = '#FF8C1A'; // Orange (variables)
+                } else if (originalLine.startsWith('dire')) {
+                    bgColor = '#9966FF'; // Violet (apparence)
+                } else if (originalLine.startsWith('avancer') || originalLine.startsWith('tourner')) {
+                    bgColor = '#4C97FF'; // Bleu (mouvement)
+                } else if (originalLine.startsWith('stylo')) {
+                    bgColor = '#0FBD8C'; // Vert (stylo)
+                } else if (originalLine === 'sinon' || originalLine === 'fin') {
+                    blockStyle = 'cap';
                 }
-                // Répéter
-                else if (trimmedLine.startsWith('répéter')) {
-                    const match = trimmedLine.match(/répéter \((\d+)\) fois/);
-                    const times = match ? match[1] : '?';
-                    blockHtml = `<div class="scratch-block scratch-block-control">répéter <span class="scratch-input">${times}</span> fois</div>`;
+
+                // ÉTAPE 1 : Remplacer avec des placeholders pour éviter les conflits
+                const placeholders = [];
+                let placeholderIndex = 0;
+
+                // Mettre les ? en rouge
+                line = line.replace(/\?/g, () => {
+                    const placeholder = `__PLACEHOLDER_${placeholderIndex}__`;
+                    placeholders[placeholderIndex] = '<span style="color: red; font-weight: bold; font-size: 1.4em;">?</span>';
+                    placeholderIndex++;
+                    return placeholder;
+                });
+
+                // Mettre les comparaisons en vert (AVANT les autres pour éviter confusion avec <, >)
+                line = line.replace(/<([^>]+)>/g, (match, content) => {
+                    const placeholder = `__PLACEHOLDER_${placeholderIndex}__`;
+                    placeholders[placeholderIndex] = `<span style="background: #59C059; color: white; padding: 2px 8px; border-radius: 12px;">${content}</span>`;
+                    placeholderIndex++;
+                    return placeholder;
+                });
+
+                // Mettre les expressions mathématiques complexes en vert (AVANT tout le reste)
+                // Exemples : ((côté) * (?)), ((longueur) + (largeur)) * 2, (x) mod (y)
+
+                // D'ABORD : ((X) OP (Y)) OP N - expressions avec opérateur après
+                line = line.replace(/\(\([^)]+\)\s*[\+\-\*\/]\s*\([^)]+\)\)\s*[\+\-\*\/]\s*[\d\?]+/g, (match) => {
+                    const placeholder = `__PLACEHOLDER_${placeholderIndex}__`;
+                    let formatted = match;
+                    // ORDRE IMPORTANT : Opérateurs EN PREMIER pour éviter de casser les spans HTML
+                    formatted = formatted.replace(/([+\-*\/])/g, ' <strong>$1</strong> ');
+                    // Variables en orange
+                    formatted = formatted.replace(/\(([a-zéèêàâùôîç]+)\)/gi, '<span style="background: #FF8C1A; color: white; padding: 2px 6px; border-radius: 10px; font-weight: 500;">$1</span>');
+                    // Nombres en blanc
+                    formatted = formatted.replace(/\((\d+)\)/g, '<span style="background: white; color: #575E75; padding: 2px 6px; border-radius: 10px; font-weight: 500;">$1</span>');
+                    formatted = formatted.replace(/(\d+)/g, '<span style="background: white; color: #575E75; padding: 2px 6px; border-radius: 10px; font-weight: 500;">$1</span>');
+                    // ? en rouge
+                    formatted = formatted.replace(/\?/g, '<span style="color: red; font-weight: bold; font-size: 1.2em;">?</span>');
+                    placeholders[placeholderIndex] = `<span style="background: #59C059; color: white; padding: 4px 10px; border-radius: 10px;">${formatted}</span>`;
+                    placeholderIndex++;
+                    return placeholder;
+                });
+
+                // ENSUITE : (X) mod (Y) - opérateur modulo
+                line = line.replace(/\([^)]+\)\s+mod\s+\([^)]+\)/gi, (match) => {
+                    const placeholder = `__PLACEHOLDER_${placeholderIndex}__`;
+                    let formatted = match;
+                    // mod en gras
+                    formatted = formatted.replace(/\bmod\b/gi, ' <strong>mod</strong> ');
+                    // Variables en orange
+                    formatted = formatted.replace(/\(([a-zéèêàâùôîç]+)\)/gi, '<span style="background: #FF8C1A; color: white; padding: 2px 6px; border-radius: 10px; font-weight: 500;">$1</span>');
+                    // Nombres en blanc
+                    formatted = formatted.replace(/\((\d+)\)/g, '<span style="background: white; color: #575E75; padding: 2px 6px; border-radius: 10px; font-weight: 500;">$1</span>');
+                    // ? en rouge
+                    formatted = formatted.replace(/\?/g, '<span style="color: red; font-weight: bold; font-size: 1.2em;">?</span>');
+                    placeholders[placeholderIndex] = `<span style="background: #59C059; color: white; padding: 4px 10px; border-radius: 10px;">${formatted}</span>`;
+                    placeholderIndex++;
+                    return placeholder;
+                });
+
+                // ENFIN : ((X) OP (Y)) - expression simple
+                line = line.replace(/\(\([^)]+\)\s*[\+\-\*\/]\s*\([^)]+\)\)/g, (match) => {
+                    const placeholder = `__PLACEHOLDER_${placeholderIndex}__`;
+                    let formatted = match;
+                    // ORDRE IMPORTANT : Opérateurs EN PREMIER
+                    formatted = formatted.replace(/([+\-*\/])/g, ' <strong>$1</strong> ');
+                    // Variables en orange
+                    formatted = formatted.replace(/\(([a-zéèêàâùôîç]+)\)/gi, '<span style="background: #FF8C1A; color: white; padding: 2px 6px; border-radius: 10px; font-weight: 500;">$1</span>');
+                    // Nombres en blanc
+                    formatted = formatted.replace(/\((\d+)\)/g, '<span style="background: white; color: #575E75; padding: 2px 6px; border-radius: 10px; font-weight: 500;">$1</span>');
+                    // ? en rouge
+                    formatted = formatted.replace(/\?/g, '<span style="color: red; font-weight: bold; font-size: 1.2em;">?</span>');
+                    placeholders[placeholderIndex] = `<span style="background: #59C059; color: white; padding: 4px 10px; border-radius: 10px;">${formatted}</span>`;
+                    placeholderIndex++;
+                    return placeholder;
+                });
+
+                // Mettre les variables Scratch [var v] en orange
+                line = line.replace(/\[([^\]]+) v\]/g, (match, varName) => {
+                    const placeholder = `__PLACEHOLDER_${placeholderIndex}__`;
+                    placeholders[placeholderIndex] = `<span style="background: #FF8C1A; color: white; padding: 2px 6px; border-radius: 10px; font-weight: 500;">${varName}</span>`;
+                    placeholderIndex++;
+                    return placeholder;
+                });
+
+                // Mettre les variables simples (nomVar) en orange si ce sont des lettres
+                line = line.replace(/\(([a-zéèêàâùôîç]+)\)/gi, (match, varName) => {
+                    const placeholder = `__PLACEHOLDER_${placeholderIndex}__`;
+                    placeholders[placeholderIndex] = `<span style="background: #FF8C1A; color: white; padding: 2px 6px; border-radius: 10px; font-weight: 500;">${varName}</span>`;
+                    placeholderIndex++;
+                    return placeholder;
+                });
+
+                // Mettre les textes entre crochets en violet
+                line = line.replace(/\[([^\]]+)\]/g, (match, text) => {
+                    const placeholder = `__PLACEHOLDER_${placeholderIndex}__`;
+                    placeholders[placeholderIndex] = `<span style="background: #9966FF; color: white; padding: 2px 6px; border-radius: 10px;">${text}</span>`;
+                    placeholderIndex++;
+                    return placeholder;
+                });
+
+                // Mettre les nombres simples en blanc
+                line = line.replace(/\((\d+)\)/g, (match, number) => {
+                    const placeholder = `__PLACEHOLDER_${placeholderIndex}__`;
+                    placeholders[placeholderIndex] = `<span style="background: white; color: #575E75; padding: 2px 8px; border-radius: 10px; font-weight: 500;">${number}</span>`;
+                    placeholderIndex++;
+                    return placeholder;
+                });
+
+                // Mettre les expressions mod en vert
+                line = line.replace(/\([^)]+\)\s+mod\s+\([^)]+\)/g, (match) => {
+                    const placeholder = `__PLACEHOLDER_${placeholderIndex}__`;
+                    placeholders[placeholderIndex] = `<span style="background: #59C059; color: white; padding: 2px 8px; border-radius: 10px;">${match}</span>`;
+                    placeholderIndex++;
+                    return placeholder;
+                });
+
+                // ÉTAPE 2 : Restaurer tous les placeholders
+                for (let i = 0; i < placeholderIndex; i++) {
+                    line = line.replace(`__PLACEHOLDER_${i}__`, placeholders[i]);
+                }
+
+                if (blockStyle === 'cap') {
+                    html += `<div style="margin-left: ${indent}px; padding: 8px 12px; background: ${bgColor}; color: white; border-radius: 4px; margin-bottom: 2px; font-weight: 500; width: fit-content; min-width: 60px;">${line}</div>`;
+                } else {
+                    html += `<div style="margin-left: ${indent}px; padding: 10px 12px; background: ${bgColor}; color: white; border-radius: 4px; margin-bottom: 2px; font-weight: 500; width: fit-content; min-width: 150px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">${line}</div>`;
+                }
+
+                // Augmenter l'indentation après certains blocs (utiliser originalLine)
+                if (originalLine.includes('si ') || originalLine.includes('répéter') || originalLine.includes('sinon')) {
                     indentLevel++;
                 }
-                // Si...alors
-                else if (trimmedLine.startsWith('si ')) {
-                    let condition = trimmedLine.match(/si (.+?) alors/)[1];
-                    condition = cleanVariable(condition);
-                    // Gérer les opérateurs de comparaison <...>
-                    condition = condition.replace(/<(.+?)>/g, (match, inner) => {
-                        // Détecter les opérateurs de comparaison
-                        const compMatch = inner.match(/(.+?)\s*(>|<|=|≥|≤)\s*(.+)/);
-                        if (compMatch) {
-                            const left = compMatch[1].trim();
-                            const operator = compMatch[2].trim();
-                            const right = compMatch[3].trim();
 
-                            // Formater chaque côté
-                            const formattedLeft = formatExpression(left);
-                            const formattedRight = formatExpression(right);
-
-                            // Retourner dans un hexagone vert
-                            return `<span class="scratch-boolean">${formattedLeft} ${operator} ${formattedRight}</span>`;
-                        } else {
-                            // Pas de comparaison détectée, formater normalement
-                            inner = formatExpression(inner);
-                            return `&lt;${inner}&gt;`;
-                        }
-                    });
-                    blockHtml = `<div class="scratch-block scratch-block-control">si ${condition} alors</div>`;
-                    indentLevel++;
+                if (originalLine === 'fin') {
+                    indentLevel = Math.max(0, indentLevel - 1);
                 }
-                // Sinon
-                else if (trimmedLine === 'sinon') {
-                    blockHtml = '<div class="scratch-block scratch-block-control">sinon</div>';
-                    indentLevel++;
-                }
-                // End
-                else if (trimmedLine === 'end') {
-                    blockHtml = '<div class="scratch-block scratch-block-control">end</div>';
-                }
-                // Avancer
-                else if (trimmedLine.startsWith('avancer de')) {
-                    const match = trimmedLine.match(/avancer de \((\?|\d+)\)/);
-                    const distance = match ? match[1] : '?';
-                    if (distance === '?') {
-                        blockHtml = `<div class="scratch-block scratch-block-motion">avancer de <span class="scratch-question-mark">?</span></div>`;
-                    } else {
-                        blockHtml = `<div class="scratch-block scratch-block-motion">avancer de <span class="scratch-input">${distance}</span></div>`;
-                    }
-                }
-                // Tourner
-                else if (trimmedLine.startsWith('tourner droite')) {
-                    const match = trimmedLine.match(/tourner droite de \((\?|\d+)\)/);
-                    const angle = match ? match[1] : '?';
-                    if (angle === '?') {
-                        blockHtml = `<div class="scratch-block scratch-block-motion">tourner droite de <span class="scratch-question-mark">?</span> degrés</div>`;
-                    } else {
-                        blockHtml = `<div class="scratch-block scratch-block-motion">tourner droite de <span class="scratch-input">${angle}</span> degrés</div>`;
-                    }
-                }
-                // Mettre variable à
-                else if (trimmedLine.startsWith('mettre ')) {
-                    let content = trimmedLine.substring(7); // Enlever "mettre "
-                    content = cleanVariable(content);
-                    // Chercher la variable et la valeur
-                    const match = content.match(/(.+?) à (.+)/);
-                    if (match) {
-                        const varName = match[1].trim();
-                        let value = match[2].trim();
-                        value = formatExpression(value);
-                        blockHtml = `<div class="scratch-block scratch-block-data">mettre <span class="scratch-variable">${varName}</span> à ${value}</div>`;
-                    }
-                }
-                // Ajouter à variable
-                else if (trimmedLine.startsWith('ajouter ')) {
-                    let content = cleanVariable(trimmedLine.substring(8));
-                    const match = content.match(/(.+?) à (.+)/);
-                    if (match) {
-                        let value = match[1].trim();
-                        const varName = match[2].trim();
-                        value = formatExpression(value);
-                        blockHtml = `<div class="scratch-block scratch-block-data">ajouter ${value} à <span class="scratch-variable">${varName}</span></div>`;
-                    }
-                }
-                // Dire
-                else if (trimmedLine.startsWith('dire ')) {
-                    let content = trimmedLine.substring(5);
-                    content = cleanVariable(content);
-
-                    // Gérer "dire [texte] pendant (2) secondes" ou "dire (expression)"
-                    if (content.includes(' pendant ')) {
-                        const match = content.match(/\[(.+?)\] pendant \((\d+)\) secondes?/);
-                        if (match) {
-                            const text = match[1];
-                            const duration = match[2];
-                            blockHtml = `<div class="scratch-block">dire <span class="scratch-input">${text}</span> pendant <span class="scratch-input">${duration}</span> secondes</div>`;
-                        }
-                    } else {
-                        // Expression simple
-                        content = formatExpression(content);
-                        blockHtml = `<div class="scratch-block">dire ${content}</div>`;
-                    }
-                }
-
-                if (blockHtml) {
-                    html += indentHtml + blockHtml + indentCloseHtml;
-                }
-            });
+            }
 
             html += '</div>';
             return html;
@@ -1061,7 +930,8 @@
             }
             for (let val of row1Values) {
                 const displayVal = val === "?" ? "?" : (typeof val === 'number' && val % 1 !== 0 ? toFrenchNumber(val) : val);
-                table += `<td style="border: 2px solid #667eea; padding: 8px 12px; background: #f8f9fa;">${displayVal}</td>`;
+                const cellContent = displayVal === "?" ? `<span style="color: red; font-weight: bold; font-size: 1.3em;">${displayVal}</span>` : displayVal;
+                table += `<td style="border: 2px solid #667eea; padding: 8px 12px; background: #f8f9fa;">${cellContent}</td>`;
             }
             table += `</tr>`;
 
@@ -1072,7 +942,8 @@
             }
             for (let val of row2Values) {
                 const displayVal = val === "?" ? "?" : (typeof val === 'number' && val % 1 !== 0 ? toFrenchNumber(val) : val);
-                table += `<td style="border: 2px solid #667eea; padding: 8px 12px; background: #f8f9fa;">${displayVal}</td>`;
+                const cellContent = displayVal === "?" ? `<span style="color: red; font-weight: bold; font-size: 1.3em;">${displayVal}</span>` : displayVal;
+                table += `<td style="border: 2px solid #667eea; padding: 8px 12px; background: #f8f9fa;">${cellContent}</td>`;
             }
             table += `</tr>`;
 
@@ -1228,76 +1099,6 @@
                 svg += `<circle cx="${pointX}" cy="${lineY}" r="4" fill="#e74c3c" stroke="#c0392b" stroke-width="1.5"/>`;
                 svg += `<text x="${pointX}" y="${lineY - 12}" text-anchor="middle" font-size="10" font-weight="bold" fill="#e74c3c">•</text>`;
             }
-
-            svg += `</svg>`;
-            return svg;
-        }
-
-        // Fonction pour générer un SVG explicatif du triangle équilatéral (angle intérieur vs rotation)
-        function generateTriangleExplanationSVG() {
-            const width = 500;
-            const height = 350;
-
-            // Triangle équilatéral
-            const centerX = 250;
-            const centerY = 200;
-            const sideLength = 140;
-            const h = sideLength * Math.sqrt(3) / 2; // hauteur
-
-            // Sommets du triangle
-            const A = { x: centerX, y: centerY - h * 0.66 };
-            const B = { x: centerX - sideLength / 2, y: centerY + h * 0.33 };
-            const C = { x: centerX + sideLength / 2, y: centerY + h * 0.33 };
-
-            let svg = `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="display: block; margin: 15px auto; background: white; border: 1px solid #ddd;">`;
-
-            // Titre
-            svg += `<text x="${width/2}" y="25" text-anchor="middle" font-size="16" font-weight="bold" fill="#333">Triangle équilatéral : Angle intérieur vs Angle de rotation</text>`;
-
-            // Dessiner le triangle
-            svg += `<polygon points="${A.x},${A.y} ${B.x},${B.y} ${C.x},${C.y}" fill="#E3F2FD" stroke="#2196F3" stroke-width="2"/>`;
-
-            // Angle intérieur au point A (60°)
-            const angleRadius = 30;
-            const angleStartX = A.x + angleRadius;
-            const angleStartY = A.y;
-            const angleEndX = A.x - angleRadius * Math.cos(Math.PI / 3);
-            const angleEndY = A.y + angleRadius * Math.sin(Math.PI / 3);
-            svg += `<path d="M ${angleStartX} ${angleStartY} A ${angleRadius} ${angleRadius} 0 0 1 ${angleEndX} ${angleEndY}" stroke="#4CAF50" stroke-width="2" fill="none"/>`;
-            svg += `<text x="${A.x + 15}" y="${A.y + 25}" font-size="14" fill="#4CAF50" font-weight="bold">60°</text>`;
-            svg += `<text x="${A.x - 50}" y="${A.y + 50}" font-size="12" fill="#4CAF50">angle intérieur</text>`;
-
-            // Direction du lutin au point A (flèche vers B)
-            const dirX = (B.x - A.x) / sideLength * 40;
-            const dirY = (B.y - A.y) / sideLength * 40;
-            svg += `<line x1="${A.x}" y1="${A.y}" x2="${A.x + dirX}" y2="${A.y + dirY}" stroke="#FF9800" stroke-width="3" marker-end="url(#arrowOrange)"/>`;
-            svg += `<text x="${A.x + 50}" y="${A.y - 10}" font-size="12" fill="#FF9800" font-weight="bold">Direction du lutin</text>`;
-
-            // Angle de rotation au point B (120°)
-            // Montrer l'angle extérieur
-            const rotStartX = B.x + 50;
-            const rotStartY = B.y;
-            svg += `<path d="M ${rotStartX} ${rotStartY} A 50 50 0 0 0 ${B.x + 25} ${B.y - 43.3}" stroke="#F44336" stroke-width="2.5" fill="none"/>`;
-            svg += `<text x="${B.x + 40}" y="${B.y - 15}" font-size="14" fill="#F44336" font-weight="bold">120°</text>`;
-            svg += `<text x="${B.x + 10}" y="${B.y - 35}" font-size="12" fill="#F44336">rotation Scratch</text>`;
-
-            // Flèche de direction après le point B
-            const nextDirX = (C.x - B.x) / sideLength * 40;
-            const nextDirY = (C.y - B.y) / sideLength * 40;
-            svg += `<line x1="${B.x}" y1="${B.y}" x2="${B.x + nextDirX}" y2="${B.y + nextDirY}" stroke="#FF9800" stroke-width="3" marker-end="url(#arrowOrange)"/>`;
-
-            // Explication en bas
-            svg += `<text x="${width/2}" y="${height - 70}" text-anchor="middle" font-size="13" fill="#333" font-weight="bold">Pourquoi 120° et pas 60° ?</text>`;
-            svg += `<text x="${width/2}" y="${height - 50}" text-anchor="middle" font-size="12" fill="#555">L'angle intérieur du triangle = 60°</text>`;
-            svg += `<text x="${width/2}" y="${height - 32}" text-anchor="middle" font-size="12" fill="#555">Mais le lutin doit tourner de l'angle EXTÉRIEUR : 180° - 60° = 120°</text>`;
-            svg += `<text x="${width/2}" y="${height - 14}" text-anchor="middle" font-size="12" fill="#555">Formule générale : Angle de rotation = 360° ÷ nombre de côtés = 360° ÷ 3 = 120°</text>`;
-
-            // Définir le marqueur de flèche orange
-            svg += `<defs>
-                <marker id="arrowOrange" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-                    <path d="M0,0 L0,6 L9,3 z" fill="#FF9800" />
-                </marker>
-            </defs>`;
 
             svg += `</svg>`;
             return svg;
@@ -3169,7 +2970,7 @@
                             () => {
                                 // Variable simple
                                 const x = randInt(5, 15);
-                                const scratchCode = `mettre [x v] à (${x})`;
+                                const scratchCode = `set [x v] to (${x})`;
                                 return {
                                     question: `Que vaut la variable x après l'exécution de ce programme ?<br>${generateScratchBlocks(scratchCode)}`,
                                     answer: `x = ${x}`
@@ -3180,8 +2981,8 @@
                                 const x = randInt(3, 8);
                                 const add = randInt(3, 7);
                                 const result = x + add;
-                                const scratchCode = `mettre [x v] à (${x})
-ajouter (${add}) à [x v]`;
+                                const scratchCode = `set [x v] to (${x})
+change [x v] by (${add})`;
                                 return {
                                     question: `Que vaut la variable x à la fin du programme ?<br>${generateScratchBlocks(scratchCode)}`,
                                     answer: `x = ${x} + ${add} = ${result}`
@@ -3193,6 +2994,7 @@ ajouter (${add}) à [x v]`;
                                 const mult = randInt(2, 4);
                                 const add = randInt(5, 10);
                                 const result = x * mult + add;
+                                // TEST : Essayer en français pur
                                 const scratchCode = `mettre [x v] à (${x})
 mettre [x v] à ((x) * (${mult}))
 ajouter (${add}) à [x v]`;
@@ -3214,11 +3016,11 @@ ajouter (${add}) à [x v]`;
                                 const x = randInt(5, 20);
                                 const threshold = 10;
                                 const result = x > threshold ? "Grand" : "Petit";
-                                const scratchCode = `mettre [x v] à (${x})
-si <(x) > (10)> alors
-  dire [Grand] pendant (2) secondes
-sinon
-  dire [Petit] pendant (2) secondes
+                                const scratchCode = `set [x v] to (${x})
+if <(x) > (10)> then
+  say [Grand] for (2) secs
+else
+  say [Petit] for (2) secs
 end`;
                                 return {
                                     question: `Qu'affiche ce programme ?<br>${generateScratchBlocks(scratchCode)}`,
@@ -3230,11 +3032,11 @@ end`;
                                 const x = randInt(3, 15);
                                 const isPair = x % 2 === 0;
                                 const result = isPair ? "pair" : "impair";
-                                const scratchCode = `mettre [x v] à (${x})
-si <((x) mod (2)) = (0)> alors
-  dire [pair] pendant (2) secondes
-sinon
-  dire [impair] pendant (2) secondes
+                                const scratchCode = `set [x v] to (${x})
+if <((x) mod (2)) = (0)> then
+  say [pair] for (2) secs
+else
+  say [impair] for (2) secs
 end`;
                                 return {
                                     question: `Qu'affiche ce programme ?<br>${generateScratchBlocks(scratchCode)}`,
@@ -3254,9 +3056,9 @@ end`;
                                 const x = randInt(0, 3);
                                 const repeat = randInt(4, 8);
                                 const result = x + repeat;
-                                const scratchCode = `mettre [x v] à (${x})
-répéter (${repeat}) fois
-  ajouter (1) à [x v]
+                                const scratchCode = `set [x v] to (${x})
+repeat (${repeat})
+  change [x v] by (1)
 end`;
                                 return {
                                     question: `Quelle est la valeur finale de x ?<br>${generateScratchBlocks(scratchCode)}`,
@@ -3269,9 +3071,9 @@ end`;
                                 const repeat = randInt(3, 6);
                                 const add = randInt(2, 4);
                                 const result = x + (repeat * add);
-                                const scratchCode = `mettre [x v] à (${x})
-répéter (${repeat}) fois
-  ajouter (${add}) à [x v]
+                                const scratchCode = `set [x v] to (${x})
+repeat (${repeat})
+  change [x v] by (${add})
 end`;
                                 return {
                                     question: `Que vaut x à la fin ?<br>${generateScratchBlocks(scratchCode)}`,
@@ -3390,11 +3192,11 @@ end`;
                         const ops = [
                             () => {
                                 // Dessiner un carré - compléter le programme
-                                const cote = 121;
-                                const scratchCode = `stylo en position d'écriture
-répéter (4) fois
-  avancer de (${cote})
-  tourner droite de (?) degrés
+                                const cote = randInt(50, 150);
+                                const scratchCode = `pen down
+repeat (4)
+  move (${cote}) steps
+  turn right (?) degrees
 end`;
                                 return {
                                     question: `Compléter ce programme Scratch pour dessiner un carré de côté ${cote} :<br>${generateScratchBlocks(scratchCode)}`,
@@ -3404,14 +3206,14 @@ end`;
                             () => {
                                 // Dessiner un triangle équilatéral
                                 const cote = randInt(60, 120);
-                                const scratchCode = `stylo en position d'écriture
-répéter (3) fois
-  avancer de (${cote})
-  tourner droite de (?) degrés
+                                const scratchCode = `pen down
+repeat (3)
+  move (${cote}) steps
+  turn right (?) degrees
 end`;
                                 return {
                                     question: `Compléter ce programme pour dessiner un triangle équilatéral :<br>${generateScratchBlocks(scratchCode)}`,
-                                    answer: `<strong>120 degrés</strong><br><br>${generateTriangleExplanationSVG()}<br><div style="background: #FFF3CD; border-left: 4px solid #FF9800; padding: 12px; margin: 15px 0; border-radius: 4px;"><strong>⚠️ Attention :</strong> L'angle <strong>intérieur</strong> du triangle équilatéral est de 60°, mais dans Scratch, le lutin doit tourner de l'<strong>angle extérieur</strong> qui est de <strong>120°</strong>.<br><br>Calcul : 180° - 60° = 120°<br>Ou bien : 360° ÷ 3 côtés = 120°</div>`
+                                    answer: `120 degrés<br><em>Explication : Angle extérieur = 360° ÷ 3 = 120°</em>`
                                 };
                             },
                             () => {
@@ -3428,8 +3230,8 @@ end`;
                                 // Calculer le périmètre d'un carré avec Scratch
                                 const cote = randInt(5, 15);
                                 const perimetre = 4 * cote;
-                                const scratchCode = `mettre [côté v] à (${cote})
-mettre [périmètre v] à ((côté) * (?))`;
+                                const scratchCode = `set [côté v] to (${cote})
+set [périmètre v] to ((côté) * (?))`;
                                 return {
                                     question: `Compléter ce programme qui calcule le périmètre d'un carré :<br>${generateScratchBlocks(scratchCode)}`,
                                     answer: `4<br>Périmètre = ${cote} cm × 4 = ${perimetre} cm`
@@ -3440,9 +3242,9 @@ mettre [périmètre v] à ((côté) * (?))`;
                                 const longueur = randInt(8, 15);
                                 const largeur = randInt(4, 10);
                                 const aire = longueur * largeur;
-                                const scratchCode = `mettre [longueur v] à (${longueur})
-mettre [largeur v] à (${largeur})
-mettre [aire v] à ((longueur) * (?))`;
+                                const scratchCode = `set [longueur v] to (${longueur})
+set [largeur v] to (${largeur})
+set [aire v] to ((longueur) * (?))`;
                                 return {
                                     question: `Compléter ce programme qui calcule l'aire d'un rectangle :<br>${generateScratchBlocks(scratchCode)}`,
                                     answer: `largeur<br>Aire = ${longueur} cm × ${largeur} cm = ${aire} cm²`
@@ -3460,9 +3262,9 @@ mettre [aire v] à ((longueur) * (?))`;
                                 // Périmètre d'un triangle équilatéral
                                 const cote = randInt(6, 12);
                                 const perimetre = 3 * cote;
-                                const scratchCode = `mettre [côté v] à (${cote})
-mettre [périmètre v] à ((côté) * (3))
-dire (rejoindre [Le périmètre est ] (rejoindre (périmètre) [ cm]))`;
+                                const scratchCode = `set [côté v] to (${cote})
+set [périmètre v] to ((côté) * (3))
+say (join [Le périmètre est ] (join (périmètre) [ cm]))`;
                                 return {
                                     question: `Quelle valeur affichera ce programme ?<br>${generateScratchBlocks(scratchCode)}`,
                                     answer: `Le périmètre est ${perimetre} cm<br>Calcul : ${cote} cm × 3 = ${perimetre} cm`
@@ -3472,8 +3274,8 @@ dire (rejoindre [Le périmètre est ] (rejoindre (périmètre) [ cm]))`;
                                 // Aire d'un carré
                                 const cote = randInt(5, 12);
                                 const aire = cote * cote;
-                                const scratchCode = `mettre [côté v] à (${cote})
-mettre [aire v] à ((côté) * (côté))`;
+                                const scratchCode = `set [côté v] to (${cote})
+set [aire v] to ((côté) * (côté))`;
                                 return {
                                     question: `Quelle sera la valeur de la variable "aire" ?<br>${generateScratchBlocks(scratchCode)}`,
                                     answer: `${aire} cm²<br>Aire = ${cote} cm × ${cote} cm = ${aire} cm²`
@@ -3481,10 +3283,10 @@ mettre [aire v] à ((côté) * (côté))`;
                             },
                             () => {
                                 // Dessiner une étoile à 5 branches
-                                const scratchCode = `stylo en position d'écriture
-répéter (5) fois
-  avancer de (100)
-  tourner droite de (?) degrés
+                                const scratchCode = `pen down
+repeat (5)
+  move (100) steps
+  turn right (?) degrees
 end`;
                                 return {
                                     question: `Pour dessiner une étoile à 5 branches, on doit tourner de combien de degrés à chaque pointe ?<br>${generateScratchBlocks(scratchCode)}`,
@@ -3496,9 +3298,9 @@ end`;
                                 const longueur = randInt(10, 18);
                                 const largeur = randInt(5, 9);
                                 const perimetre = 2 * (longueur + largeur);
-                                const scratchCode = `mettre [longueur v] à (${longueur})
-mettre [largeur v] à (${largeur})
-mettre [périmètre v] à (((longueur) + (largeur)) * (2))`;
+                                const scratchCode = `set [longueur v] to (${longueur})
+set [largeur v] to (${largeur})
+set [périmètre v] to (((longueur) + (largeur)) * (2))`;
                                 return {
                                     question: `Quelle sera la valeur de "périmètre" ?<br>${generateScratchBlocks(scratchCode)}`,
                                     answer: `${perimetre} cm<br>Périmètre = (${longueur} cm + ${largeur} cm) × 2 = ${longueur + largeur} cm × 2 = ${perimetre} cm`
@@ -3643,6 +3445,9 @@ mettre [périmètre v] à (((longueur) + (largeur)) * (2))`;
             document.getElementById('statsSection').style.display = 'flex';
             document.getElementById('questionsCount').textContent = questionsGenerated;
             document.getElementById('printButtons').classList.add('active');
+
+            // Plus besoin de scratchblocks - rendu HTML/CSS pur en français !
+            console.log('✓ Blocs Scratch générés en HTML/CSS français natif');
         }
 
         function toggleAnswers() {
@@ -3797,5 +3602,11 @@ mettre [périmètre v] à (((longueur) + (largeur)) * (2))`;
         // Initialiser au chargement
         window.onload = initThemes;
     </script>
+
+    <!-- Indicateur de version pour vérifier le cache -->
+    <!-- FIX CACHE : Pas de marqueurs de conflit Git ! -->
+    <div style="position: fixed; bottom: 5px; right: 5px; background: rgba(0,0,0,0.7); color: white; padding: 3px 8px; border-radius: 5px; font-size: 11px; z-index: 9999;">
+        v2024-11-20-02h45-CLEAN
+    </div>
 </body>
 </html>
