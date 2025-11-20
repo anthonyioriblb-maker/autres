@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activité de découverte - Scratch 4ème</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            background-color: #f5f5f5;
+        }
+        .header {
+            background: linear-gradient(135deg, #FF8C1A, #4C97FF);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        .info-box {
+            background-color: #e8f4f8;
+            border-left: 5px solid #4C97FF;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .section {
+            background-color: white;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .section h2 {
+            color: #FF8C1A;
+            border-bottom: 3px solid #FF8C1A;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        .etape {
+            background-color: #fff9e6;
+            border-left: 4px solid #FFAB19;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .etape h3 {
+            margin-top: 0;
+            color: #FFAB19;
+        }
+        .objectif {
+            background-color: #e8f8f5;
+            border-left: 4px solid #0FBD8C;
+            padding: 10px 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .attention {
+            background-color: #ffe6e6;
+            border-left: 4px solid #ff4444;
+            padding: 10px 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .code-block {
+            background-color: #f8f8f8;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+        }
+        .scratch-block {
+            display: inline-block;
+            padding: 8px 12px;
+            border-radius: 5px;
+            margin: 5px;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .motion { background-color: #4C97FF; }
+        .control { background-color: #FFAB19; }
+        .pen { background-color: #0FBD8C; }
+        .looks { background-color: #9966FF; }
+        .data { background-color: #FF8C1A; }
+        .events { background-color: #FFD500; }
+
+        .checklist {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .checklist li {
+            padding: 8px;
+            margin: 5px 0;
+            background-color: #f9f9f9;
+            border-left: 3px solid #4C97FF;
+            padding-left: 15px;
+        }
+        .checklist li:before {
+            content: "☐ ";
+            font-size: 1.2em;
+            margin-right: 10px;
+            color: #4C97FF;
+        }
+        .timing {
+            display: inline-block;
+            background-color: #FF8C1A;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-left: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #4C97FF;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .challenge {
+            background: linear-gradient(135deg, #9966FF, #FF8C1A);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .challenge h3 {
+            margin-top: 0;
+        }
+        @media print {
+            body {
+                background-color: white;
+            }
+            .section {
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎮 Découverte de Scratch</h1>
+        <p style="font-size: 1.2em; margin: 10px 0 0 0;">Activité pour la classe de 4ème - Durée : 1h30</p>
+    </div>
+
+    <div class="info-box">
+        <strong>📌 Informations importantes :</strong>
+        <ul>
+            <li><strong>Site web :</strong> <a href="https://scratch.mit.edu" target="_blank">https://scratch.mit.edu</a></li>
+            <li><strong>Matériel nécessaire :</strong> Un ordinateur avec accès Internet</li>
+            <li><strong>Objectif général :</strong> Découvrir la programmation par blocs et créer ses premiers programmes</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>📋 Déroulement de la séance</h2>
+        <table>
+            <tr>
+                <th>Phase</th>
+                <th>Durée</th>
+                <th>Activité</th>
+            </tr>
+            <tr>
+                <td>Phase 1</td>
+                <td>10 min</td>
+                <td>Découverte de l'interface Scratch</td>
+            </tr>
+            <tr>
+                <td>Phase 2</td>
+                <td>20 min</td>
+                <td>Premiers pas : faire bouger le sprite</td>
+            </tr>
+            <tr>
+                <td>Phase 3</td>
+                <td>30 min</td>
+                <td>Dessiner des formes géométriques</td>
+            </tr>
+            <tr>
+                <td>Phase 4</td>
+                <td>20 min</td>
+                <td>Ajouter de l'interactivité</td>
+            </tr>
+            <tr>
+                <td>Phase 5</td>
+                <td>10 min</td>
+                <td>Défi créatif et conclusion</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- PHASE 1 -->
+    <div class="section">
+        <h2>Phase 1 : Découverte de l'interface <span class="timing">⏱ 10 min</span></h2>
+
+        <div class="objectif">
+            <strong>🎯 Objectif :</strong> Se familiariser avec l'environnement Scratch
+        </div>
+
+        <div class="etape">
+            <h3>Étape 1.1 - Accéder à Scratch</h3>
+            <ol>
+                <li>Ouvre un navigateur web (Chrome, Firefox, Edge...)</li>
+                <li>Va sur le site : <strong>https://scratch.mit.edu</strong></li>
+                <li>Clique sur <strong>"Créer"</strong> pour démarrer un nouveau projet</li>
+            </ol>
+        </div>
+
+        <div class="etape">
+            <h3>Étape 1.2 - Explorer l'interface</h3>
+            <p><strong>Repère les 4 zones principales :</strong></p>
+            <table>
+                <tr>
+                    <th>Zone</th>
+                    <th>Description</th>
+                    <th>Position</th>
+                </tr>
+                <tr>
+                    <td><strong>Scène</strong></td>
+                    <td>C'est là que ton programme s'exécute</td>
+                    <td>En haut à droite</td>
+                </tr>
+                <tr>
+                    <td><strong>Palette de blocs</strong></td>
+                    <td>Tous les blocs disponibles par catégorie</td>
+                    <td>À gauche</td>
+                </tr>
+                <tr>
+                    <td><strong>Zone de scripts</strong></td>
+                    <td>Où tu assembles tes blocs de code</td>
+                    <td>Au centre</td>
+                </tr>
+                <tr>
+                    <td><strong>Liste des sprites</strong></td>
+                    <td>Tous les personnages de ton projet</td>
+                    <td>En bas à droite</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="etape">
+            <h3>Étape 1.3 - Les catégories de blocs</h3>
+            <p><strong>Découvre les principales catégories :</strong></p>
+            <ul>
+                <li><span class="scratch-block motion">Mouvement</span> : pour déplacer les sprites</li>
+                <li><span class="scratch-block looks">Apparence</span> : pour modifier l'apparence</li>
+                <li><span class="scratch-block events">Événements</span> : pour démarrer un programme</li>
+                <li><span class="scratch-block control">Contrôle</span> : pour répéter ou faire des choix</li>
+                <li><span class="scratch-block pen">Stylo</span> : pour dessiner</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="section">
+        <h2>Phase 2 : Premiers pas <span class="timing">⏱ 20 min</span></h2>
+
+        <div class="objectif">
+            <strong>🎯 Objectif :</strong> Créer ton premier programme pour faire bouger le chat (sprite)
+        </div>
+
+        <div class="etape">
+            <h3>Exercice 2.1 - Le chat qui avance</h3>
+            <p><strong>Programme à créer :</strong></p>
+            <div class="code-block">
+                <span class="scratch-block events">Quand 🏁 est cliqué</span><br>
+                <span class="scratch-block motion">avancer de 100 pas</span>
+            </div>
+
+            <p><strong>À faire :</strong></p>
+            <ol>
+                <li>Dans la catégorie <span class="scratch-block events">Événements</span>, prends le bloc <strong>"Quand 🏁 est cliqué"</strong></li>
+                <li>Dans la catégorie <span class="scratch-block motion">Mouvement</span>, prends le bloc <strong>"avancer de 10 pas"</strong></li>
+                <li>Attache les deux blocs ensemble (ils s'aimantent !)</li>
+                <li>Change 10 par 100</li>
+                <li>Clique sur le drapeau vert 🏁 pour tester</li>
+            </ol>
+
+            <div class="attention">
+                <strong>⚠️ Question :</strong> Que se passe-t-il si tu cliques plusieurs fois sur le drapeau vert ?
+            </div>
+        </div>
+
+        <div class="etape">
+            <h3>Exercice 2.2 - Le chat qui fait demi-tour</h3>
+            <p><strong>Améliore ton programme :</strong></p>
+            <div class="code-block">
+                <span class="scratch-block events">Quand 🏁 est cliqué</span><br>
+                <span class="scratch-block motion">aller à x: 0 y: 0</span><br>
+                <span class="scratch-block motion">avancer de 100 pas</span><br>
+                <span class="scratch-block control">attendre 1 secondes</span><br>
+                <span class="scratch-block motion">tourner ↻ de 180 degrés</span><br>
+                <span class="scratch-block motion">avancer de 100 pas</span>
+            </div>
+
+            <p><strong>Nouveaux blocs à découvrir :</strong></p>
+            <ul class="checklist">
+                <li>Le bloc <strong>"aller à x: 0 y: 0"</strong> remet le chat au centre</li>
+                <li>Le bloc <strong>"attendre 1 secondes"</strong> fait une pause</li>
+                <li>Le bloc <strong>"tourner de 180 degrés"</strong> fait tourner le chat</li>
+            </ul>
+        </div>
+
+        <div class="etape">
+            <h3>Exercice 2.3 - Le carré</h3>
+            <p><strong>Défi :</strong> Fais dessiner un carré au chat !</p>
+
+            <div class="attention">
+                <strong>💡 Aide :</strong> Pour dessiner, il faut :
+                <ul>
+                    <li>Activer le stylo : <span class="scratch-block pen">stylo en position d'écriture</span></li>
+                    <li>Répéter 4 fois : avancer puis tourner de 90°</li>
+                    <li>Utiliser le bloc <span class="scratch-block control">répéter 10 fois</span></li>
+                </ul>
+            </div>
+
+            <div class="code-block">
+                <span class="scratch-block events">Quand 🏁 est cliqué</span><br>
+                <span class="scratch-block pen">effacer tout</span><br>
+                <span class="scratch-block pen">stylo en position d'écriture</span><br>
+                <span class="scratch-block control">répéter 4 fois</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="scratch-block motion">avancer de 100 pas</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="scratch-block motion">tourner ↻ de 90 degrés</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="section">
+        <h2>Phase 3 : Dessiner des formes géométriques <span class="timing">⏱ 30 min</span></h2>
+
+        <div class="objectif">
+            <strong>🎯 Objectif :</strong> Utiliser les boucles pour dessiner différentes formes
+        </div>
+
+        <div class="etape">
+            <h3>Exercice 3.1 - Le triangle équilatéral</h3>
+            <p><strong>Question mathématique :</strong></p>
+            <div class="attention">
+                <strong>🤔 Réflexion :</strong> Un triangle équilatéral a des angles de 60°. Mais de quel angle doit tourner le chat ?
+                <br><br>
+                <strong>Indice :</strong> Le chat doit tourner de l'angle <strong>extérieur</strong>, pas l'angle intérieur !
+                <br>Angle extérieur = 180° - 60° = <strong>120°</strong>
+            </div>
+
+            <p><strong>À compléter :</strong></p>
+            <div class="code-block">
+                <span class="scratch-block events">Quand 🏁 est cliqué</span><br>
+                <span class="scratch-block pen">effacer tout</span><br>
+                <span class="scratch-block pen">stylo en position d'écriture</span><br>
+                <span class="scratch-block control">répéter <strong>?</strong> fois</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="scratch-block motion">avancer de 150 pas</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="scratch-block motion">tourner ↻ de <strong>?</strong> degrés</span>
+            </div>
+
+            <p><strong>Questions :</strong></p>
+            <ul class="checklist">
+                <li>Combien de fois faut-il répéter ?</li>
+                <li>De combien de degrés faut-il tourner ?</li>
+                <li>Que se passe-t-il si tu mets 60° au lieu de 120° ?</li>
+            </ul>
+        </div>
+
+        <div class="etape">
+            <h3>Exercice 3.2 - L'hexagone</h3>
+            <p><strong>Recherche :</strong></p>
+            <ol>
+                <li>Combien de côtés a un hexagone ?</li>
+                <li>Calcule l'angle de rotation : 360° ÷ nombre de côtés = ?</li>
+                <li>Crée le programme pour dessiner un hexagone</li>
+            </ol>
+
+            <div class="code-block">
+                <strong>À toi de jouer !</strong> Construis le programme avec :
+                <ul>
+                    <li>répéter <strong>___ fois</strong></li>
+                    <li>avancer de 100 pas</li>
+                    <li>tourner de <strong>___ degrés</strong></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="etape">
+            <h3>Exercice 3.3 - Utiliser les variables</h3>
+            <p><strong>Nouvelle notion : les variables</strong></p>
+            <ol>
+                <li>Va dans la catégorie <span class="scratch-block data">Variables</span></li>
+                <li>Crée une variable appelée <strong>"nombre de côtés"</strong></li>
+                <li>Crée une variable appelée <strong>"angle"</strong></li>
+            </ol>
+
+            <div class="code-block">
+                <span class="scratch-block events">Quand 🏁 est cliqué</span><br>
+                <span class="scratch-block pen">effacer tout</span><br>
+                <span class="scratch-block data">mettre [nombre de côtés] à 6</span><br>
+                <span class="scratch-block data">mettre [angle] à (360 / nombre de côtés)</span><br>
+                <span class="scratch-block pen">stylo en position d'écriture</span><br>
+                <span class="scratch-block control">répéter (nombre de côtés) fois</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="scratch-block motion">avancer de 100 pas</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="scratch-block motion">tourner ↻ de (angle) degrés</span>
+            </div>
+
+            <div class="attention">
+                <strong>🎯 Défi :</strong> Change la valeur de "nombre de côtés" pour dessiner d'autres polygones (pentagone, octogone...)
+            </div>
+        </div>
+    </div>
+
+    <!-- PHASE 4 -->
+    <div class="section">
+        <h2>Phase 4 : Ajouter de l'interactivité <span class="timing">⏱ 20 min</span></h2>
+
+        <div class="objectif">
+            <strong>🎯 Objectif :</strong> Créer un programme qui réagit aux actions de l'utilisateur
+        </div>
+
+        <div class="etape">
+            <h3>Exercice 4.1 - Contrôle au clavier</h3>
+            <p><strong>Programme :</strong> Le chat se déplace avec les flèches du clavier</p>
+
+            <div class="code-block">
+                <span class="scratch-block events">Quand la touche [flèche haut ▲] est pressée</span><br>
+                <span class="scratch-block motion">avancer de 10 pas</span>
+            </div>
+
+            <p><strong>À faire :</strong></p>
+            <ol>
+                <li>Crée 4 scripts différents (un pour chaque flèche)</li>
+                <li>Utilise les blocs :
+                    <ul>
+                        <li>Flèche haut ▲ : avancer de 10 pas</li>
+                        <li>Flèche bas ▼ : avancer de -10 pas</li>
+                        <li>Flèche gauche ◄ : tourner de -15 degrés</li>
+                        <li>Flèche droite ► : tourner de 15 degrés</li>
+                    </ul>
+                </li>
+                <li>Active le stylo pour laisser une trace !</li>
+            </ol>
+        </div>
+
+        <div class="etape">
+            <h3>Exercice 4.2 - Questions et réponses</h3>
+            <p><strong>Programme :</strong> Créer un quiz mathématique</p>
+
+            <div class="code-block">
+                <span class="scratch-block events">Quand 🏁 est cliqué</span><br>
+                <span class="scratch-block looks">demander [Combien font 5 x 6 ?] et attendre</span><br>
+                <span class="scratch-block control">si &lt;(réponse) = [30]&gt; alors</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="scratch-block looks">dire [Bravo !] pendant 2 secondes</span><br>
+                <span class="scratch-block control">sinon</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="scratch-block looks">dire [Réessaie !] pendant 2 secondes</span>
+            </div>
+
+            <p><strong>Nouveaux blocs :</strong></p>
+            <ul class="checklist">
+                <li><span class="scratch-block looks">demander et attendre</span> : pose une question</li>
+                <li><span class="scratch-block control">si...alors...sinon</span> : fait un choix</li>
+                <li>Le bloc <strong>réponse</strong> contient ce que l'utilisateur a tapé</li>
+            </ul>
+
+            <div class="attention">
+                <strong>🎯 Extension :</strong> Ajoute plusieurs questions avec un compteur de bonnes réponses !
+            </div>
+        </div>
+    </div>
+
+    <!-- PHASE 5 -->
+    <div class="section">
+        <h2>Phase 5 : Défi créatif <span class="timing">⏱ 10 min</span></h2>
+
+        <div class="challenge">
+            <h3>🏆 Choisis ton défi !</h3>
+
+            <p><strong>Défi 1 - L'étoile</strong></p>
+            <p>Dessine une étoile à 5 branches. Indice : il faut tourner de 144° et répéter 5 fois.</p>
+
+            <p><strong>Défi 2 - La spirale</strong></p>
+            <p>Crée une spirale en augmentant la distance à chaque tour.<br>
+            Indice : utilise une variable qui augmente à chaque répétition.</p>
+
+            <p><strong>Défi 3 - Le labyrinthe</strong></p>
+            <p>Crée un mini-jeu où le chat doit être contrôlé au clavier pour atteindre un point sans toucher les bords.</p>
+
+            <p><strong>Défi 4 - Création libre</strong></p>
+            <p>Imagine et crée ton propre programme original !</p>
+        </div>
+    </div>
+
+    <!-- BILAN -->
+    <div class="section">
+        <h2>📝 Bilan de la séance</h2>
+
+        <div class="etape">
+            <h3>Ce que tu as appris aujourd'hui :</h3>
+            <ul class="checklist">
+                <li>Utiliser l'interface de Scratch</li>
+                <li>Assembler des blocs pour créer un programme</li>
+                <li>Faire bouger un sprite</li>
+                <li>Utiliser les boucles (répéter)</li>
+                <li>Dessiner des formes géométriques</li>
+                <li>Créer et utiliser des variables</li>
+                <li>Ajouter de l'interactivité (clavier, questions)</li>
+                <li>Utiliser les conditions (si...alors...sinon)</li>
+            </ul>
+        </div>
+
+        <div class="etape">
+            <h3>Pour aller plus loin :</h3>
+            <ul>
+                <li>Explore les autres catégories de blocs (son, capteurs...)</li>
+                <li>Ajoute plusieurs sprites et fais-les interagir</li>
+                <li>Crée un jeu complet</li>
+                <li>Partage ton projet sur le site Scratch.mit.edu</li>
+                <li>Regarde les projets des autres pour t'inspirer</li>
+            </ul>
+        </div>
+
+        <div class="info-box">
+            <strong>📚 Ressources utiles :</strong>
+            <ul>
+                <li>Tutoriels officiels Scratch : <a href="https://scratch.mit.edu/ideas" target="_blank">scratch.mit.edu/ideas</a></li>
+                <li>Projets d'exemple : explore la page d'accueil de Scratch</li>
+                <li>Carte de référence des blocs (à distribuer par le professeur)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section" style="text-align: center; background: linear-gradient(135deg, #4C97FF, #9966FF); color: white;">
+        <h2 style="color: white; border: none;">Bravo pour cette découverte de Scratch ! 🎉</h2>
+        <p style="font-size: 1.2em;">Continue à explorer et à créer tes propres projets !</p>
+    </div>
+
+</body>
+</html>
