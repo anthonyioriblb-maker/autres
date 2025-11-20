@@ -44,30 +44,8 @@
             margin-bottom: 8px;
         }
 
-        .screenshot-box {
-            border: 2px dashed #ccc;
-            background: #f9f9f9;
-            padding: 15px;
-            margin: 15px 0;
-            min-height: 150px;
-            text-align: center;
-            color: #888;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 5px;
-        }
-
-        .screenshot-box.small {
-            min-height: 100px;
-        }
-
-        .screenshot-box.large {
-            min-height: 250px;
-        }
-
         .section {
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         .color-badge {
@@ -84,15 +62,6 @@
         .control { background: #FFAB19; }
         .pen { background: #0FBD8C; }
         .data { background: #FF8C1A; }
-        .looks { background: #9966FF; }
-        .events { background: #FFD500; color: #333; }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin: 15px 0;
-        }
 
         .note {
             background: #FFF9E6;
@@ -120,180 +89,193 @@
             margin: 5px 0;
         }
 
-        .interface-zones {
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        .categories-grid {
             display: grid;
-            grid-template-columns: 1fr 2fr;
+            grid-template-columns: 1fr 1fr;
             gap: 20px;
             margin: 15px 0;
         }
 
-        .zone-list {
+        .category-box {
+            background: #f9f9f9;
+            padding: 12px;
+            border-radius: 5px;
+            border-left: 4px solid;
+        }
+
+        .category-box.motion { border-left-color: #4C97FF; }
+        .category-box.control { border-left-color: #FFAB19; }
+        .category-box.pen { border-left-color: #0FBD8C; }
+        .category-box.data { border-left-color: #FF8C1A; }
+
+        .rotation-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .rotation-box {
             background: #f5f5f5;
             padding: 15px;
             border-radius: 5px;
+            text-align: center;
         }
 
-        .zone-item {
-            padding: 8px;
-            margin: 5px 0;
+        .rotation-box h3 {
+            color: #4C97FF;
+            margin-top: 0;
+        }
+
+        .rotation-example {
             background: white;
+            padding: 10px;
             border-radius: 3px;
-            font-size: 14px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 13px;
+        }
+
+        .extension-steps {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
         }
     </style>
 </head>
 <body>
     <h1>🎨 Guide Scratch - Référence Rapide</h1>
 
-    <!-- SECTION 1: Interface -->
+    <!-- SECTION 1: Catégories de blocs -->
     <div class="section">
-        <h2>1. L'interface Scratch</h2>
+        <h2>1. Les catégories de blocs</h2>
 
-        <div class="interface-zones">
-            <div class="zone-list">
-                <div class="zone-item"><strong>①</strong> Menu des blocs</div>
-                <div class="zone-item"><strong>②</strong> Zone de scripts</div>
-                <div class="zone-item"><strong>③</strong> Scène</div>
-                <div class="zone-item"><strong>④</strong> Liste des lutins</div>
-                <div class="zone-item"><strong>⑤</strong> Extension stylo</div>
-            </div>
+        <img src="interface.png" alt="Interface Scratch avec catégories">
 
-            <div class="screenshot-box large">
-                📸 Insérer capture : Interface complète avec numéros
-            </div>
-        </div>
-    </div>
-
-    <!-- SECTION 2: Catégories de blocs -->
-    <div class="section">
-        <h2>2. Les catégories de blocs</h2>
-
-        <div class="grid-2">
-            <div>
+        <div class="categories-grid">
+            <div class="category-box motion">
                 <h3><span class="color-badge motion">Mouvement</span></h3>
                 <ul>
-                    <li>Avancer / Reculer</li>
-                    <li>Tourner</li>
-                    <li>Aller à une position</li>
+                    <li><strong>avancer de (50) pas</strong> → Déplace le lutin</li>
+                    <li><strong>tourner ↻ de (90) degrés</strong> → Tourne à droite</li>
+                    <li><strong>tourner ↺ de (90) degrés</strong> → Tourne à gauche</li>
+                    <li><strong>s'orienter à (0)°</strong> → Dirige vers le haut</li>
                 </ul>
-                <div class="screenshot-box small">📸 Blocs mouvement</div>
             </div>
 
-            <div>
+            <div class="category-box control">
                 <h3><span class="color-badge control">Contrôle</span></h3>
                 <ul>
-                    <li>Répéter</li>
-                    <li>Si... alors</li>
-                    <li>Attendre</li>
+                    <li><strong>répéter (4) fois</strong> → Boucle un certain nombre de fois</li>
+                    <li><strong>répéter indéfiniment</strong> → Boucle sans arrêt</li>
+                    <li><strong>si... alors</strong> → Condition</li>
+                    <li><strong>attendre (1) secondes</strong> → Met en pause</li>
                 </ul>
-                <div class="screenshot-box small">📸 Blocs contrôle</div>
             </div>
 
-            <div>
+            <div class="category-box pen">
                 <h3><span class="color-badge pen">Stylo</span></h3>
                 <ul>
-                    <li>Stylo en position d'écriture</li>
-                    <li>Relever le stylo</li>
-                    <li>Mettre la couleur / taille</li>
+                    <li><strong>effacer tout</strong> → Efface les dessins</li>
+                    <li><strong>stylo en position d'écriture</strong> → Commence à dessiner</li>
+                    <li><strong>relever le stylo</strong> → Arrête de dessiner</li>
+                    <li><strong>mettre la taille du stylo à (5)</strong> → Change l'épaisseur</li>
                 </ul>
-                <div class="screenshot-box small">📸 Blocs stylo</div>
             </div>
 
-            <div>
+            <div class="category-box data">
                 <h3><span class="color-badge data">Variables</span></h3>
                 <ul>
-                    <li>Mettre à</li>
-                    <li>Ajouter à</li>
-                    <li>Afficher / Cacher</li>
+                    <li><strong>mettre [côté] à (100)</strong> → Donne une valeur</li>
+                    <li><strong>ajouter (10) à [côté]</strong> → Augmente la valeur</li>
+                    <li><strong>[côté]</strong> → Utilise la valeur stockée</li>
                 </ul>
-                <div class="screenshot-box small">📸 Blocs variables</div>
             </div>
         </div>
     </div>
 
-    <!-- SECTION 3: Activer le stylo -->
-    <div class="section page-break">
-        <h2>3. Activer l'extension Stylo</h2>
+    <!-- SECTION 2: Activer le stylo -->
+    <div class="section">
+        <h2>2. Activer l'extension Stylo</h2>
 
         <div class="important">
             ⚠️ Le stylo n'est pas activé par défaut - il faut ajouter l'extension !
         </div>
 
-        <h3>Procédure :</h3>
+        <div class="extension-steps">
+            <div>
+                <h3>Étape 1 : Cliquer sur l'icône en bas à gauche</h3>
+                <img src="ajouter extension.png" alt="Bouton ajouter extension">
+            </div>
 
-        <div class="screenshot-box">
-            📸 Capture 1 : Bouton "Ajouter une extension" en bas à gauche
-        </div>
-
-        <div class="screenshot-box">
-            📸 Capture 2 : Fenêtre des extensions avec icône Stylo
-        </div>
-
-        <div class="screenshot-box">
-            📸 Capture 3 : Catégorie Stylo ajoutée dans la liste des blocs
+            <div>
+                <h3>Étape 2 : Choisir l'extension Stylo</h3>
+                <img src="extension stylo.png" alt="Extension stylo">
+            </div>
         </div>
 
         <div class="note">
-            💡 Une fois l'extension ajoutée, la catégorie <span class="color-badge pen">Stylo</span> apparaît dans le menu des blocs.
+            💡 Une fois l'extension ajoutée, la catégorie <span class="color-badge pen">Stylo</span> apparaît dans le menu des blocs (voir image ci-dessus).
         </div>
     </div>
 
-    <!-- SECTION 4: Utiliser le stylo -->
+    <!-- SECTION 3: Blocs essentiels du stylo -->
     <div class="section">
-        <h2>4. Dessiner avec le stylo</h2>
+        <h2>3. Utiliser le stylo pour dessiner</h2>
 
-        <h3>Blocs essentiels :</h3>
+        <h3>Les 3 blocs indispensables :</h3>
         <ul>
-            <li><strong>Stylo en position d'écriture</strong> → Commence à dessiner</li>
-            <li><strong>Relever le stylo</strong> → Arrête de dessiner</li>
-            <li><strong>Effacer tout</strong> → Efface tous les dessins</li>
+            <li><strong>effacer tout</strong> → Nettoie la scène avant de commencer</li>
+            <li><strong>stylo en position d'écriture</strong> → Le lutin laisse une trace quand il se déplace</li>
+            <li><strong>relever le stylo</strong> → Le lutin ne dessine plus</li>
         </ul>
 
-        <h3>Exemple : Dessiner un carré</h3>
-
-        <div class="screenshot-box">
-            📸 Programme Scratch complet pour tracer un carré
-        </div>
-
         <div class="note">
-            💡 Le lutin se déplace et laisse une trace quand le stylo est en position d'écriture.
+            💡 Le lutin doit bouger avec les blocs <span class="color-badge motion">Mouvement</span> pour tracer un dessin.
         </div>
     </div>
 
-    <!-- SECTION 5: Concepts clés -->
-    <div class="section">
-        <h2>5. Concepts importants</h2>
+    <!-- SECTION 4: Les deux rotations -->
+    <div class="section page-break">
+        <h2>4. Les deux types de rotation</h2>
 
-        <div class="grid-2">
-            <div>
-                <h3>Direction du lutin</h3>
-                <ul>
-                    <li>0° = vers le haut</li>
-                    <li>90° = vers la droite</li>
-                    <li>180° = vers le bas</li>
-                    <li>-90° = vers la gauche</li>
-                </ul>
+        <div class="rotation-grid">
+            <div class="rotation-box">
+                <h3>↻ Tourner à droite</h3>
+                <div class="rotation-example">
+                    tourner ↻ de (90) degrés
+                </div>
+                <p>Tourne dans le sens des aiguilles d'une montre</p>
+                <p><strong>Exemple :</strong> Si le lutin regarde en haut (0°) et tourne de 90° à droite, il regardera à droite (90°)</p>
             </div>
 
-            <div>
-                <h3>Angles de rotation</h3>
-                <ul>
-                    <li>Tourner à droite : angle positif</li>
-                    <li>Tourner à gauche : angle négatif</li>
-                    <li>Carré : 90° × 4</li>
-                    <li>Triangle : 120° × 3</li>
-                </ul>
+            <div class="rotation-box">
+                <h3>↺ Tourner à gauche</h3>
+                <div class="rotation-example">
+                    tourner ↺ de (90) degrés
+                </div>
+                <p>Tourne dans le sens inverse des aiguilles d'une montre</p>
+                <p><strong>Exemple :</strong> Si le lutin regarde en haut (0°) et tourne de 90° à gauche, il regardera à gauche (-90°)</p>
             </div>
         </div>
 
-        <div class="screenshot-box">
-            📸 Schéma : Angles et directions
+        <div class="note">
+            💡 <strong>Pour dessiner un carré :</strong> On peut tourner 4 fois de 90° à droite OU 4 fois de 90° à gauche !
         </div>
     </div>
 
     <!-- Footer -->
     <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #eee; text-align: center; color: #888; font-size: 12px;">
-        Guide Scratch - Référence Rapide | Pour insérer vos captures, remplacez les zones grisées
+        Guide Scratch - Référence Rapide
     </div>
 </body>
 </html>
