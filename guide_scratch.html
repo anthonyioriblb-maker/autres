@@ -97,6 +97,41 @@
             margin: 10px 0;
         }
 
+        .interface-container {
+            position: relative;
+            margin: 20px 0;
+        }
+
+        .interface-legend {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            background: #f9f9f9;
+            padding: 8px;
+            border-radius: 5px;
+        }
+
+        .legend-number {
+            background: #FF6B35;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
         .categories-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -155,51 +190,97 @@
 <body>
     <h1>🎨 Guide Scratch - Référence Rapide</h1>
 
+    <!-- SECTION 0: Interface -->
+    <div class="section">
+        <h2>L'interface Scratch</h2>
+
+        <div class="interface-container">
+            <img src="interface.png" alt="Interface Scratch">
+
+            <div class="interface-legend">
+                <div class="legend-item">
+                    <div class="legend-number">①</div>
+                    <div><strong>Menu des catégories</strong> - Choix des types de blocs</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-number">②</div>
+                    <div><strong>Blocs disponibles</strong> - Tous les blocs de la catégorie</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-number">③</div>
+                    <div><strong>Zone de scripts</strong> - Où on assemble les blocs</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-number">④</div>
+                    <div><strong>Scène</strong> - Résultat visuel du programme</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-number">⑤</div>
+                    <div><strong>Informations du lutin</strong> - Position, taille, direction</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-number">⑥</div>
+                    <div><strong>Ajouter extension</strong> - Pour activer le Stylo</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- SECTION 1: Catégories de blocs -->
     <div class="section">
         <h2>1. Les catégories de blocs</h2>
-
-        <img src="interface.png" alt="Interface Scratch avec catégories">
 
         <div class="categories-grid">
             <div class="category-box motion">
                 <h3><span class="color-badge motion">Mouvement</span></h3>
                 <ul>
-                    <li><strong>avancer de (50) pas</strong> → Déplace le lutin</li>
-                    <li><strong>tourner ↻ de (90) degrés</strong> → Tourne à droite</li>
-                    <li><strong>tourner ↺ de (90) degrés</strong> → Tourne à gauche</li>
+                    <li><strong>avancer de (50) pas</strong> → Déplace le lutin vers l'avant</li>
+                    <li><strong>tourner ↻ de (90) degrés</strong> → Tourne à droite (sens horaire)</li>
+                    <li><strong>tourner ↺ de (90) degrés</strong> → Tourne à gauche (sens anti-horaire)</li>
                     <li><strong>s'orienter à (0)°</strong> → Dirige vers le haut</li>
+                    <li><strong>aller à x: (0) y: (0)</strong> → Va au centre de la scène</li>
+                    <li><strong>glisser en (1) s à x: (100) y: (100)</strong> → Déplacement progressif</li>
                 </ul>
             </div>
 
             <div class="category-box control">
                 <h3><span class="color-badge control">Contrôle</span></h3>
                 <ul>
-                    <li><strong>répéter (4) fois</strong> → Boucle un certain nombre de fois</li>
-                    <li><strong>répéter indéfiniment</strong> → Boucle sans arrêt</li>
-                    <li><strong>si... alors</strong> → Condition</li>
-                    <li><strong>attendre (1) secondes</strong> → Met en pause</li>
+                    <li><strong>répéter (4) fois</strong> → Répète les blocs à l'intérieur 4 fois</li>
+                    <li><strong>répéter indéfiniment</strong> → Boucle sans fin</li>
+                    <li><strong>si... alors</strong> → Exécute si la condition est vraie</li>
+                    <li><strong>si... alors... sinon</strong> → Deux chemins possibles</li>
+                    <li><strong>attendre (1) secondes</strong> → Pause le programme</li>
+                    <li><strong>stop [tout]</strong> → Arrête le programme</li>
                 </ul>
             </div>
 
             <div class="category-box pen">
                 <h3><span class="color-badge pen">Stylo</span></h3>
                 <ul>
-                    <li><strong>effacer tout</strong> → Efface les dessins</li>
-                    <li><strong>stylo en position d'écriture</strong> → Commence à dessiner</li>
-                    <li><strong>relever le stylo</strong> → Arrête de dessiner</li>
-                    <li><strong>mettre la taille du stylo à (5)</strong> → Change l'épaisseur</li>
+                    <li><strong>effacer tout</strong> → Efface tous les dessins de la scène</li>
+                    <li><strong>stylo en position d'écriture</strong> → Le lutin dessine en se déplaçant</li>
+                    <li><strong>relever le stylo</strong> → Le lutin se déplace sans dessiner</li>
+                    <li><strong>mettre la couleur du stylo à</strong> → Change la couleur du trait</li>
+                    <li><strong>mettre la taille du stylo à (5)</strong> → Change l'épaisseur (1=fin, 10=gros)</li>
+                    <li><strong>estampiller</strong> → Imprime une copie du lutin sur la scène</li>
                 </ul>
             </div>
 
             <div class="category-box data">
                 <h3><span class="color-badge data">Variables</span></h3>
                 <ul>
-                    <li><strong>mettre [côté] à (100)</strong> → Donne une valeur</li>
-                    <li><strong>ajouter (10) à [côté]</strong> → Augmente la valeur</li>
-                    <li><strong>[côté]</strong> → Utilise la valeur stockée</li>
+                    <li><strong>mettre [côté] à (100)</strong> → Stocke la valeur 100 dans la variable</li>
+                    <li><strong>ajouter (10) à [côté]</strong> → Augmente la variable de 10</li>
+                    <li><strong>[côté]</strong> → Utilise la valeur stockée dans les calculs</li>
+                    <li><strong>afficher [côté]</strong> → Montre la variable sur la scène</li>
+                    <li><strong>cacher [côté]</strong> → Cache la variable de la scène</li>
                 </ul>
             </div>
+        </div>
+
+        <div class="note">
+            💡 <strong>Astuce :</strong> Les blocs de <span class="color-badge pen">Stylo</span> n'apparaissent qu'après avoir activé l'extension (voir section suivante).
         </div>
     </div>
 
