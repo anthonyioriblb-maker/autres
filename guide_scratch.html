@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prise en main de Scratch</title>
+    <style>
+        @media print {
+            body {
+                margin: 0.5cm;
+            }
+            .page-break {
+                page-break-after: always;
+            }
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 21cm;
+            margin: 0 auto;
+            padding: 0.5cm;
+            line-height: 1.2;
+            font-size: 11px;
+        }
+
+        h1 {
+            color: #FF6B35;
+            border-bottom: 2px solid #FF6B35;
+            padding-bottom: 5px;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #4C97FF;
+            font-size: 15px;
+            margin-top: 10px;
+            margin-bottom: 6px;
+        }
+
+        h3 {
+            color: #333;
+            font-size: 13px;
+            margin-top: 8px;
+            margin-bottom: 4px;
+        }
+
+        .section {
+            margin-bottom: 12px;
+        }
+
+        .color-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 10px;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .motion { background: #4C97FF; }
+        .looks { background: #9966FF; }
+        .sound { background: #D65CD6; }
+        .events { background: #FFD500; color: #333; }
+        .control { background: #FFAB19; }
+        .sensing { background: #4CBFE6; }
+        .operators { background: #40BF4A; }
+        .data { background: #FF8C1A; }
+        .myblocks { background: #FF6680; }
+        .pen { background: #0FBD8C; }
+
+        .note {
+            background: #FFF9E6;
+            border-left: 3px solid #FFD500;
+            padding: 6px;
+            margin: 8px 0;
+            font-size: 10px;
+        }
+
+        .important {
+            background: #FFE6E6;
+            border-left: 3px solid #FF6B35;
+            padding: 6px;
+            margin: 8px 0;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        ul {
+            margin: 4px 0;
+            padding-left: 18px;
+        }
+
+        li {
+            margin: 2px 0;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            margin: 5px 0;
+        }
+
+        .interface-container {
+            position: relative;
+            margin: 8px 0;
+        }
+
+        .interface-legend {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 5px;
+            margin-top: 8px;
+            font-size: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            background: #f9f9f9;
+            padding: 4px;
+            border-radius: 3px;
+        }
+
+        .legend-number {
+            background: #FF6B35;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 5px;
+            flex-shrink: 0;
+            font-size: 11px;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin: 8px 0;
+        }
+
+        .category-box {
+            background: #f9f9f9;
+            padding: 6px;
+            border-radius: 3px;
+            border-left: 3px solid;
+        }
+
+        .category-box ul {
+            font-size: 10px;
+        }
+
+        .category-box.motion { border-left-color: #4C97FF; }
+        .category-box.looks { border-left-color: #9966FF; }
+        .category-box.sound { border-left-color: #D65CD6; }
+        .category-box.events { border-left-color: #FFD500; }
+        .category-box.control { border-left-color: #FFAB19; }
+        .category-box.sensing { border-left-color: #4CBFE6; }
+        .category-box.operators { border-left-color: #40BF4A; }
+        .category-box.data { border-left-color: #FF8C1A; }
+        .category-box.myblocks { border-left-color: #FF6680; }
+        .category-box.pen { border-left-color: #0FBD8C; }
+
+        .rotation-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin: 8px 0;
+        }
+
+        .rotation-box {
+            background: #f5f5f5;
+            padding: 8px;
+            border-radius: 3px;
+            text-align: center;
+        }
+
+        .rotation-box h3 {
+            color: #4C97FF;
+            margin-top: 0;
+            font-size: 12px;
+        }
+
+        .rotation-box p {
+            font-size: 10px;
+            margin: 4px 0;
+        }
+
+        .rotation-example {
+            background: white;
+            padding: 5px;
+            border-radius: 3px;
+            margin: 5px 0;
+            font-family: monospace;
+            font-size: 10px;
+        }
+
+        .extension-steps {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin: 8px 0;
+        }
+
+        .extension-steps img {
+            max-height: 120px;
+            object-fit: contain;
+        }
+
+        .extension-steps h3 {
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎨 Prise en main de Scratch</h1>
+
+    <!-- SECTION 0: Interface -->
+    <div class="section">
+        <h2>L'interface Scratch</h2>
+
+        <div class="interface-container">
+            <img src="interface.png" alt="Interface Scratch">
+
+            <div class="interface-legend">
+                <div class="legend-item">
+                    <div class="legend-number">①</div>
+                    <div><strong>Menu des catégories</strong> - Choix des types de blocs</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-number">②</div>
+                    <div><strong>Blocs disponibles</strong> - Tous les blocs de la catégorie</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-number">③</div>
+                    <div><strong>Zone de scripts</strong> - Où on assemble les blocs</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-number">④</div>
+                    <div><strong>Scène</strong> - Résultat visuel du programme</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-number">⑤</div>
+                    <div><strong>Informations du lutin</strong> - Position, taille, direction</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-number">⑥</div>
+                    <div><strong>Ajouter extension</strong> - Pour activer le Stylo</div>
+                </div>
+            </div>
+
+            <div class="note" style="margin-top: 15px;">
+                💡 <strong>Sur cette image :</strong> La catégorie <span class="color-badge pen">Stylo</span> est visible car l'extension a déjà été activée. Sans l'extension, cette catégorie n'apparaît pas.
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 1: Les 10 catégories de blocs -->
+    <div class="section">
+        <h2>1. Les 10 catégories de blocs Scratch</h2>
+
+        <div class="categories-grid">
+            <div class="category-box motion">
+                <h3><span class="color-badge motion">Mouvement</span></h3>
+                <ul>
+                    <li><strong>avancer de (50) pas</strong> → Déplace le lutin</li>
+                    <li><strong>tourner ↻ de (90) degrés</strong> → Tourne à droite</li>
+                    <li><strong>tourner ↺ de (90) degrés</strong> → Tourne à gauche</li>
+                    <li><strong>s'orienter à (0)°</strong> → Dirige vers une direction précise</li>
+                    <li><strong>aller à x: (0) y: (0)</strong> → Va à une position</li>
+                </ul>
+            </div>
+
+            <div class="category-box looks">
+                <h3><span class="color-badge looks">Apparence</span></h3>
+                <ul>
+                    <li><strong>dire [Bonjour] pendant (2) s</strong> → Bulle temporaire</li>
+                    <li><strong>basculer sur le costume</strong> → Change l'apparence</li>
+                    <li><strong>montrer / cacher</strong> → Visibilité</li>
+                    <li><strong>mettre la taille à (100) %</strong> → Change la taille</li>
+                </ul>
+            </div>
+
+            <div class="category-box sound">
+                <h3><span class="color-badge sound">Son</span></h3>
+                <ul>
+                    <li><strong>jouer le son [Miaou]</strong> → Joue sans attendre</li>
+                    <li><strong>jouer [Miaou] jusqu'au bout</strong> → Attend la fin</li>
+                    <li><strong>mettre le volume à (100) %</strong> → Règle volume</li>
+                </ul>
+            </div>
+
+            <div class="category-box events">
+                <h3><span class="color-badge events">Événements</span></h3>
+                <ul>
+                    <li><strong>quand 🏴 est cliqué</strong> → Démarre au drapeau vert</li>
+                    <li><strong>quand ce lutin est cliqué</strong> → Clic sur le lutin</li>
+                    <li><strong>quand [espace] est pressé</strong> → Touche clavier</li>
+                </ul>
+            </div>
+
+            <div class="category-box control">
+                <h3><span class="color-badge control">Contrôle</span></h3>
+                <ul>
+                    <li><strong>répéter (4) fois</strong> → Boucle nombre fixe</li>
+                    <li><strong>répéter indéfiniment</strong> → Boucle infinie</li>
+                    <li><strong>si... alors... sinon</strong> → Condition</li>
+                    <li><strong>attendre (1) secondes</strong> → Pause</li>
+                </ul>
+            </div>
+
+            <div class="category-box sensing">
+                <h3><span class="color-badge sensing">Capteurs</span></h3>
+                <ul>
+                    <li><strong>touche [espace] pressée ?</strong> → Détecte clavier</li>
+                    <li><strong>souris pressée ?</strong> → Détecte clic</li>
+                    <li><strong>demander [Ton nom ?]</strong> → Pose question</li>
+                    <li><strong>réponse</strong> → Récupère la réponse</li>
+                </ul>
+            </div>
+        </div>
+        <br><br><br><br><br><br>
+        <div class="categories-grid">
+            <div class="category-box operators">
+                <h3><span class="color-badge operators">Opérateurs</span></h3>
+                <ul>
+                    <li><strong>(10) + (5)</strong> → Addition</li>
+                    <li><strong>(10) - (5)</strong> → Soustraction</li>
+                    <li><strong>(10) × (5)</strong> → Multiplication</li>
+                    <li><strong>aléatoire entre (1) et (10)</strong> → Hasard</li>
+                </ul>
+            </div>
+
+            <div class="category-box data">
+                <h3><span class="color-badge data">Variables</span></h3>
+                <ul>
+                    <li><strong>mettre [côté] à (100)</strong> → Stocke une valeur</li>
+                    <li><strong>ajouter (10) à [côté]</strong> → Augmente ou diminue (si nombres négatifs)</li>
+                    <li><strong>[côté]</strong> → Utilise la valeur</li>
+                    <li><strong>afficher / cacher [côté]</strong> → Visibilité</li>
+                </ul>
+            </div>
+
+            <div class="category-box myblocks">
+                <h3><span class="color-badge myblocks">Mes Blocs</span></h3>
+                <ul>
+                    <li><strong>Créer un bloc</strong> → Fonction personnalisée</li>
+                    <li>Utile pour ne pas répéter le code</li>
+                </ul>
+            </div>
+
+            <div class="category-box pen">
+                <h3><span class="color-badge pen">Stylo</span> (Extension)</h3>
+                <ul>
+                    <li><strong>effacer tout</strong> → Efface dessins</li>
+                    <li><strong>stylo en position d'écriture</strong> → Dessine</li>
+                    <li><strong>relever le stylo</strong> → Ne dessine plus</li>
+                    <li><strong>mettre couleur / taille</strong> → Personnalise</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="note">
+            💡 <strong>Important :</strong> La catégorie <span class="color-badge pen">Stylo</span> n'apparaît qu'après avoir activé l'extension (voir section suivante).
+        </div>
+    </div>
+
+    <!-- SECTION 2: Activer le stylo -->
+    <div class="section">
+        <h2>2. Activer l'extension Stylo</h2>
+
+        <div class="important">
+            ⚠️ Le stylo n'est pas activé par défaut - il faut ajouter l'extension !
+        </div>
+
+        <div class="extension-steps">
+            <div>
+                <h3>Étape 1 : Cliquer sur l'icône en bas à gauche</h3>
+                <img src="ajouter extension.png" alt="Bouton ajouter extension">
+            </div>
+
+            <div>
+                <h3>Étape 2 : Choisir l'extension Stylo</h3>
+                <img src="extension stylo.png" alt="Extension stylo">
+            </div>
+        </div>
+
+        <div class="note">
+            💡 Une fois l'extension ajoutée, la catégorie <span class="color-badge pen">Stylo</span> apparaît dans le menu des blocs (voir image ci-dessus).
+        </div>
+    </div>
+
+    <!-- SECTION 3: Blocs essentiels du stylo -->
+    <div class="section">
+        <h2>3. Utiliser le stylo</h2>
+        <div class="note">
+            💡 Le lutin dessine quand le stylo est en position d'écriture et qu'il se déplace avec les blocs <span class="color-badge motion">Mouvement</span>.
+        </div>
+    </div>
+
+    <!-- SECTION 4: Les rotations et orientations -->
+    <div class="section page-break">
+        <h2>4. Les rotations et orientations</h2>
+
+        <div class="rotation-grid">
+            <div class="rotation-box">
+                <h3>↻ Tourner à droite</h3>
+                <div class="rotation-example">tourner ↻ de (90) degrés</div>
+                <p>Sens horaire ⟳</p>
+            </div>
+
+            <div class="rotation-box">
+                <h3>↺ Tourner à gauche</h3>
+                <div class="rotation-example">tourner ↺ de (90) degrés</div>
+                <p>Sens anti-horaire ⟲</p>
+            </div>
+        </div>
+
+        <h3 style="margin-top: 8px;">S'orienter vers une direction précise</h3>
+        <div style="background: #f5f5f5; padding: 8px; border-radius: 3px; margin: 8px 0; font-size: 10px;">
+            <div class="rotation-example" style="text-align: center;">
+                s'orienter à (0) degrés
+            </div>
+            <p style="margin: 4px 0;"><strong>Fixe directement la direction :</strong> 0°=Haut ⬆️, 90°=Droite ➡️, 180°=Bas ⬇️, -90°=Gauche ⬅️</p>
+        </div>
+
+        <div class="note">
+            💡 "Tourner" ajoute des degrés, "s'orienter à" fixe une direction précise.
+        </div>
+    </div>
+
+</body>
+</html>
