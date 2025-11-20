@@ -222,6 +222,29 @@
             box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.1);
         }
 
+        .scratch-block {
+            padding: 3px 6px;
+            border-radius: 8px;
+            display: inline-block;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 9px;
+            font-weight: 500;
+            color: white;
+            line-height: 1.3;
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+            border: 0.5px solid rgba(0, 0, 0, 0.15);
+        }
+
+        .scratch-block.motion { background: #4C97FF; border-color: #3373CC; }
+        .scratch-block.looks { background: #9966FF; border-color: #774DCB; }
+        .scratch-block.sound { background: #D65CD6; border-color: #BD42BD; }
+        .scratch-block.events { background: #FFD500; border-color: #CC9900; color: #333; }
+        .scratch-block.control { background: #FFAB19; border-color: #CF8B17; }
+        .scratch-block.sensing { background: #4CBFE6; border-color: #2E8EB8; }
+        .scratch-block.operators { background: #40BF4A; border-color: #389438; }
+        .scratch-block.data { background: #FF8C1A; border-color: #DB6E00; }
+        .scratch-block.pen { background: #0FBD8C; border-color: #0B8E69; }
+
         .extension-steps {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -290,59 +313,57 @@
             <div class="category-box motion">
                 <h3><span class="color-badge motion">Mouvement</span></h3>
                 <ul>
-                    <li><strong>avancer de (50) pas</strong> → Déplace le lutin</li>
-                    <li><strong>tourner ↻ de (90) degrés</strong> → Tourne à droite</li>
-                    <li><strong>tourner ↺ de (90) degrés</strong> → Tourne à gauche</li>
-                    <li><strong>s'orienter à (0)°</strong> → Dirige vers une direction précise</li>
-                    <li><strong>aller à x: (0) y: (0)</strong> → Va à une position</li>
+                    <li><span class="scratch-block motion">avancer de <span class="scratch-value">50</span> pas</span> → Déplace le lutin</li>
+                    <li><span class="scratch-block motion">tourner ↻ de <span class="scratch-value">90</span> degrés</span> → Tourne à droite</li>
+                    <li><span class="scratch-block motion">tourner ↺ de <span class="scratch-value">90</span> degrés</span> → Tourne à gauche</li>
+                    <li><span class="scratch-block motion">s'orienter à <span class="scratch-value">0</span></span> → Dirige vers une direction</li>
                 </ul>
             </div>
 
             <div class="category-box looks">
                 <h3><span class="color-badge looks">Apparence</span></h3>
                 <ul>
-                    <li><strong>dire [Bonjour] pendant (2) s</strong> → Bulle temporaire</li>
-                    <li><strong>basculer sur le costume</strong> → Change l'apparence</li>
-                    <li><strong>montrer / cacher</strong> → Visibilité</li>
-                    <li><strong>mettre la taille à (100) %</strong> → Change la taille</li>
+                    <li><span class="scratch-block looks">dire Bonjour pendant <span class="scratch-value">2</span> s</span> → Bulle temporaire</li>
+                    <li><span class="scratch-block looks">basculer sur le costume</span> → Change l'apparence</li>
+                    <li><span class="scratch-block looks">montrer / cacher</span> → Visibilité</li>
                 </ul>
             </div>
 
             <div class="category-box sound">
                 <h3><span class="color-badge sound">Son</span></h3>
                 <ul>
-                    <li><strong>jouer le son [Miaou]</strong> → Joue sans attendre</li>
-                    <li><strong>jouer [Miaou] jusqu'au bout</strong> → Attend la fin</li>
-                    <li><strong>mettre le volume à (100) %</strong> → Règle volume</li>
+                    <li><span class="scratch-block sound">jouer le son Miaou</span> → Joue sans attendre</li>
+                    <li><span class="scratch-block sound">jouer Miaou jusqu'au bout</span> → Attend la fin</li>
+                    <li><span class="scratch-block sound">mettre le volume à <span class="scratch-value">100</span> %</span> → Règle volume</li>
                 </ul>
             </div>
 
             <div class="category-box events">
                 <h3><span class="color-badge events">Événements</span></h3>
                 <ul>
-                    <li><strong>quand 🏴 est cliqué</strong> → Démarre au drapeau vert</li>
-                    <li><strong>quand ce lutin est cliqué</strong> → Clic sur le lutin</li>
-                    <li><strong>quand [espace] est pressé</strong> → Touche clavier</li>
+                    <li><span class="scratch-block events">quand 🏴 est cliqué</span> → Démarre au drapeau vert</li>
+                    <li><span class="scratch-block events">quand ce lutin est cliqué</span> → Clic sur le lutin</li>
+                    <li><span class="scratch-block events">quand espace est pressé</span> → Touche clavier</li>
                 </ul>
             </div>
 
             <div class="category-box control">
                 <h3><span class="color-badge control">Contrôle</span></h3>
                 <ul>
-                    <li><strong>répéter (4) fois</strong> → Boucle nombre fixe</li>
-                    <li><strong>répéter indéfiniment</strong> → Boucle infinie</li>
-                    <li><strong>si... alors... sinon</strong> → Condition</li>
-                    <li><strong>attendre (1) secondes</strong> → Pause</li>
+                    <li><span class="scratch-block control">répéter <span class="scratch-value">4</span> fois</span> → Boucle nombre fixe</li>
+                    <li><span class="scratch-block control">répéter indéfiniment</span> → Boucle infinie</li>
+                    <li><span class="scratch-block control">si... alors... sinon</span> → Condition</li>
+                    <li><span class="scratch-block control">attendre <span class="scratch-value">1</span> secondes</span> → Pause</li>
                 </ul>
             </div>
 
             <div class="category-box sensing">
                 <h3><span class="color-badge sensing">Capteurs</span></h3>
                 <ul>
-                    <li><strong>touche [espace] pressée ?</strong> → Détecte clavier</li>
-                    <li><strong>souris pressée ?</strong> → Détecte clic</li>
-                    <li><strong>demander [Ton nom ?]</strong> → Pose question</li>
-                    <li><strong>réponse</strong> → Récupère la réponse</li>
+                    <li><span class="scratch-block sensing">touche espace pressée ?</span> → Détecte clavier</li>
+                    <li><span class="scratch-block sensing">souris pressée ?</span> → Détecte clic</li>
+                    <li><span class="scratch-block sensing">demander Ton nom ?</span> → Pose question</li>
+                    <li><span class="scratch-block sensing">réponse</span> → Récupère la réponse</li>
                 </ul>
             </div>
         </div>
@@ -351,20 +372,19 @@
             <div class="category-box operators">
                 <h3><span class="color-badge operators">Opérateurs</span></h3>
                 <ul>
-                    <li><strong>(10) + (5)</strong> → Addition</li>
-                    <li><strong>(10) - (5)</strong> → Soustraction</li>
-                    <li><strong>(10) × (5)</strong> → Multiplication</li>
-                    <li><strong>aléatoire entre (1) et (10)</strong> → Hasard</li>
+                    <li><span class="scratch-block operators"><span class="scratch-value">10</span> + <span class="scratch-value">5</span></span> → Addition</li>
+                    <li><span class="scratch-block operators"><span class="scratch-value">10</span> - <span class="scratch-value">5</span></span> → Soustraction</li>
+                    <li><span class="scratch-block operators"><span class="scratch-value">10</span> × <span class="scratch-value">5</span></span> → Multiplication</li>
+                    <li><span class="scratch-block operators">aléatoire entre <span class="scratch-value">1</span> et <span class="scratch-value">10</span></span> → Hasard</li>
                 </ul>
             </div>
 
             <div class="category-box data">
                 <h3><span class="color-badge data">Variables</span></h3>
                 <ul>
-                    <li><strong>mettre [côté] à (100)</strong> → Stocke une valeur</li>
-                    <li><strong>ajouter (10) à [côté]</strong> → Augmente ou diminue (si nombres négatifs)</li>
-                    <li><strong>[côté]</strong> → Utilise la valeur</li>
-                    <li><strong>afficher / cacher [côté]</strong> → Visibilité</li>
+                    <li><span class="scratch-block data">mettre côté à <span class="scratch-value">100</span></span> → Stocke une valeur</li>
+                    <li><span class="scratch-block data">ajouter <span class="scratch-value">10</span> à côté</span> → Augmente ou diminue</li>
+                    <li><span class="scratch-block data">côté</span> → Utilise la valeur</li>
                 </ul>
             </div>
 
@@ -379,10 +399,9 @@
             <div class="category-box pen">
                 <h3><span class="color-badge pen">Stylo</span> (Extension)</h3>
                 <ul>
-                    <li><strong>effacer tout</strong> → Efface dessins</li>
-                    <li><strong>stylo en position d'écriture</strong> → Dessine</li>
-                    <li><strong>relever le stylo</strong> → Ne dessine plus</li>
-                    <li><strong>mettre couleur / taille</strong> → Personnalise</li>
+                    <li><span class="scratch-block pen">effacer tout</span> → Efface dessins</li>
+                    <li><span class="scratch-block pen">stylo en position d'écriture</span> → Dessine</li>
+                    <li><span class="scratch-block pen">relever le stylo</span> → Ne dessine plus</li>
                 </ul>
             </div>
         </div>
