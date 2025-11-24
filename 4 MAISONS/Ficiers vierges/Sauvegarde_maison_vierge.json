@@ -1,0 +1,66 @@
+{
+  "students": [
+    {
+      "id": 1,
+      "name": "Maison",
+      "firstName": "Casa",
+      "class": "Maison",
+      "house": "Casaorca",
+      "points": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "active": true
+    },
+    {
+      "id": 2,
+      "name": "Maison",
+      "firstName": "Kite",
+      "class": "Maison",
+      "house": "Kitefield",
+      "points": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "active": true
+    },
+    {
+      "id": 3,
+      "name": "Maison",
+      "firstName": "ours",
+      "class": "Maison",
+      "house": "Villursa",
+      "points": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "active": true
+    },
+    {
+      "id": 4,
+      "name": "Maison",
+      "firstName": "Tiger",
+      "class": "Maison",
+      "house": "Tigerhaus",
+      "points": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "active": true
+    }
+  ],
+  "classes": [
+    "Maison"
+  ],
+  "trimesterStatus": {
+    "1": "open",
+    "2": "open",
+    "3": "open"
+  },
+  "history": [],
+  "lastSaved": "2025-09-29T07:16:39.569Z"
+}
