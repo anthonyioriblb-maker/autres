@@ -1648,20 +1648,23 @@
 
                 // Retirer les points de l'élève
                 student.points[trimester] = Math.max(0, student.points[trimester] - points);
-                logHistory('Retrait', student, points, trimester);
+                logHistory('Retrait Élève', student, -points, trimester);
 
-                // Si l'utilisateur a choisi 'both', retirer aussi les points de la maison
-                if (choice === 'both') {
+                // Si l'utilisateur a choisi 'student' (élève seulement), compenser en ajoutant les points à la maison
+                // pour que le total de la maison ne change pas
+                if (choice === 'student') {
                     const houseStudent = students.find(s =>
                         s.house === student.house &&
                         s.class.toLowerCase() === 'maison'
                     );
 
                     if (houseStudent) {
-                        houseStudent.points[trimester] = Math.max(0, houseStudent.points[trimester] - points);
-                        logHistory('Retrait (Maison)', houseStudent, points, trimester);
+                        houseStudent.points[trimester] += points;
+                        logHistory('Compensation Maison', houseStudent, points, trimester);
                     }
                 }
+                // Si choice === 'both', on ne fait rien de plus, les points sont retirés à l'élève
+                // ce qui impacte automatiquement la maison via le calcul
 
                 pointsInput.value = '';
                 invalidateCache();
