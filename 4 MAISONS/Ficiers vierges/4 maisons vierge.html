@@ -1515,8 +1515,35 @@
 
             const student = students.find(s => s.id === studentId);
             if (student) {
+                // Demander confirmation pour retirer les points
+                const choice = confirm(
+                    `Voulez-vous retirer ${points} points à ${student.firstName} ${student.name} ?\n\n` +
+                    `Cliquez sur OK pour retirer les points à l'ÉLÈVE ET À LA MAISON.\n` +
+                    `Cliquez sur ANNULER pour retirer les points SEULEMENT À L'ÉLÈVE (sans affecter la maison).`
+                );
+
+                if (choice === null) {
+                    // L'utilisateur a annulé
+                    return;
+                }
+
+                // Retirer les points de l'élève
                 student.points[trimester] = Math.max(0, student.points[trimester] - points);
                 logHistory('Retrait', student, points, trimester);
+
+                // Si l'utilisateur a choisi OK, retirer aussi les points de la maison
+                if (choice) {
+                    const houseStudent = students.find(s =>
+                        s.house === student.house &&
+                        s.class.toLowerCase() === 'maison'
+                    );
+
+                    if (houseStudent) {
+                        houseStudent.points[trimester] = Math.max(0, houseStudent.points[trimester] - points);
+                        logHistory('Retrait (Maison)', houseStudent, points, trimester);
+                    }
+                }
+
                 pointsInput.value = '';
                 invalidateCache();
                 debounceUpdate('dashboard', updateDashboard, 50);
