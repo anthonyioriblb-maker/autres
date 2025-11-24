@@ -712,6 +712,87 @@
             background: #d1ecf1 !important;
             border: 2px solid #007bff;
         }
+
+        /* Modal de confirmation pour retrait de points */
+        .points-confirm-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .points-confirm-modal.show {
+            display: flex;
+        }
+
+        .points-confirm-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .points-confirm-content h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .points-confirm-content p {
+            margin-bottom: 30px;
+            color: #666;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .points-confirm-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .points-confirm-buttons button {
+            flex: 1;
+            min-width: 140px;
+            padding: 12px 20px;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .btn-both {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-both:hover {
+            background: #c82333;
+        }
+
+        .btn-student-only {
+            background: #ffc107;
+            color: black;
+        }
+
+        .btn-student-only:hover {
+            background: #e0a800;
+        }
+
+        .btn-cancel {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-cancel:hover {
+            background: #5a6268;
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
@@ -722,7 +803,7 @@
             <p>Pour utiliser cette application, vous devez d'abord charger un fichier JSON de données existant.</p>
             <p><strong>Si c'est votre première utilisation :</strong> Créez d'abord un fichier vide en cliquant sur "Créer un nouveau fichier".</p>
 
-            <div class="file-load-area" onclick="document.getElementById('mandatoryLoadFile').click();" 
+            <div class="file-load-area" onclick="document.getElementById('mandatoryLoadFile').click();"
                  ondragover="handleDragOver(event)" ondrop="handleDrop(event)">
                 <h3>📂 Cliquez ici ou glissez-déposez votre fichier JSON</h3>
                 <p>Formats acceptés : .json</p>
@@ -733,6 +814,19 @@
 
             <div class="keyboard-shortcut">
                 <strong>💡 Astuce :</strong> Une fois le fichier chargé, utilisez <strong>Ctrl+S</strong> pour sauvegarder rapidement
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmation pour retrait de points -->
+    <div class="points-confirm-modal" id="pointsConfirmModal">
+        <div class="points-confirm-content">
+            <h3>⚠️ Retrait de points</h3>
+            <p id="pointsConfirmMessage"></p>
+            <div class="points-confirm-buttons">
+                <button class="btn-both" id="confirmBothBtn">Élève et Maison</button>
+                <button class="btn-student-only" id="confirmStudentOnlyBtn">Élève seulement</button>
+                <button class="btn-cancel" id="confirmCancelBtn">Annuler</button>
             </div>
         </div>
     </div>
@@ -1498,7 +1592,36 @@
             }
         }
 
-        function removePoints(studentId) {
+        function showPointsConfirmModal(message) {
+            return new Promise((resolve) => {
+                const modal = document.getElementById('pointsConfirmModal');
+                const messageEl = document.getElementById('pointsConfirmMessage');
+                const bothBtn = document.getElementById('confirmBothBtn');
+                const studentOnlyBtn = document.getElementById('confirmStudentOnlyBtn');
+                const cancelBtn = document.getElementById('confirmCancelBtn');
+
+                messageEl.textContent = message;
+                modal.classList.add('show');
+
+                const handleChoice = (choice) => {
+                    modal.classList.remove('show');
+                    bothBtn.removeEventListener('click', handleBoth);
+                    studentOnlyBtn.removeEventListener('click', handleStudentOnly);
+                    cancelBtn.removeEventListener('click', handleCancel);
+                    resolve(choice);
+                };
+
+                const handleBoth = () => handleChoice('both');
+                const handleStudentOnly = () => handleChoice('student');
+                const handleCancel = () => handleChoice('cancel');
+
+                bothBtn.addEventListener('click', handleBoth);
+                studentOnlyBtn.addEventListener('click', handleStudentOnly);
+                cancelBtn.addEventListener('click', handleCancel);
+            });
+        }
+
+        async function removePoints(studentId) {
             if (!isAppUnlocked) return;
 
             const trimester = parseInt(document.getElementById('pointsTrimester').value);
@@ -1516,14 +1639,10 @@
             const student = students.find(s => s.id === studentId);
             if (student) {
                 // Demander confirmation pour retirer les points
-                const choice = confirm(
-                    `Voulez-vous retirer ${points} points à ${student.firstName} ${student.name} ?\n\n` +
-                    `Cliquez sur OK pour retirer les points à l'ÉLÈVE ET À LA MAISON.\n` +
-                    `Cliquez sur ANNULER pour retirer les points SEULEMENT À L'ÉLÈVE (sans affecter la maison).`
-                );
+                const message = `Voulez-vous retirer ${points} points à ${student.firstName} ${student.name} ?\n\nChoisissez une option :`;
+                const choice = await showPointsConfirmModal(message);
 
-                if (choice === null) {
-                    // L'utilisateur a annulé
+                if (choice === 'cancel') {
                     return;
                 }
 
@@ -1531,8 +1650,8 @@
                 student.points[trimester] = Math.max(0, student.points[trimester] - points);
                 logHistory('Retrait', student, points, trimester);
 
-                // Si l'utilisateur a choisi OK, retirer aussi les points de la maison
-                if (choice) {
+                // Si l'utilisateur a choisi 'both', retirer aussi les points de la maison
+                if (choice === 'both') {
                     const houseStudent = students.find(s =>
                         s.house === student.house &&
                         s.class.toLowerCase() === 'maison'
