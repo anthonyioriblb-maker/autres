@@ -1565,7 +1565,7 @@
             }
         }
 
-        function addPoints(studentId) {
+        async function addPoints(studentId) {
             if (!isAppUnlocked) return;
 
             const trimester = parseInt(document.getElementById('pointsTrimester').value);
@@ -1578,16 +1578,52 @@
             const pointsInput = document.getElementById(`points_${studentId}`);
             const points = parseInt(pointsInput.value) || 0;
 
-            if (points <= 0) return;
+            if (points === 0) return;
 
             const student = students.find(s => s.id === studentId);
-            if (student) {
+            if (!student) return;
+
+            // Si les points sont négatifs, déclencher le processus de retrait avec confirmation
+            if (points < 0) {
+                const absPoints = Math.abs(points);
+
+                // Demander confirmation pour retirer les points
+                const message = `Voulez-vous retirer ${absPoints} points à ${student.firstName} ${student.name} ?\n\nChoisissez une option :`;
+                const choice = await showPointsConfirmModal(message);
+
+                if (choice === 'cancel') {
+                    pointsInput.value = '';
+                    return;
+                }
+
+                // Retirer les points de l'élève
+                student.points[trimester] = Math.max(0, student.points[trimester] - absPoints);
+                logHistory('Retrait Élève', student, -absPoints, trimester);
+
+                // Si l'utilisateur a choisi 'student' (élève seulement), compenser en ajoutant les points à la maison
+                if (choice === 'student') {
+                    const houseStudent = students.find(s =>
+                        s.house === student.house &&
+                        s.class.toLowerCase() === 'maison'
+                    );
+
+                    if (houseStudent) {
+                        houseStudent.points[trimester] += absPoints;
+                        logHistory('Compensation Maison', houseStudent, absPoints, trimester);
+                    }
+                }
+
+                pointsInput.value = '';
+                invalidateCache();
+                debounceUpdate('dashboard', updateDashboard, 50);
+                focusNextStudent(studentId);
+            } else {
+                // Points positifs : ajout normal
                 student.points[trimester] += points;
                 logHistory('Ajout', student, points, trimester);
                 pointsInput.value = '';
                 invalidateCache();
                 debounceUpdate('dashboard', updateDashboard, 50);
-
                 focusNextStudent(studentId);
             }
         }
@@ -1749,10 +1785,12 @@
                 const pointsInput = document.getElementById(`points_${studentId}`);
                 const points = parseInt(pointsInput.value) || 0;
 
-                if (points > 0) {
-                    if (event.shiftKey) {
+                if (points !== 0) {
+                    if (event.shiftKey && points > 0) {
+                        // Shift+Entrée avec nombre positif = retirer
                         removePoints(studentId);
                     } else {
+                        // Entrée seule = ajouter (gère automatiquement les nombres négatifs)
                         addPoints(studentId);
                     }
                 } else {
@@ -1997,7 +2035,7 @@
                                ${isClosed ? 'disabled' : ''}>
                         <button onclick="addPoints(${student.id})" class="btn-success" ${isClosed ? 'disabled' : ''}>Ajouter</button>
                         <button onclick="removePoints(${student.id})" class="btn-danger" ${isClosed ? 'disabled' : ''}>Retirer</button>
-                        <small style="color: #6c757d; margin-left: 10px;">Entrée: Ajouter | Shift+Entrée: Retirer</small>
+                        <small style="color: #6c757d; margin-left: 10px;">💡 Astuce: Tapez -600 pour retirer | Entrée: Ajouter | Shift+Entrée: Retirer</small>
                     </div>
                 `;
                 container.appendChild(div);
