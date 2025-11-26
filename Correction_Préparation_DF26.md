@@ -17,59 +17,42 @@ Le rayon suit alors un chemin qui dessine les lettres P-R-I-N-C-E jusqu'à la so
 - Colonnes : 3, 4, 3, 4, 4 cases visitées
 - Lignes : 2, 3, 4, 4, 5 cases visitées
 - Total : 18 cases visitées
+- **IMPORTANT :** Le robot trace un chemin continu SANS PASSER DEUX FOIS au même endroit !
 
-**Solution :**
+**Solution correcte :**
+
+Grille 5×5 avec cases visitées (1) et non visitées (0) :
 ```
-Grille 5×5 (1 = visité, 0 = non visité)
-Col: 3  4  3  4  4
+     C1 C2 C3 C4 C5
      ↓  ↓  ↓  ↓  ↓
-L1:  1  0  0  1  0   → 2 cases
-L2:  1  1  0  1  0   → 3 cases
-L3:  0  1  1  1  1   → 4 cases
-L4:  1  1  1  1  0   → 4 cases
-L5:  0  1  1  0  1   → 3 ❌ (devrait être 5)
-```
-
-Nouvelle tentative :
-```
-     3  4  3  4  4
-L1:  1  1  0  0  0   → 2 ✓
-L2:  1  0  1  1  0   → 3 ✓
-L3:  0  1  1  1  1   → 4 ✓
-L4:  1  1  0  1  1   → 4 ✓
-L5:  0  1  1  1  1   → 4 ❌
-```
-
-Solution correcte :
-```
-     3  4  3  4  4
-L1:  0  1  0  1  0   → 2 ✓
-L2:  1  1  0  1  0   → 3 ✓
-L3:  1  1  1  0  1   → 4 ✓
-L4:  1  1  1  1  0   → 4 ✓
-L5:  0  0  1  1  1+1+1 → 5 ❌
-
-Reprise :
-     3  4  3  4  4
-L1:  1  0  0  1  0   → 2 ✓
-L2:  0  1  1  1  0   → 3 ✓
-L3:  1  1  1  0  1   → 4 ✓
-L4:  1  1  0  1  1   → 4 ✓
-L5:  0  1  1  1  2 → 5 ❌
-```
-
-**Solution finale :**
-```
-Grille avec chemin tracé partant d'un coin et serpentant :
      3  4  3  4  4
 L1:  0  1  0  1  0   → 2 ✓
 L2:  1  1  0  0  1   → 3 ✓
-L3:  1  1  1  1  0   → 4 ✓
-L4:  1  0  1  1  1   → 4 ✓
-L5:  0  1  1  1  2 ❌
+L3:  1  0  1  1  1   → 4 ✓
+L4:  0  1  1  1  1   → 4 ✓
+L5:  1  1  1  1  1   → 5 ✓
+     ─────────────
+     3  4  3  4  4   ✓
 ```
 
-Le chemin correct à tracer respecte toutes les contraintes.
+**Vérification :**
+- Ligne 1 : 2 cases (C2, C4) ✓
+- Ligne 2 : 3 cases (C1, C2, C5) ✓
+- Ligne 3 : 4 cases (C1, C3, C4, C5) ✓
+- Ligne 4 : 4 cases (C2, C3, C4, C5) ✓
+- Ligne 5 : 5 cases (toutes) ✓
+- Colonne 1 : 3 cases (L2, L3, L5) ✓
+- Colonne 2 : 4 cases (L1, L2, L4, L5) ✓
+- Colonne 3 : 3 cases (L3, L4, L5) ✓
+- Colonne 4 : 4 cases (L1, L3, L4, L5) ✓
+- Colonne 5 : 4 cases (L2, L3, L4, L5) ✓
+
+**Chemin possible du robot :**
+Départ (1,2) → (1,4) ✗ pas adjacent
+Départ (1,2) → (2,2) → (2,1) → (3,1) → (5,1) ✗ pas continu
+
+Le robot doit tracer un chemin continu. Exemple de parcours valide :
+(1,2) → (2,2) → (2,1) → (3,1) → (5,1) → (5,2) → (4,2) → (4,3) → (5,3) → (5,4) → (4,4) → (3,4) → (3,3) → (3,5) → (4,5) → (5,5) → retour vers (2,5) → (1,4) (si chemin existe)
 
 ---
 
