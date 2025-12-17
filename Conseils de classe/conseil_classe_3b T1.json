@@ -1,0 +1,648 @@
+{
+  "students": [
+    {
+      "id": 1,
+      "name": "BILLOTET Tayana",
+      "trimestres": {
+        "T1": {
+          "moyenne": 8.7,
+          "notes": {
+            "Allemand LV2": 4.7,
+            "Anglais LV1": 3.1,
+            "Arts plastiques": 6.5,
+            "Chant choral": 17,
+            "EPS": 18.5,
+            "Éducation musicale": 6.7,
+            "Français": 0.4,
+            "Histoire-Géographie": 6.1,
+            "Mathématiques": 1,
+            "Physique-Chimie": 13,
+            "SVT": 8.8,
+            "Technologie": 18
+          },
+          "absences": 62,
+          "retards": 2,
+          "distinction": "encouragements",
+          "comportementNegatif": "Trimestre catastrophique en anglais\nTrimestre décevant en arts plastiques\nAbsence totale de travail et comportement inadapté en français\nTravail personnel très insuffisant dans plusieurs matières\nLeçons non apprises régulièrement",
+          "comportementPositif": "Attitude en classe s'est nettement améliorée cette année\nProgrès considérables en histoire-géo et mathématiques sur le comportement\nTrès investie en EPS et excellent travail à la chorale\nFait des efforts en éducation musicale",
+          "appreciation": "Les résultats sont très inquiétants dans la quasi-totalité des disciplines, avec des moyennes catastrophiques dans plusieurs matières qui reflètent une absence de travail personnel régulier. Le contraste entre ces difficultés et les bons résultats dans certaines activités montre pourtant que des capacités existent. Un investissement sérieux et quotidien est absolument indispensable pour espérer progresser et rattraper le retard accumulé. Cependant, l'attitude en classe s'est nettement améliorée cette année, ce qui constitue un progrès encourageant. ENCOURAGEMENTS DU CONSEIL DE CLASSE."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": [
+          "Coiffure en apprentissage"
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "name": "CARRÉ Enzo",
+      "trimestres": {
+        "T1": {
+          "moyenne": 16.1,
+          "notes": {
+            "Allemand LV2": 16,
+            "Anglais LV1": 13.6,
+            "Arts plastiques": 13.5,
+            "EPS": 15,
+            "Éducation musicale": 16,
+            "Français": 18.7,
+            "Histoire-Géographie": 17.4,
+            "Mathématiques": 16.5,
+            "Physique-Chimie": 13,
+            "PIX": 17.9,
+            "SVT": 15.6,
+            "Technologie": 20
+          },
+          "absences": 70,
+          "retards": 0,
+          "distinction": "felicitations",
+          "comportementNegatif": "Bavardages en histoire",
+          "comportementPositif": "Excellent travail dans toutes les matières\nÉlève très sérieux, investi et rigoureux\nParticulièrement brillant en français, histoire-géo et technologie\nÉlève ambassadeur anti-harcèlement très impliqué",
+          "appreciation": "Enzo est un élève très investi, sérieux et rigoureux, qui s'implique pleinement dans ses apprentissages comme dans la vie de l'établissement en tant qu'ambassadeur contre le harcèlement. Ses résultats sont excellents et son attitude en classe est exemplaire. FÉLICITATIONS DU CONSEIL DE CLASSE."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": [
+          "bac pro transport langres"
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "name": "CLEMENT Matteo",
+      "trimestres": {
+        "T1": {
+          "moyenne": 14.2,
+          "notes": {
+            "Allemand LV2": 14.8,
+            "Anglais LV1": 14.1,
+            "Arts plastiques": 14,
+            "EPS": 13.5,
+            "Éducation musicale": 16.5,
+            "Français": 11.7,
+            "Histoire-Géographie": 15.8,
+            "Mathématiques": 9.6,
+            "Physique-Chimie": 11.7,
+            "PIX": 14.2,
+            "SVT": 14.6,
+            "Technologie": 20
+          },
+          "absences": 28,
+          "retards": 2,
+          "distinction": "",
+          "comportementNegatif": "Attitude parfois inappropriée avec tendance à l'amusement\nManque de sérieux ponctuel en classe\nRemarques intempestives et parfois condescendantes\nBavardages à éviter\nRemarques qui peuvent friser l'insolence sous couvert d'humour\nEn dessous de ses capacités",
+          "comportementPositif": "Résultats corrects ",
+          "appreciation": "Matteo est un élève volontaire et plutôt sérieux, qui obtient de bons résultats dans la plupart des disciplines. Cependant, son attitude en classe n'est pas toujours exemplaire : remarques intempestives, bavardages et un langage parfois proche de l’insolence sous couvert d’humour. Il doit apprendre à mieux canaliser son énergie, adopter une attitude plus régulière et respectueuse, et consolider certaines fragilités d’ici le DNB. Avec davantage de concentration et de rigueur, il pourra pleinement exprimer son potentiel et viser l’excellence au brevet.﻿"
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": [
+          "Bac pro sécurité à Wassy"
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "name": "CONTI Johan",
+      "trimestres": {
+        "T1": {
+          "moyenne": 9.5,
+          "notes": {
+            "Allemand LV2": 7.2,
+            "Anglais LV1": 8.7,
+            "Arts plastiques": 12.5,
+            "EPS": 11.3,
+            "Éducation musicale": 8.7,
+            "Français": 9.7,
+            "Histoire-Géographie": 9.5,
+            "Mathématiques": 8.7,
+            "Physique-Chimie": 8.8,
+            "PIX": 7.5,
+            "SVT": 4.8,
+            "Technologie": 16
+          },
+          "absences": 24,
+          "retards": 1,
+          "distinction": "",
+          "comportementNegatif": "Peine à surmonter ses difficultés\nTravail personnel insuffisant\nAbsence de travail personnel qui le pénalise grandement\nManque de régularité dans ses apprentissages",
+          "comportementPositif": "Élève très agréable, irréprochable en classe et tellement volontaire\nSérieux et très participatif, un moteur de la classe\nÉlève soucieux de bien faire et attentif en classe\nÉlève investi au sein des éco-délégués, toujours gentil et serviable\nFournit des efforts et s'implique régulièrement",
+          "appreciation": "Johan est un élève très agréable, irréprochable en classe et tellement volontaire. Il est sérieux, participatif et volontaire. Soucieux de bien faire, il s'investit également au sein des éco-délégués. Cependant, malgré toutes ces qualités, ses résultats restent fragiles car l'absence de travail personnel le pénalise grandement et limite voire empêche toute progression. Il doit se mettre au travail, réviser ses évaluations et faire preuve de plus de régularité dans ses apprentissages pour espérer réussir le DNB. On compte sur lui !"
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 5,
+      "name": "DE JONGE Beaudine",
+      "trimestres": {
+        "T1": {
+          "moyenne": 10.9,
+          "notes": {
+            "Allemand LV2": 12.4,
+            "Anglais LV1": 13.6,
+            "Arts plastiques": 14.5,
+            "EPS": 5.5,
+            "Éducation musicale": 14.4,
+            "Histoire-Géographie": 9.8,
+            "Mathématiques": 2.9,
+            "Physique-Chimie": 8,
+            "PIX": 15,
+            "SVT": 8,
+            "Technologie": 16
+          },
+          "absences": 49,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "Problème de la langue\nTravail insuffisant dans plusieurs matières\nDifficultés importantes en mathématiques\nManque d'investissement et de régularité",
+          "comportementPositif": "Élève sympathique et agréable\nExcellent investissement à la chorale\nFait des efforts dans certaines matières",
+          "appreciation": "Beaudine est une élève sympathique qui fait face à une barrière de la langue constituant un frein important dans plusieurs disciplines. L'investissement reste trop irrégulier et le travail personnel insuffisant pour permettre une progression. Son engagement dans les activités artistiques montre une capacité d'investissement qu'il serait bénéfique de transposer dans toutes les matières en adoptant un travail régulier afin de construire les bases nécessaires pour réussir au DNB."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": [
+          "??????????"
+        ]
+      }
+    },
+    {
+      "id": 6,
+      "name": "GARNIER Pauline",
+      "trimestres": {
+        "T1": {
+          "moyenne": 14.7,
+          "notes": {
+            "Allemand LV2": 14.6,
+            "Anglais LV1": 13.8,
+            "Arts plastiques": 15,
+            "Chant choral": 17,
+            "EPS": 15.3,
+            "Éducation musicale": 17.6,
+            "Français": 14.9,
+            "Histoire-Géographie": 14.8,
+            "Mathématiques": 8.3,
+            "Physique-Chimie": 10.7,
+            "PIX": 14.6,
+            "SVT": 14,
+            "Technologie": 20
+          },
+          "absences": 35,
+          "retards": 0,
+          "distinction": "compliments",
+          "comportementNegatif": "Trop passive en classe parfois\nTravail personnel qui manque de rigueur et d'approfondissement\nDifficultés en mathématiques\nBavardages en mathématiques à cesser",
+          "comportementPositif": "Élève agréable, polie et investie\nTrès bon travail en musique et EPS\nBon investissement à la chorale\nSérieuse et appliquée",
+          "appreciation": "Pauline est une élève sérieuse qui obtient de bons résultats dans la plupart des matières. Elle sait se montrer investie dans de nombreuse disciplines. Cependant, elle gagnerait à être moins discrète en classe, à cesser les bavardages, notamment en mathématiques, et à approfondir son travail personnel dans certaines disciplines où des efforts supplémentaires sont nécessaires. En s'investissant davantage et en participant plus activement, elle pourra progresser et viser l'excellence dans toutes les matières pour bien se préparer au DNB. COMPLIMENTS DU CONSEIL DE CLASSE."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 7,
+      "name": "GROSSI Sara",
+      "trimestres": {
+        "T1": {
+          "moyenne": 13.3,
+          "notes": {
+            "Allemand LV2": 9.8,
+            "Anglais LV1": 11.4,
+            "Arts plastiques": 12.5,
+            "Chant choral": 17,
+            "EPS": 19,
+            "Éducation musicale": 16,
+            "Français": 10.9,
+            "Histoire-Géographie": 15.3,
+            "Mathématiques": 7.6,
+            "Physique-Chimie": 8,
+            "PIX": 15,
+            "SVT": 10.9,
+            "Technologie": 20
+          },
+          "absences": 30,
+          "retards": 0,
+          "distinction": "encouragements",
+          "comportementNegatif": "Attitude défaitiste en allemand\nDifficultés en mathématiques et physique-chimie\nTravail à la maison inexistant en français\nBavardages en mathématiques à cesser",
+          "comportementPositif": "Élève serviable et agréable, investie pour l'action E3D\nTrès bon investissement en EPS et à la chorale\nTrès investie en histoire-géographie\nParticipe régulièrement en classe",
+          "appreciation": "Sara est une élève agréable qui montre un bon engagement dans certaines matières. Elle doit maintenant généraliser cette dynamique positive à l'ensemble des disciplines en développant un travail personnel régulier à la maison, actuellement insuffisant. Les bavardages en cours constituent un frein à sa progression et doivent cesser. Sara a les capacités pour réussir : elle doit reprendre confiance en elle et fournir un travail plus régulier dans toutes les matières pour progresser et se préparer au mieux au DNB. ENCOURAGEMENTS DU CONSEIL DE CLASSE."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 8,
+      "name": "LAMBOURS Sullyvanne",
+      "trimestres": {
+        "T1": {
+          "moyenne": 8.2,
+          "notes": {
+            "Allemand LV2": 4.3,
+            "Anglais LV1": 2.9,
+            "Arts plastiques": 10.5,
+            "EPS": 12.3,
+            "Éducation musicale": 10.4,
+            "Français": 4,
+            "Histoire-Géographie": 6.9,
+            "Mathématiques": 2.6,
+            "Physique-Chimie": 7.8,
+            "PIX": 12.2,
+            "SVT": 6.3,
+            "Technologie": 18
+          },
+          "absences": 61,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "Beaucoup d'absences et difficultés de compréhension\nNe cherche pas à progresser en anglais\nRésultats extrêmement faibles en français\nTravail insuffisant et attitude passive\nCours non rattrapés et évaluations jamais révisées",
+          "comportementPositif": "Élève discret qui a le mérite d'être serviable\nRetours très positifs sur son stage en entreprise (garagiste)\nTrès investi et opérationnel durant le stage\nAttitude correcte en classe malgré passivité",
+          "appreciation": "Sullyvanne est un élève discret dont les résultats sont très préoccupants dans la quasi-totalité des matières. Malgré une attitude correcte en classe, il ne fournit pas suffisamment de travail et reste trop passif dans ses apprentissages. Ses nombreuses absences aggravent la situation. Les retours très positifs de son stage en entreprise montrent pourtant qu'il peut faire preuve d'investissement et d'efficacité. Il doit impérativement réagir : rattraper systématiquement les cours manqués, réviser ses évaluations et fournir un travail personnel beaucoup plus régulier pour espérer progresser et réussir le DNB."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 9,
+      "name": "LEPAGE Teddy",
+      "trimestres": {
+        "T1": {
+          "moyenne": 14.9,
+          "notes": {
+            "Allemand LV2": 10.2,
+            "Anglais LV1": 9,
+            "Arts plastiques": 18.5,
+            "Chant choral": 18,
+            "EPS": 19.5,
+            "Éducation musicale": 15.3,
+            "Français": 13.9,
+            "Histoire-Géographie": 15.4,
+            "Mathématiques": 14.4,
+            "Physique-Chimie": 13.3,
+            "PIX": 15.8,
+            "SVT": 12,
+            "Technologie": 18
+          },
+          "absences": 1,
+          "retards": 0,
+          "distinction": "compliments",
+          "comportementNegatif": "Quelques difficultés en anglais et allemand",
+          "comportementPositif": "Excellent trimestre, très investi au sein du collège\nDélégué et ambassadeur contre le harcèlement\nParticipe au conseil d'administration de façon pertinente et constructive\nÉlève sérieux et investi, bon camarade, toujours prêt à aider\nTravail sérieux et régulier\nAttitude irréprochable",
+          "appreciation": "Teddy est un élève exemplaire qui s'investit pleinement dans ses apprentissages et dans la vie de l'établissement. En tant que délégué et ambassadeur contre le harcèlement, il participe activement au conseil d'administration avec pertinence et maturité. Ses résultats sont très bons dans de nombreuses disciplines et son attitude est remarquable. Son sérieux, sa bienveillance envers les autres et son engagement font de lui une véritable valeur ajoutée pour l'établissement. Il se prépare au mieux pour le DNB. Qu'il continue ainsi ! COMPLIMENTS DU CONSEIL DE CLASSE."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 10,
+      "name": "LOTSCHER Jessica",
+      "trimestres": {
+        "T1": {
+          "moyenne": 13.6,
+          "notes": {
+            "Allemand LV2": 9.7,
+            "Anglais LV1": 11.4,
+            "Arts plastiques": 18,
+            "Chant choral": 17,
+            "EPS": 18.5,
+            "Éducation musicale": 10.7,
+            "Français": 11.6,
+            "Histoire-Géographie": 15.1,
+            "Mathématiques": 7,
+            "Physique-Chimie": 10.3,
+            "PIX": 14.5,
+            "SVT": 13.1,
+            "Technologie": 20
+          },
+          "absences": 35,
+          "retards": 0,
+          "distinction": "encouragements",
+          "comportementNegatif": "Efforts inconstants\nDifficultés \nTravail personnel trop superficiel et manque de régularité",
+          "comportementPositif": "Se rend très régulièrement en Devoirs Faits pour progresser\nComportement mature et courageux\nVolontaire en classe",
+          "appreciation": "Jessica est une élève agréable et volontaire qui se montre investie, notamment en se rendant régulièrement en Devoirs Faits. Ses résultats sont corrects dans plusieurs disciplines. Cependant, son travail personnel reste trop superficiel et irrégulier, ce qui l'empêche de progresser davantage, notamment en mathématiques. Elle doit approfondir ses révisions et adopter une méthode de travail plus rigoureuse pour consolider ses acquis et se préparer au mieux au DNB. Sa maturité et sa réflexion sur son projet professionnel sont encourageantes. ENCOURAGEMENTS DU CONSEIL DE CLASSE."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": [
+          "2nd pro ASSP bouchardon"
+        ]
+      }
+    },
+    {
+      "id": 11,
+      "name": "LOTSCHER Mylana",
+      "trimestres": {
+        "T1": {
+          "moyenne": 11,
+          "notes": {
+            "Allemand LV2": 8.5,
+            "Anglais LV1": 9.7,
+            "Arts plastiques": 14.5,
+            "Chant choral": 17,
+            "EPS": 13.3,
+            "Éducation musicale": 8.2,
+            "Français": 6.1,
+            "Histoire-Géographie": 10.8,
+            "Mathématiques": 3.4,
+            "Physique-Chimie": 9.3,
+            "PIX": 15.3,
+            "SVT": 10.7,
+            "Technologie": 16
+          },
+          "absences": 17,
+          "retards": 2,
+          "distinction": "",
+          "comportementNegatif": "Efforts inconstants \nTrop passive en classe et dans ses apprentissages\nRésultats faibles \nTravail personnel manque de régularité\nLeçons pas suffisamment sues",
+          "comportementPositif": "A fait des efforts d'assiduité\nÉlève discrète et agréable\nProgression par rapport à l'année dernière",
+          "appreciation": "Mylana est une élève discrète et agréable. Cependant, ses résultats restent trop justes dans de nombreuses matières en raison d'une attitude trop passive face au travail. Le manque d'investissement personnel et l'apprentissage insuffisant des leçons freinent sa progression, particulièrement en français et en mathématiques. Elle doit impérativement se montrer plus active en classe et fournir un travail beaucoup plus régulier et approfondi pour espérer progresser et se préparer correctement au DNB."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 12,
+      "name": "PASQUA Théo",
+      "trimestres": {
+        "T1": {
+          "moyenne": 15.2,
+          "notes": {
+            "Allemand LV2": 14.5,
+            "Anglais LV1": 11.5,
+            "Arts plastiques": 13,
+            "EPS": 18.5,
+            "Éducation musicale": 15.6,
+            "Français": 17.6,
+            "Histoire-Géographie": 16.3,
+            "Mathématiques": 13.3,
+            "Physique-Chimie": 13,
+            "PIX": 15.3,
+            "SVT": 14.1,
+            "Technologie": 20
+          },
+          "absences": 4,
+          "retards": 2,
+          "distinction": "felicitations",
+          "comportementNegatif": "Attention à améliorer en AP\nPeut encore accentuer ses efforts",
+          "comportementPositif": "Élève sérieux et investi dans son travail\nFait preuve de sérieux en classe et dans son travail\nTravail régulier\nParticipe avec intérêt et bonne humeur\nÉlève agréable et de bonne volonté",
+          "appreciation": "Théo est un élève sérieux et appliqué qui obtient de très bons résultats grâce à son travail régulier et son investissement constant. Il participe avec intérêt en classe et fait preuve de bonne humeur. Son attitude est généralement très positive et il se prépare très bien pour le DNB. Bravo et continue ainsi ! FÉLICITATIONS DU CONSEIL DE CLASSE."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": [
+          "Barbeur donc veut faire apprentissages. Très jeune peut être 2GT pour faire une 1ER Techno."
+        ]
+      }
+    },
+    {
+      "id": 13,
+      "name": "PERRIN--GOTTFROIS Charles",
+      "trimestres": {
+        "T1": {
+          "moyenne": 14.8,
+          "notes": {
+            "Allemand LV2": 15.2,
+            "Anglais LV1": 13.9,
+            "Arts plastiques": 12.5,
+            "EPS": 15.8,
+            "Éducation musicale": 14,
+            "Français": 15.9,
+            "Histoire-Géographie": 14.6,
+            "Mathématiques": 15.4,
+            "Physique-Chimie": 13.8,
+            "PIX": 11.6,
+            "SVT": 17.4,
+            "Technologie": 18
+          },
+          "absences": 0,
+          "retards": 0,
+          "distinction": "compliments",
+          "comportementNegatif": "Souvent ronchon et parfois désagréable\nAttention à la prise de parole en classe et à ne pas se braquer",
+          "comportementPositif": "Très bon trimestre, continue ainsi\nCompliments pour la volonté de travail, notamment présence en Devoirs faits\nÉlève très investi en classe\nParticipe activement à l'oral\nTravail sérieux\nMoteur de la classe à l'oral sur certaines séances\nToujours très investi en classe",
+          "appreciation": "Charles est un élève investi qui obtient de très bons résultats grâce à son sérieux et son travail régulier. Il participe activement en classe et peut être un véritable moteur lors de certaines séances. Sa présence en Devoirs Faits montre sa volonté de progresser. Cependant, même si des efforts sont constatés, ses remarques parfois condescendantes et son comportement ronchon peuvent le rendre désagréable parfois. En adoptant une attitude plus positive en toutes circonstances, il pourra viser l'excellence et se préparer au mieux au DNB. COMPLIMENTS DU CONSEIL DE CLASSE."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": [
+          "2GT"
+        ]
+      }
+    },
+    {
+      "id": 14,
+      "name": "POISSE Lény",
+      "trimestres": {
+        "T1": {
+          "moyenne": 15.5,
+          "notes": {
+            "Allemand LV2": 12.6,
+            "Anglais LV1": 15.6,
+            "Arts plastiques": 14.5,
+            "EPS": 17.8,
+            "Éducation musicale": 15.6,
+            "Français": 14.1,
+            "Histoire-Géographie": 16.4,
+            "Mathématiques": 14.9,
+            "Physique-Chimie": 15,
+            "PIX": 15.1,
+            "SVT": 14.8,
+            "Technologie": 20
+          },
+          "absences": 15,
+          "retards": 0,
+          "distinction": "felicitations",
+          "comportementNegatif": "Résultats en allemand peuvent aller du simple au double\nDoit harmoniser ses efforts",
+          "comportementPositif": "Bon trimestre\nToujours de bonne volonté\nParticipation orale toujours très pertinente et productive\nÉlève volontaire et très agréable\nTravail globalement sérieux et régulier (attention en allemand et en français)\n",
+          "appreciation": "Lény est un élève volontaire et agréable qui obtient de très bons résultats grâce à son travail sérieux et régulier. Il participe de façon pertinente en classe et son travail est régulier. Son attitude est remarquable et ses efforts constants. Il doit simplement veiller à harmoniser son investissement dans toutes les matières pour obtenir des résultats toujours à la hauteur de ses capacités. Il se prépare excellemment bien pour le DNB. Félicitations et continue ainsi ! FÉLICITATIONS DU CONSEIL DE CLASSE."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 15,
+      "name": "SCHWINDEN Emy",
+      "trimestres": {
+        "T1": {
+          "moyenne": 12.1,
+          "notes": {
+            "Anglais LV1": 12.2,
+            "Arts plastiques": 16,
+            "EPS": 11.8,
+            "Éducation musicale": 12,
+            "Français": 8,
+            "Histoire-Géographie": 9.3,
+            "Mathématiques": 13.3,
+            "Physique-Chimie": 10.3,
+            "PIX": 9.8,
+            "SVT": 12.5,
+            "Technologie": 18
+          },
+          "absences": 19,
+          "retards": 0,
+          "distinction": "encouragements",
+          "comportementNegatif": "Difficultés\ntravail personnel à accentuer\nTravail demandé a été bâclé en PIX",
+          "comportementPositif": "Élève toujours agréable, \nSe montre sérieuse et attentive en classe\nToujours de bonne volonté\nFait toujours de son mieux en classe",
+          "appreciation": "Emy est une élève sérieuse, toujours attentive et animée d’une réelle volonté de progresser. Malgré quelques difficultés dans certaines matières, elle fait preuve de persévérance et donne le meilleur d’elle-même. Elle profite pleinement des aides apportées, doit poursuivre ses efforts, renforcer son travail là où des fragilités persistent et ne pas hésiter à solliciter de l’aide lorsqu’elle en ressent le besoin. ENCOURAGEMENTS DU CONSEIL DE CLASSE."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": [
+          "Veut être maitre chien"
+        ]
+      }
+    },
+    {
+      "id": 16,
+      "name": "THIRIET Théo",
+      "trimestres": {
+        "T1": {
+          "moyenne": 12.8,
+          "notes": {
+            "Allemand LV2": 11.7,
+            "Anglais LV1": 11.2,
+            "Arts plastiques": 11.5,
+            "EPS": 18,
+            "Éducation musicale": 13.5,
+            "Français": 11.4,
+            "Histoire-Géographie": 13.1,
+            "Mathématiques": 7.4,
+            "Physique-Chimie": 10.8,
+            "PIX": 16.1,
+            "SVT": 10.8,
+            "Technologie": 18
+          },
+          "absences": 4,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "Efforts inconstants\nTrop passive en classe\nTravail personnel manque de régularité et d'approfondissement\n",
+          "comportementPositif": "Bon trimestre\nPrend peu la parole mais toujours avec pertinence\nÉlève réactif et très efficace en classe",
+          "appreciation": "Théo est un élève qui peut se montrer très efficace en classe lorsqu'il s'investit. Cependant, son attitude reste trop passive dans l'ensemble et son travail personnel manque de régularité, ce qui l'empêche d'obtenir des résultats à la hauteur de ses capacités. Il doit impérativement réagir : participer davantage en classe, s'investir plus activement dans son travail et adopter une attitude plus dynamique face aux apprentissages pour progresser et se préparer correctement au DNB."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 17,
+      "name": "ULMANN Alexia",
+      "trimestres": {
+        "T1": {
+          "moyenne": 15.1,
+          "notes": {
+            "Allemand LV2": 12.8,
+            "Anglais LV1": 14,
+            "Arts plastiques": 14.5,
+            "Chant choral": 18,
+            "EPS": 15,
+            "Éducation musicale": 16.4,
+            "Français": 13.6,
+            "Histoire-Géographie": 15.5,
+            "Mathématiques": 14.9,
+            "Physique-Chimie": 13,
+            "PIX": 14.3,
+            "SVT": 16.1,
+            "Technologie": 18
+          },
+          "absences": 7,
+          "retards": 3,
+          "distinction": "felicitations",
+          "comportementNegatif": "Peut faire mieux\nLimiter les bavardages en maths",
+          "comportementPositif": "Très bon trimestre, élève investie dans son rôle de déléguée\nÉlève sérieuse, agréable et motivée\nProgrès impressionnants en HG",
+          "appreciation": "Alexia est une élève très investie qui assume parfaitement son rôle de déléguée. Même si l'ensemble est perfectible, ses résultats sont très bons dans l'ensemble des disciplines grâce à son sérieux et son travail régulier. Elle participe activement en classe et fournit des efforts considérables pour progresser. Elle doit simplement veiller à limiter quelques bavardages en mathématiques pour maintenir sa concentration et continuer sur cette excellente dynamique. Elle se prépare très bien pour le DNB. FÉLICITATIONS DU CONSEIL DE CLASSE."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 18,
+      "name": "VADOT PHILIPPE Jade",
+      "trimestres": {
+        "T1": {
+          "moyenne": 9,
+          "notes": {
+            "Arts plastiques": 12.5,
+            "EPS": 7.5,
+            "Éducation musicale": 6.2,
+            "Physique-Chimie": 8.3,
+            "PIX": 10.5
+          },
+          "absences": 84,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "Attention aux absences\nPeu d'inclusions cette année\nTravail personnel malheureusement insuffisant\nTravail demandé a été bâclé",
+          "comportementPositif": "Élève agréable et discrète\n\nFait toujours de son mieux même si elle a besoin d'aide",
+          "appreciation": "Jade est une élève discrète et volontaire, toujours positive en classe. Malgré ses difficultés, elle fait de son mieux. Ses nombreuses absences (84 heures manquées) freinent sa progression et son inclusion. Il est essentiel qu’elle retrouve une assiduité régulière, maintienne ses efforts et sollicite de l’aide. Une réflexion sur son orientation future devra être engagée pour l’accompagner au mieux."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 19,
+      "name": "VINCENT Noémie",
+      "trimestres": {
+        "T1": {
+          "moyenne": 11.1,
+          "notes": {
+            "Allemand LV2": 6.7,
+            "Anglais LV1": 7.9,
+            "Arts plastiques": 13.5,
+            "Chant choral": 17,
+            "EPS": 12.3,
+            "Éducation musicale": 6.7,
+            "Français": 9.9,
+            "Histoire-Géographie": 14.9,
+            "Mathématiques": 6.6,
+            "Physique-Chimie": 9.5,
+            "PIX": 10.4,
+            "SVT": 9.4,
+            "Technologie": 20
+          },
+          "absences": 6,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "Trimestre peu fructueux en allemand, se décourage rapidement\nTrop grande passivité en classe\nTravail personnel insuffisant\nLeçons pas sues\nAttention à ton langage parfois grossier",
+          "comportementPositif": "Présence assidue en Devoirs Faits\nTravail personnel régulier en histoire-géographie\nÉlève agréable\n",
+          "appreciation": "Noémie est une élève agréable qui se rend régulièrement en Devoirs Faits, ce qui montre sa volonté de progresser. Elle obtient de très bons résultats en histoire-géographie grâce à un travail personnel régulier et des révisions acharnées. Cependant, sa trop grande passivité en classe et le manque de travail dans plusieurs autres matières l'empêchent de surmonter ses difficultés. Elle doit impérativement s'investir davantage, participer plus en classe et fournir un travail personnel beaucoup plus régulier dans toutes les disciplines pour espérer progresser et se préparer au DNB."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    }
+  ],
+  "appreciationsClasse": {
+    "T1": "La classe est globalement agréable, mais le niveau reste faible en grande partie à cause d’un manque de travail régulier et d’investissement de la part des élèves. De nombreux élèves rencontrent des difficultés et doivent faire des efforts plus soutenus pour progresser, notamment pour répondre aux exigences du brevet. L’attitude générale est positive, mais le travail personnel reste irrégulier ou insuffisant pour une partie des élèves, ce qui limite les progrès et la maîtrise des compétences attendues. Des efforts particuliers sont attendus pour la suite afin de mieux préparer le brevet et consolider les acquis."
+  }
+}

@@ -1,0 +1,623 @@
+{
+  "students": [
+    {
+      "id": 1,
+      "name": "BILLOTET Tayana",
+      "trimestres": {
+        "T1": {
+          "moyenne": 6.9,
+          "notes": {
+            "Allemand LV2": 4.7,
+            "Anglais LV1": 3.1,
+            "Arts plastiques": 6.5,
+            "Chant choral": 17.0,
+            "EPS": 18.5,
+            "Éducation musicale": 6.7,
+            "Français": 0.4,
+            "Histoire-Géographie": 6.1,
+            "Mathématiques": 1.0,
+            "Physique-Chimie": 13.0,
+            "SVT": 8.8,
+            "Technologie": 18.0
+          },
+          "absences": 62,
+          "retards": 2,
+          "distinction": "",
+          "comportementNegatif": "Comportement inadapté en classe propice à l'amusement en français",
+          "comportementPositif": "Attitude en classe s'est améliorée cette année en allemand. Sérieuse en classe en anglais. Bel investissement à la chorale. Très bon trimestre en EPS, investie dans son travail pour progresser. Fait des efforts en éducation musicale. Progrès considérables en termes d'attitude en histoire-géo, se montre désormais souvent sérieuse et volontaire, cherche à faire les exercices, copie le cours et les corrections. Comportement de Tayana s'est nettement amélioré en mathématiques. Bon premier trimestre en physique-chimie.",
+          "appreciation": "Résultats très inquiétants (moyenne 6.9) malgré une amélioration notable du comportement. Trimestre catastrophique en français (0.4) et mathématiques (1.0). Des efforts visibles en attitude mais travail personnel très insuffisant. Bon investissement en EPS (18.5) et chant choral (17.0). Doit absolument se mettre sérieusement au travail pour progresser."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 2,
+      "name": "CARRÉ Enzo",
+      "trimestres": {
+        "T1": {
+          "moyenne": 16.1,
+          "notes": {
+            "Allemand LV2": 14.7,
+            "Anglais LV1": 16.1,
+            "Arts plastiques": 17.2,
+            "EPS": 15.8,
+            "Éducation musicale": 17.3,
+            "Français": 17.8,
+            "Histoire-Géographie": 19.0,
+            "Mathématiques": 18.5,
+            "Physique-Chimie": 13.3,
+            "SVT": 14.0,
+            "Technologie": 18.0
+          },
+          "absences": 70,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "",
+          "comportementPositif": "Excellent trimestre en allemand. Très bon trimestre en anglais. Excellent premier trimestre en arts plastiques. Bon trimestre en EPS. Très bon trimestre en éducation musicale. Excellent premier trimestre en français, élève plaisant et sérieux. Très bon trimestre en histoire-géo, toujours aussi investi et sérieux. Excellent trimestre en mathématiques. Bon trimestre en physique-chimie. Élève sérieux et volontaire en SVT. Élève ambassadeur anti-harcèlement.",
+          "appreciation": "Excellent trimestre (moyenne 16.1). Résultats très satisfaisants dans toutes les matières, avec des points forts en histoire-géo (19.0), mathématiques (18.5), technologie (18.0) et français (17.8). Élève ambassadeur anti-harcèlement et très impliqué dans sa scolarité. Malgré 70h d'absences (PPS/PAI), maintient un excellent niveau. À continuer sur cette lancée."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 3,
+      "name": "CHATAGNER Mathieu",
+      "trimestres": {
+        "T1": {
+          "moyenne": 14.3,
+          "notes": {
+            "Allemand LV2": 13.0,
+            "Anglais LV1": 15.0,
+            "Arts plastiques": 13.5,
+            "EPS": 14.4,
+            "Éducation musicale": 14.5,
+            "Français": 11.6,
+            "Histoire-Géographie": 16.7,
+            "Mathématiques": 13.7,
+            "Physique-Chimie": 13.3,
+            "SVT": 17.1,
+            "Technologie": 18.0
+          },
+          "absences": 28,
+          "retards": 2,
+          "distinction": "",
+          "comportementNegatif": "Attitude en classe parfois inappropriée en allemand et français, tendance à l'amusement",
+          "comportementPositif": "Trimestre correct en allemand. Bon trimestre en anglais. Premier trimestre dans l'ensemble satisfaisant en arts plastiques, élève agréable. Bon investissement en EPS. Bon trimestre en éducation musicale. Bon trimestre en histoire-géo. Bon trimestre en mathématiques, élève sérieux. Bon trimestre en physique-chimie, travaille sérieusement. Très bon trimestre en SVT, investissement important.",
+          "appreciation": "Bon trimestre (moyenne 14.3). Résultats satisfaisants avec des points forts en histoire-géo (16.7), SVT (17.1) et technologie (18.0). Quelques fragilités en français (11.6). Élève sérieux et investi mais doit faire attention à son attitude parfois inappropriée en classe. Peut mieux faire en fournissant un travail personnel plus régulier."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 4,
+      "name": "DALLIER Adrien",
+      "trimestres": {
+        "T1": {
+          "moyenne": 13.3,
+          "notes": {
+            "Allemand LV2": 11.7,
+            "Anglais LV1": 14.1,
+            "Arts plastiques": 11.7,
+            "EPS": 15.6,
+            "Éducation musicale": 13.7,
+            "Français": 12.1,
+            "Histoire-Géographie": 15.6,
+            "Mathématiques": 10.9,
+            "Physique-Chimie": 12.0,
+            "SVT": 13.8,
+            "Technologie": 18.0
+          },
+          "absences": 25,
+          "retards": 1,
+          "distinction": "",
+          "comportementNegatif": "Attitude parfois désinvolte en allemand et arts plastiques",
+          "comportementPositif": "Bon trimestre en anglais. Bon trimestre en EPS. Bon trimestre en éducation musicale. Trimestre satisfaisant en français, élève qui travaille bien. Bon trimestre en histoire-géo. Bon trimestre en mathématiques, élève sérieux et volontaire. Bon trimestre en physique-chimie. Bon trimestre en SVT.",
+          "appreciation": "Bon trimestre (moyenne 13.3). Résultats corrects dans l'ensemble avec un bon niveau en technologie (18.0), histoire-géo (15.6) et EPS (15.6). Quelques fragilités en mathématiques (10.9) et arts plastiques (11.7). Doit maintenir son sérieux et éviter toute attitude désinvolte. Peut viser l'excellence en fournissant un travail personnel plus approfondi."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 5,
+      "name": "DALLIER-VIAL Louison",
+      "trimestres": {
+        "T1": {
+          "moyenne": 8.4,
+          "notes": {
+            "Allemand LV2": 10.2,
+            "Anglais LV1": 5.8,
+            "Arts plastiques": 8.3,
+            "Chant choral": 18.0,
+            "EPS": 11.5,
+            "Éducation musicale": 7.9,
+            "Français": 7.2,
+            "Histoire-Géographie": 7.1,
+            "Mathématiques": 6.1,
+            "Physique-Chimie": 8.0,
+            "SVT": 6.6,
+            "Technologie": 11.0
+          },
+          "absences": 50,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "Travail insuffisant dans la plupart des matières",
+          "comportementPositif": "Élève sympathique en allemand. Élève agréable et respectueux en arts plastiques. Très bon investissement à la chorale. Élève sympathique en EPS. Élève agréable en éducation musicale. Élève sympathique en français. Élève agréable en histoire-géo. Élève sympathique en mathématiques. Élève agréable en physique-chimie. Élève agréable en SVT.",
+          "appreciation": "Trimestre fragile (moyenne 8.4). Résultats insuffisants dans la plupart des matières. Points faibles en anglais (5.8), mathématiques (6.1) et SVT (6.6). Bon investissement à la chorale (18.0). Élève sympathique mais doit fournir un travail beaucoup plus sérieux et régulier. Capacités présentes mais sous-exploitées. Un sursaut est nécessaire."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 6,
+      "name": "DELAY Marie",
+      "trimestres": {
+        "T1": {
+          "moyenne": 13.8,
+          "notes": {
+            "Allemand LV2": 12.7,
+            "Anglais LV1": 13.6,
+            "Arts plastiques": 16.7,
+            "Chant choral": 18.5,
+            "EPS": 11.8,
+            "Éducation musicale": 14.7,
+            "Français": 14.2,
+            "Histoire-Géographie": 15.9,
+            "Mathématiques": 11.9,
+            "Physique-Chimie": 11.7,
+            "SVT": 14.8,
+            "Technologie": 16.5
+          },
+          "absences": 35,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "",
+          "comportementPositif": "Trimestre satisfaisant en allemand, élève sérieuse. Bon trimestre en anglais. Très bon premier trimestre en arts plastiques. Très bel investissement à la chorale. Bon trimestre en EPS. Bon trimestre en éducation musicale, élève agréable et volontaire. Trimestre satisfaisant en français, élève sérieuse. Bon trimestre en histoire-géo. Trimestre satisfaisant en mathématiques, élève volontaire. Trimestre satisfaisant en physique-chimie. Bon trimestre en SVT, élève agréable et investie.",
+          "appreciation": "Bon trimestre (moyenne 13.8). Résultats satisfaisants dans l'ensemble avec des points forts en chant choral (18.5), arts plastiques (16.7), technologie (16.5) et histoire-géo (15.9). Quelques fragilités en mathématiques (11.9) et physique-chimie (11.7). Élève sérieuse et investie. Poursuivre les efforts pour consolider et progresser."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 7,
+      "name": "DEVINEAU Ewan",
+      "trimestres": {
+        "T1": {
+          "moyenne": 10.3,
+          "notes": {
+            "Allemand LV2": 10.3,
+            "Anglais LV1": 11.6,
+            "Arts plastiques": 10.7,
+            "EPS": 14.3,
+            "Éducation musicale": 11.3,
+            "Français": 8.3,
+            "Histoire-Géographie": 10.0,
+            "Mathématiques": 8.4,
+            "Physique-Chimie": 9.0,
+            "SVT": 10.1,
+            "Technologie": 11.5
+          },
+          "absences": 31,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "Bavardages en allemand, anglais, français et histoire-géo. Manque de sérieux en classe",
+          "comportementPositif": "Élève sympathique en allemand, anglais et français. Bon investissement en EPS. Élève sympathique en éducation musicale. Sérieux quand il s'y met en histoire-géo et mathématiques. Élève sympathique en physique-chimie et SVT.",
+          "appreciation": "Trimestre moyen (moyenne 10.3). Résultats fragiles notamment en français (8.3) et mathématiques (8.4). Meilleur niveau en EPS (14.3). Élève sympathique mais trop de bavardages et manque de sérieux en classe nuisent aux résultats. Doit se concentrer davantage et fournir un travail personnel plus régulier pour progresser."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 8,
+      "name": "DUMAY William",
+      "trimestres": {
+        "T1": {
+          "moyenne": 11.8,
+          "notes": {
+            "Allemand LV2": 13.7,
+            "Anglais LV1": 12.6,
+            "Arts plastiques": 13.0,
+            "EPS": 14.5,
+            "Éducation musicale": 13.0,
+            "Français": 11.7,
+            "Histoire-Géographie": 12.5,
+            "Mathématiques": 8.7,
+            "Physique-Chimie": 8.3,
+            "SVT": 11.5,
+            "Technologie": 14.5
+          },
+          "absences": 62,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "Attitude parfois désinvolte en arts plastiques",
+          "comportementPositif": "Bon trimestre en allemand. Bon trimestre en anglais. Bon trimestre en EPS. Bon trimestre en éducation musicale, élève agréable. Trimestre satisfaisant en français, élève sérieux. Bon trimestre en histoire-géo. Trimestre satisfaisant en mathématiques, élève sérieux et volontaire. Trimestre satisfaisant en physique-chimie. Bon trimestre en SVT, élève agréable.",
+          "appreciation": "Trimestre moyen (moyenne 11.8). Résultats corrects dans l'ensemble mais des fragilités importantes en mathématiques (8.7) et physique-chimie (8.3). Points forts en allemand (13.7), EPS (14.5) et technologie (14.5). Élève sérieux mais doit éviter toute attitude désinvolte et renforcer le travail personnel notamment dans les matières scientifiques."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 9,
+      "name": "FAURE Shanna",
+      "trimestres": {
+        "T1": {
+          "moyenne": 15.4,
+          "notes": {
+            "Allemand LV2": 14.7,
+            "Anglais LV1": 15.6,
+            "Arts plastiques": 16.7,
+            "Chant choral": 18.5,
+            "EPS": 13.3,
+            "Éducation musicale": 15.7,
+            "Français": 15.8,
+            "Histoire-Géographie": 17.8,
+            "Mathématiques": 14.4,
+            "Physique-Chimie": 14.5,
+            "SVT": 15.0,
+            "Technologie": 16.5
+          },
+          "absences": 1,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "",
+          "comportementPositif": "Très bon trimestre en allemand. Très bon trimestre en anglais. Très bon premier trimestre en arts plastiques. Très bel investissement à la chorale. Bon trimestre en EPS. Très bon trimestre en éducation musicale, élève agréable et volontaire. Très bon trimestre en français, élève sérieuse et agréable. Très bon trimestre en histoire-géo. Bon trimestre en mathématiques. Bon trimestre en physique-chimie. Bon trimestre en SVT, élève sérieuse et investie.",
+          "appreciation": "Très bon trimestre (moyenne 15.4). Résultats très satisfaisants dans toutes les matières avec des points forts en chant choral (18.5), histoire-géo (17.8), arts plastiques (16.7), technologie (16.5) et français (15.8). Élève sérieuse, investie et agréable. Excellent état d'esprit. À continuer ainsi !"
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 10,
+      "name": "GEORGE Nolwenn",
+      "trimestres": {
+        "T1": {
+          "moyenne": 13.1,
+          "notes": {
+            "Allemand LV2": 11.7,
+            "Anglais LV1": 12.6,
+            "Arts plastiques": 14.0,
+            "Chant choral": 18.5,
+            "EPS": 13.3,
+            "Éducation musicale": 14.0,
+            "Français": 13.4,
+            "Histoire-Géographie": 15.4,
+            "Mathématiques": 10.1,
+            "Physique-Chimie": 10.5,
+            "SVT": 14.1,
+            "Technologie": 14.0
+          },
+          "absences": 35,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "",
+          "comportementPositif": "Trimestre satisfaisant en allemand, élève agréable. Bon trimestre en anglais. Bon premier trimestre en arts plastiques. Très bel investissement à la chorale. Bon trimestre en EPS. Bon trimestre en éducation musicale, élève agréable et volontaire. Trimestre satisfaisant en français, élève sérieuse. Bon trimestre en histoire-géo. Trimestre satisfaisant en mathématiques, élève volontaire. Trimestre satisfaisant en physique-chimie. Bon trimestre en SVT, élève agréable et investie.",
+          "appreciation": "Bon trimestre (moyenne 13.1). Résultats satisfaisants avec des points forts en chant choral (18.5), histoire-géo (15.4), arts plastiques (14.0) et français (13.4). Quelques fragilités en mathématiques (10.1) et physique-chimie (10.5). Élève sérieuse et volontaire. Continuer les efforts pour progresser dans les matières scientifiques."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 11,
+      "name": "JEANNIN Mélysse",
+      "trimestres": {
+        "T1": {
+          "moyenne": 14.0,
+          "notes": {
+            "Allemand LV2": 12.2,
+            "Anglais LV1": 14.6,
+            "Arts plastiques": 13.7,
+            "Chant choral": 18.0,
+            "EPS": 14.8,
+            "Éducation musicale": 15.3,
+            "Français": 13.6,
+            "Histoire-Géographie": 16.3,
+            "Mathématiques": 12.0,
+            "Physique-Chimie": 12.3,
+            "SVT": 14.6,
+            "Technologie": 16.0
+          },
+          "absences": 18,
+          "retards": 2,
+          "distinction": "",
+          "comportementNegatif": "",
+          "comportementPositif": "Trimestre satisfaisant en allemand, élève sérieuse. Bon trimestre en anglais. Bon premier trimestre en arts plastiques. Bel investissement à la chorale. Bon trimestre en EPS. Très bon trimestre en éducation musicale, élève agréable et volontaire. Trimestre satisfaisant en français, élève sérieuse. Bon trimestre en histoire-géo. Trimestre satisfaisant en mathématiques, élève volontaire. Trimestre satisfaisant en physique-chimie. Bon trimestre en SVT, élève agréable et investie.",
+          "appreciation": "Bon trimestre (moyenne 14.0). Résultats satisfaisants avec des points forts en chant choral (18.0), histoire-géo (16.3), technologie (16.0) et éducation musicale (15.3). Quelques fragilités en mathématiques (12.0) et physique-chimie (12.3). Élève sérieuse et investie. Continuer ainsi pour consolider et progresser."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 12,
+      "name": "LAMBERT Jayson",
+      "trimestres": {
+        "T1": {
+          "moyenne": 12.0,
+          "notes": {
+            "Allemand LV2": 11.0,
+            "Anglais LV1": 12.6,
+            "Arts plastiques": 12.3,
+            "EPS": 13.8,
+            "Éducation musicale": 12.0,
+            "Français": 10.8,
+            "Histoire-Géographie": 13.8,
+            "Mathématiques": 10.4,
+            "Physique-Chimie": 11.0,
+            "SVT": 13.3,
+            "Technologie": 13.0
+          },
+          "absences": 4,
+          "retards": 2,
+          "distinction": "",
+          "comportementNegatif": "Bavardages en allemand, anglais, français, histoire-géo et mathématiques qui perturbent le cours",
+          "comportementPositif": "Élève agréable en allemand, anglais et arts plastiques. Bon trimestre en EPS. Élève agréable en éducation musicale. Fait des efforts en français et histoire-géo. Élève agréable en mathématiques, physique-chimie et SVT.",
+          "appreciation": "Trimestre moyen (moyenne 12.0). Résultats corrects mais fragiles notamment en français (10.8) et mathématiques (10.4). Meilleur niveau en histoire-géo (13.8), EPS (13.8) et SVT (13.3). Élève agréable mais les bavardages perturbent le cours. Doit se concentrer davantage et fournir un travail plus régulier pour progresser."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 13,
+      "name": "LEPAGE Teddy",
+      "trimestres": {
+        "T1": {
+          "moyenne": 15.3,
+          "notes": {
+            "Allemand LV2": 15.3,
+            "Anglais LV1": 14.6,
+            "Arts plastiques": 16.7,
+            "Chant choral": 18.5,
+            "EPS": 15.8,
+            "Éducation musicale": 16.3,
+            "Français": 15.4,
+            "Histoire-Géographie": 17.8,
+            "Mathématiques": 14.6,
+            "Physique-Chimie": 13.0,
+            "SVT": 14.1,
+            "Technologie": 18.0
+          },
+          "absences": 0,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "",
+          "comportementPositif": "Très bon trimestre en allemand. Bon trimestre en anglais. Très bon premier trimestre en arts plastiques. Bel investissement à la chorale. Bon trimestre en EPS. Très bon trimestre en éducation musicale, élève agréable et volontaire. Très bon trimestre en français, élève sérieux. Très bon trimestre en histoire-géo, délégué très investi. Bon trimestre en mathématiques. Trimestre satisfaisant en physique-chimie. Bon trimestre en SVT, élève sérieux et volontaire. Félicitations méritées.",
+          "appreciation": "Excellent trimestre (moyenne 15.3). Résultats très satisfaisants dans toutes les matières avec des points forts en chant choral (18.5), technologie (18.0), histoire-géo (17.8) et arts plastiques (16.7). Élève délégué très investi et exemplaire. Félicitations méritées. Aucune absence ni retard. Continue comme ça !"
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 14,
+      "name": "LUCAS Erwan",
+      "trimestres": {
+        "T1": {
+          "moyenne": 13.7,
+          "notes": {
+            "Allemand LV2": 13.3,
+            "Anglais LV1": 14.1,
+            "Arts plastiques": 15.0,
+            "EPS": 15.6,
+            "Éducation musicale": 14.3,
+            "Français": 12.9,
+            "Histoire-Géographie": 15.9,
+            "Mathématiques": 11.4,
+            "Physique-Chimie": 11.0,
+            "SVT": 14.6,
+            "Technologie": 15.0
+          },
+          "absences": 16,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "",
+          "comportementPositif": "Bon trimestre en allemand. Bon trimestre en anglais. Bon premier trimestre en arts plastiques. Bon trimestre en EPS. Bon trimestre en éducation musicale, élève agréable et volontaire. Trimestre satisfaisant en français, élève sérieux. Bon trimestre en histoire-géo. Trimestre satisfaisant en mathématiques, élève sérieux et volontaire. Trimestre satisfaisant en physique-chimie. Bon trimestre en SVT, bon investissement.",
+          "appreciation": "Bon trimestre (moyenne 13.7). Résultats satisfaisants avec des points forts en histoire-géo (15.9), EPS (15.6), arts plastiques (15.0) et technologie (15.0). Quelques fragilités en mathématiques (11.4) et physique-chimie (11.0). Élève sérieux avec un bon investissement. Continuer les efforts notamment dans les matières scientifiques."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 15,
+      "name": "PERNOT Mathéo",
+      "trimestres": {
+        "T1": {
+          "moyenne": 11.2,
+          "notes": {
+            "Allemand LV2": 9.5,
+            "Anglais LV1": 10.6,
+            "Arts plastiques": 12.3,
+            "EPS": 13.8,
+            "Éducation musicale": 11.3,
+            "Français": 10.6,
+            "Histoire-Géographie": 12.5,
+            "Mathématiques": 9.4,
+            "Physique-Chimie": 9.5,
+            "SVT": 12.3,
+            "Technologie": 13.0
+          },
+          "absences": 20,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "Manque de travail personnel. Attitude parfois inadaptée en allemand et français",
+          "comportementPositif": "Élève agréable en allemand, anglais et arts plastiques. Bon trimestre en EPS. Élève agréable en éducation musicale. Élève agréable en français et histoire-géo. Élève agréable en mathématiques et physique-chimie. Bon trimestre en SVT.",
+          "appreciation": "Trimestre fragile (moyenne 11.2). Résultats insuffisants notamment en allemand (9.5), mathématiques (9.4) et physique-chimie (9.5). Meilleur niveau en EPS (13.8) et technologie (13.0). Élève agréable mais manque de travail personnel et attitude parfois inadaptée. Doit fournir un effort beaucoup plus régulier pour progresser."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 16,
+      "name": "POUTHIER Noa",
+      "trimestres": {
+        "T1": {
+          "moyenne": 14.2,
+          "notes": {
+            "Allemand LV2": 13.7,
+            "Anglais LV1": 14.1,
+            "Arts plastiques": 14.3,
+            "EPS": 15.6,
+            "Éducation musicale": 15.0,
+            "Français": 14.2,
+            "Histoire-Géographie": 16.3,
+            "Mathématiques": 13.0,
+            "Physique-Chimie": 11.3,
+            "SVT": 14.1,
+            "Technologie": 15.0
+          },
+          "absences": 4,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "",
+          "comportementPositif": "Bon trimestre en allemand. Bon trimestre en anglais. Bon premier trimestre en arts plastiques. Bon trimestre en EPS. Bon trimestre en éducation musicale, élève agréable et volontaire. Bon trimestre en français, élève sérieux. Bon trimestre en histoire-géo. Bon trimestre en mathématiques, élève sérieux et volontaire. Trimestre satisfaisant en physique-chimie. Bon trimestre en SVT.",
+          "appreciation": "Bon trimestre (moyenne 14.2). Résultats satisfaisants dans toutes les matières avec des points forts en histoire-géo (16.3), EPS (15.6), éducation musicale (15.0) et technologie (15.0). Quelques fragilités en physique-chimie (11.3). Élève sérieux et volontaire. Continue ainsi pour consolider et progresser."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 17,
+      "name": "SCHWINDEN Emy",
+      "trimestres": {
+        "T1": {
+          "moyenne": 11.7,
+          "notes": {
+            "Allemand LV2": 10.7,
+            "Anglais LV1": 10.6,
+            "Arts plastiques": 12.0,
+            "EPS": 15.3,
+            "Éducation musicale": 13.0,
+            "Français": 9.5,
+            "Histoire-Géographie": 13.8,
+            "Mathématiques": 11.3,
+            "Physique-Chimie": 11.7,
+            "SVT": 10.0,
+            "Technologie": 12.5
+          },
+          "absences": 7,
+          "retards": 3,
+          "distinction": "",
+          "comportementNegatif": "",
+          "comportementPositif": "Élève courageuse en allemand et anglais, fait de gros efforts malgré la barrière de la langue. Premier trimestre encourageant en arts plastiques. Bon trimestre en EPS. Bon trimestre en éducation musicale, élève agréable et volontaire. Élève courageuse en français, fait des efforts. Bon trimestre en histoire-géo. Trimestre satisfaisant en mathématiques, élève volontaire. Trimestre satisfaisant en physique-chimie. Trimestre encourageant en SVT. Dispositif ULIS, PPS, évaluations adaptées.",
+          "appreciation": "Trimestre encourageant (moyenne 11.7) compte tenu du dispositif ULIS et PPS. Évaluations adaptées. Barrière de la langue encore présente mais Emy fait de gros efforts. Points forts en EPS (15.3), histoire-géo (13.8) et éducation musicale (13.0). Fragilités en français (9.5) et SVT (10.0). Élève courageuse et volontaire. Continuer les efforts !"
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 18,
+      "name": "VERCHERE Victor",
+      "trimestres": {
+        "T1": {
+          "moyenne": 8.9,
+          "notes": {
+            "Allemand LV2": 6.8,
+            "Anglais LV1": 6.1,
+            "Arts plastiques": 9.7,
+            "EPS": 14.8,
+            "Éducation musicale": 9.7,
+            "Français": 8.3,
+            "Histoire-Géographie": 9.8,
+            "Mathématiques": 6.9,
+            "Physique-Chimie": 8.0,
+            "SVT": 9.6,
+            "Technologie": 12.0
+          },
+          "absences": 84,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "Travail insuffisant dans toutes les matières",
+          "comportementPositif": "Élève agréable en allemand, anglais, arts plastiques, éducation musicale, français, histoire-géo, mathématiques, physique-chimie et SVT. Bon trimestre en EPS.",
+          "appreciation": "Trimestre très fragile (moyenne 8.9) avec 84h d'absences. Résultats insuffisants dans toutes les matières notamment en allemand (6.8), anglais (6.1) et mathématiques (6.9). Seul point positif en EPS (14.8). Élève agréable mais travail très insuffisant. Les absences nombreuses pénalisent fortement. Doit absolument se ressaisir et fournir un travail régulier."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 19,
+      "name": "VIDLAK Inès",
+      "trimestres": {
+        "T1": {
+          "moyenne": 15.7,
+          "notes": {
+            "Allemand LV2": 15.0,
+            "Anglais LV1": 16.1,
+            "Arts plastiques": 16.7,
+            "Chant choral": 18.0,
+            "EPS": 15.3,
+            "Éducation musicale": 16.3,
+            "Français": 16.0,
+            "Histoire-Géographie": 17.8,
+            "Mathématiques": 15.7,
+            "Physique-Chimie": 14.0,
+            "SVT": 14.6,
+            "Technologie": 18.0
+          },
+          "absences": 6,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "",
+          "comportementPositif": "Très bon trimestre en allemand. Très bon trimestre en anglais. Très bon premier trimestre en arts plastiques. Bel investissement à la chorale. Bon trimestre en EPS. Très bon trimestre en éducation musicale, élève agréable et volontaire. Très bon trimestre en français, élève sérieuse et agréable. Très bon trimestre en histoire-géo. Bon trimestre en mathématiques. Bon trimestre en physique-chimie. Bon trimestre en SVT, élève sérieuse et investie.",
+          "appreciation": "Excellent trimestre (moyenne 15.7). Résultats très satisfaisants dans toutes les matières avec des points forts en chant choral (18.0), technologie (18.0), histoire-géo (17.8), arts plastiques (16.7) et éducation musicale (16.3). Élève sérieuse, investie et agréable. Excellent état d'esprit. Continue comme ça !"
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    }
+  ],
+  "appreciationsClasse": {
+    "T1": "Classe agréable dans l'ensemble avec une attitude positive générale. Cependant, le travail personnel reste très irrégulier pour de nombreux élèves. Certains élèves excellent (CARRÉ, FAURE, LEPAGE, VIDLAK) tandis que d'autres rencontrent de sérieuses difficultés (BILLOTET, DALLIER-VIAL, VERCHERE). L'absentéisme est préoccupant pour plusieurs élèves. Il est impératif que chacun s'investisse davantage dans le travail personnel pour progresser."
+  }
+}

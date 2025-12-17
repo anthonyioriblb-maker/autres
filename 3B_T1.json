@@ -1,0 +1,619 @@
+{
+  "students": [
+    {
+      "id": 1,
+      "name": "BILLOTET Tayana",
+      "trimestres": {
+        "T1": {
+          "moyenne": 8.7,
+          "notes": {
+            "Allemand LV2": 4.7,
+            "Anglais LV1": 3.1,
+            "Arts plastiques": 6.5,
+            "Chant choral": 17.0,
+            "EPS": 18.5,
+            "Éducation musicale": 6.7,
+            "Français": 0.4,
+            "Histoire-Géographie": 6.1,
+            "Mathématiques": 1.0,
+            "Physique-Chimie": 13.0,
+            "SVT": 8.8,
+            "Technologie": 18.0
+          },
+          "absences": 62,
+          "retards": 2,
+          "distinction": "",
+          "comportementNegatif": "Trimestre catastrophique en anglais\nTrimestre décevant en arts plastiques\nAbsence totale de travail et comportement inadapté en français\nTravail personnel très insuffisant dans plusieurs matières\nLeçons non apprises régulièrement",
+          "comportementPositif": "Attitude en classe s'est nettement améliorée cette année\nProgrès considérables en histoire-géo et mathématiques sur le comportement\nTrès investie en EPS et excellent travail à la chorale\nFait des efforts en éducation musicale",
+          "appreciation": "Trimestre très fragile avec des résultats très inquiétants. Le contraste est saisissant entre les notes catastrophiques en français et mathématiques et les bons résultats en EPS ou chant choral. L'amélioration du comportement est réelle mais doit impérativement se traduire par un travail personnel sérieux et régulier. Les absences nombreuses aggravent la situation."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 2,
+      "name": "CARRÉ Enzo",
+      "trimestres": {
+        "T1": {
+          "moyenne": 16.1,
+          "notes": {
+            "Allemand LV2": 16.0,
+            "Anglais LV1": 13.6,
+            "Arts plastiques": 13.5,
+            "EPS": 15.0,
+            "Éducation musicale": 16.0,
+            "Français": 18.7,
+            "Histoire-Géographie": 17.4,
+            "Mathématiques": 16.5,
+            "Physique-Chimie": 13.0,
+            "PIX": 17.9,
+            "SVT": 15.6,
+            "Technologie": 20.0
+          },
+          "absences": 70,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "",
+          "comportementPositif": "Excellent travail dans toutes les matières\nÉlève très sérieux, investi et rigoureux\nParticulièrement brillant en français, histoire-géo et technologie\nÉlève ambassadeur anti-harcèlement très impliqué",
+          "appreciation": "Excellent trimestre avec des résultats remarquables dans toutes les matières. Élève ambassadeur anti-harcèlement particulièrement investi dans la vie de l'établissement. Malgré un nombre important d'absences justifiées par son PPS/PAI, maintient un niveau d'excellence. Attitude exemplaire à poursuivre."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 3,
+      "name": "CLEMENT Matteo",
+      "trimestres": {
+        "T1": {
+          "moyenne": 14.2,
+          "notes": {
+            "Allemand LV2": 13.3,
+            "Anglais LV1": 14.6,
+            "Arts plastiques": 13.5,
+            "EPS": 14.3,
+            "Éducation musicale": 14.5,
+            "Français": 11.9,
+            "Histoire-Géographie": 16.7,
+            "Mathématiques": 13.3,
+            "Physique-Chimie": 13.3,
+            "SVT": 17.0,
+            "Technologie": 18.0
+          },
+          "absences": 28,
+          "retards": 2,
+          "distinction": "",
+          "comportementNegatif": "Attitude parfois inappropriée avec tendance à l'amusement\nManque de sérieux ponctuel en classe",
+          "comportementPositif": "Élève agréable et sérieux dans l'ensemble\nBon investissement et travail régulier\nParticulièrement bon en SVT, histoire-géo et technologie",
+          "appreciation": "Bon trimestre avec des résultats satisfaisants. Points forts notables en SVT, histoire-géo et technologie. Quelques fragilités en français à consolider. Élève globalement sérieux qui doit simplement veiller à maintenir une attitude adaptée en toutes circonstances pour viser l'excellence."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 4,
+      "name": "CONTI Johan",
+      "trimestres": {
+        "T1": {
+          "moyenne": 9.5,
+          "notes": {
+            "Allemand LV2": 10.2,
+            "Anglais LV1": 11.6,
+            "Arts plastiques": 10.3,
+            "EPS": 14.3,
+            "Éducation musicale": 11.3,
+            "Français": 8.0,
+            "Histoire-Géographie": 10.0,
+            "Mathématiques": 8.3,
+            "Physique-Chimie": 8.7,
+            "SVT": 10.0,
+            "Technologie": 11.5
+          },
+          "absences": 24,
+          "retards": 1,
+          "distinction": "",
+          "comportementNegatif": "Bavardages réguliers qui perturbent le cours\nManque de sérieux et concentration insuffisante\nTravail personnel irrégulier",
+          "comportementPositif": "Élève sympathique et agréable\nSérieux quand il s'y met\nBon investissement en EPS",
+          "appreciation": "Trimestre moyen avec des résultats fragiles dans la plupart des matières, notamment en français et mathématiques. Meilleur niveau en EPS. Élève sympathique mais les bavardages et le manque de sérieux nuisent aux résultats. Doit impérativement se concentrer et fournir un travail beaucoup plus régulier pour progresser."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 5,
+      "name": "DE JONGE Beaudine",
+      "trimestres": {
+        "T1": {
+          "moyenne": 10.9,
+          "notes": {
+            "Allemand LV2": 10.2,
+            "Anglais LV1": 11.6,
+            "Arts plastiques": 11.7,
+            "Chant choral": 18.0,
+            "EPS": 11.3,
+            "Éducation musicale": 7.9,
+            "Français": 10.7,
+            "Histoire-Géographie": 12.5,
+            "Mathématiques": 6.0,
+            "Physique-Chimie": 8.0,
+            "SVT": 11.8
+          },
+          "absences": 49,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "Travail insuffisant dans plusieurs matières\nDifficultés importantes en mathématiques\nManque d'investissement et de régularité",
+          "comportementPositif": "Élève sympathique et agréable\nExcellent investissement à la chorale\nFait des efforts dans certaines matières",
+          "appreciation": "Trimestre moyen avec des résultats fragiles. Grosse difficulté en mathématiques qui nécessite un soutien. Seul point très positif : l'excellent travail à la chorale. Élève sympathique qui doit fournir un travail beaucoup plus sérieux et régulier dans toutes les matières pour progresser."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 6,
+      "name": "GARNIER Pauline",
+      "trimestres": {
+        "T1": {
+          "moyenne": 14.7,
+          "notes": {
+            "Allemand LV2": 15.0,
+            "Anglais LV1": 15.6,
+            "Arts plastiques": 16.7,
+            "Chant choral": 18.5,
+            "EPS": 13.3,
+            "Éducation musicale": 15.7,
+            "Français": 15.8,
+            "Histoire-Géographie": 17.8,
+            "Mathématiques": 11.9,
+            "Physique-Chimie": 11.3,
+            "SVT": 14.6,
+            "Technologie": 16.5
+          },
+          "absences": 35,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "",
+          "comportementPositif": "Élève sérieuse, agréable et investie dans toutes les matières\nTrès bel investissement à la chorale\nParticulièrement brillante en matières littéraires et artistiques\nVolontaire et appliquée",
+          "appreciation": "Très bon trimestre avec des résultats très satisfaisants. Points forts remarquables en chant choral, histoire-géo, arts plastiques et français. Quelques fragilités en mathématiques et physique-chimie à travailler. Élève sérieuse et investie qui doit continuer ses efforts pour consolider l'ensemble."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 7,
+      "name": "GROSSI Sara",
+      "trimestres": {
+        "T1": {
+          "moyenne": 13.3,
+          "notes": {
+            "Allemand LV2": 12.7,
+            "Anglais LV1": 13.6,
+            "Arts plastiques": 14.0,
+            "Chant choral": 18.5,
+            "EPS": 11.8,
+            "Éducation musicale": 14.7,
+            "Français": 14.2,
+            "Histoire-Géographie": 15.9,
+            "Mathématiques": 11.0,
+            "Physique-Chimie": 11.3,
+            "SVT": 14.6,
+            "Technologie": 14.0
+          },
+          "absences": 30,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "",
+          "comportementPositif": "Élève sérieuse, agréable et volontaire\nTrès bel investissement à la chorale\nBons résultats en histoire-géo, français et SVT\nTravail régulier et appliqué",
+          "appreciation": "Bon trimestre avec des résultats satisfaisants dans l'ensemble. Points forts en chant choral, histoire-géo et français. Quelques fragilités en mathématiques et physique-chimie. Élève sérieuse et volontaire qui doit poursuivre ses efforts pour progresser dans les matières scientifiques."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 8,
+      "name": "LAMBOURS Sullyvanne",
+      "trimestres": {
+        "T1": {
+          "moyenne": 8.2,
+          "notes": {
+            "Allemand LV2": 9.5,
+            "Anglais LV1": 5.8,
+            "Arts plastiques": 8.3,
+            "Chant choral": 18.0,
+            "EPS": 11.3,
+            "Éducation musicale": 7.9,
+            "Français": 7.0,
+            "Histoire-Géographie": 7.0,
+            "Mathématiques": 6.0,
+            "Physique-Chimie": 8.0,
+            "SVT": 6.5,
+            "Technologie": 10.5
+          },
+          "absences": 61,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "Travail très insuffisant dans presque toutes les matières\nManque d'investissement généralisé\nGrosses difficultés en anglais, mathématiques et SVT",
+          "comportementPositif": "Élève sympathique, agréable et respectueux\nTrès bon investissement à la chorale",
+          "appreciation": "Trimestre fragile avec des résultats insuffisants dans la quasi-totalité des matières. Difficultés particulièrement marquées en anglais, français, mathématiques et SVT. Seul point positif notable : l'excellent investissement à la chorale. Élève sympathique mais les capacités sont très largement sous-exploitées. Un sursaut important est absolument nécessaire."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 9,
+      "name": "LEPAGE Teddy",
+      "trimestres": {
+        "T1": {
+          "moyenne": 14.9,
+          "notes": {
+            "Allemand LV2": 15.3,
+            "Anglais LV1": 14.6,
+            "Arts plastiques": 16.7,
+            "Chant choral": 18.5,
+            "EPS": 15.8,
+            "Éducation musicale": 16.3,
+            "Français": 15.4,
+            "Histoire-Géographie": 17.8,
+            "Mathématiques": 13.0,
+            "Physique-Chimie": 13.0,
+            "SVT": 14.0,
+            "Technologie": 18.0
+          },
+          "absences": 1,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "",
+          "comportementPositif": "Très bon travail dans toutes les matières\nÉlève délégué de classe exemplaire et très investi\nBel investissement à la chorale\nSérieux, agréable et volontaire\nFélicitations pleinement méritées",
+          "appreciation": "Excellent trimestre avec des résultats très satisfaisants partout. Points forts remarquables en chant choral, technologie, histoire-géo et arts plastiques. Élève délégué exemplaire et très investi dans sa fonction. Félicitations pleinement méritées. Assiduité parfaite. Continue exactement comme ça."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 10,
+      "name": "LOTSCHER Jessica",
+      "trimestres": {
+        "T1": {
+          "moyenne": 13.6,
+          "notes": {
+            "Allemand LV2": 12.2,
+            "Anglais LV1": 14.6,
+            "Arts plastiques": 13.7,
+            "Chant choral": 18.0,
+            "EPS": 14.8,
+            "Éducation musicale": 15.3,
+            "Français": 13.6,
+            "Histoire-Géographie": 16.3,
+            "Mathématiques": 12.0,
+            "Physique-Chimie": 12.3,
+            "SVT": 14.6,
+            "Technologie": 14.0
+          },
+          "absences": 35,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "",
+          "comportementPositif": "Élève sérieuse, agréable et volontaire dans toutes les matières\nBel investissement à la chorale\nParticulièrement bons résultats en histoire-géo et éducation musicale",
+          "appreciation": "Bon trimestre avec des résultats satisfaisants. Points forts en chant choral, histoire-géo et éducation musicale. Quelques fragilités en mathématiques et physique-chimie à consolider. Élève sérieuse et investie qui doit continuer ses efforts pour progresser dans les matières scientifiques."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 11,
+      "name": "LOTSCHER Mylana",
+      "trimestres": {
+        "T1": {
+          "moyenne": 11.0,
+          "notes": {
+            "Allemand LV2": 11.0,
+            "Anglais LV1": 12.6,
+            "Arts plastiques": 12.3,
+            "EPS": 13.8,
+            "Éducation musicale": 12.0,
+            "Français": 10.8,
+            "Histoire-Géographie": 13.8,
+            "Mathématiques": 8.7,
+            "Physique-Chimie": 10.5,
+            "SVT": 13.1,
+            "Technologie": 13.0
+          },
+          "absences": 17,
+          "retards": 2,
+          "distinction": "",
+          "comportementNegatif": "Bavardages réguliers qui perturbent le cours\nManque de concentration en classe",
+          "comportementPositif": "Élève agréable\nFait des efforts\nBons résultats en histoire-géo, EPS et SVT",
+          "appreciation": "Trimestre moyen avec des résultats corrects mais fragiles. Grosse difficulté en mathématiques. Meilleurs résultats en histoire-géo, EPS et SVT. Élève agréable mais les bavardages perturbent le cours et nuisent aux apprentissages. Doit se concentrer davantage et fournir un travail plus régulier pour progresser."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 12,
+      "name": "PASQUA Théo",
+      "trimestres": {
+        "T1": {
+          "moyenne": 15.2,
+          "notes": {
+            "Allemand LV2": 15.3,
+            "Anglais LV1": 14.6,
+            "Arts plastiques": 16.7,
+            "Chant choral": 18.5,
+            "EPS": 15.8,
+            "Éducation musicale": 16.3,
+            "Français": 15.4,
+            "Histoire-Géographie": 17.8,
+            "Mathématiques": 14.6,
+            "Physique-Chimie": 13.0,
+            "SVT": 14.1,
+            "Technologie": 18.0
+          },
+          "absences": 4,
+          "retards": 2,
+          "distinction": "",
+          "comportementNegatif": "",
+          "comportementPositif": "Très bon travail dans toutes les matières\nÉlève sérieux, agréable et volontaire\nBel investissement à la chorale\nParticulièrement brillant en histoire-géo, technologie et arts plastiques",
+          "appreciation": "Excellent trimestre avec des résultats très satisfaisants dans toutes les matières. Points forts remarquables en chant choral, technologie, histoire-géo et arts plastiques. Élève sérieux et investi avec un excellent état d'esprit. Continue comme ça pour consolider et viser l'excellence partout."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 13,
+      "name": "PERRIN--GOTTFROIS Charles",
+      "trimestres": {
+        "T1": {
+          "moyenne": 14.8,
+          "notes": {
+            "Allemand LV2": 13.7,
+            "Anglais LV1": 14.1,
+            "Arts plastiques": 15.0,
+            "EPS": 15.6,
+            "Éducation musicale": 14.3,
+            "Français": 12.9,
+            "Histoire-Géographie": 15.9,
+            "Mathématiques": 14.0,
+            "Physique-Chimie": 14.5,
+            "SVT": 14.6,
+            "Technologie": 15.0
+          },
+          "absences": 0,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "",
+          "comportementPositif": "Élève sérieux, agréable et volontaire dans toutes les matières\nBon investissement général et travail régulier\nRésultats homogènes et satisfaisants partout\nAssiduité exemplaire",
+          "appreciation": "Très bon trimestre avec des résultats satisfaisants et homogènes dans toutes les matières. Points forts en histoire-géo et EPS. Élève sérieux avec un bon investissement qui doit continuer ses efforts. Assiduité exemplaire avec aucune absence ni retard. Continue ainsi pour consolider et progresser."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 14,
+      "name": "POISSE Lény",
+      "trimestres": {
+        "T1": {
+          "moyenne": 15.5,
+          "notes": {
+            "Allemand LV2": 14.7,
+            "Anglais LV1": 14.1,
+            "Arts plastiques": 14.3,
+            "EPS": 15.6,
+            "Éducation musicale": 15.0,
+            "Français": 14.2,
+            "Histoire-Géographie": 16.3,
+            "Mathématiques": 17.0,
+            "Physique-Chimie": 16.3,
+            "SVT": 14.1,
+            "Technologie": 15.0
+          },
+          "absences": 15,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "",
+          "comportementPositif": "Élève sérieux, agréable et volontaire dans toutes les matières\nParticulièrement brillant en mathématiques et physique-chimie\nRésultats très satisfaisants partout",
+          "appreciation": "Excellent trimestre avec des résultats très satisfaisants dans toutes les matières. Points forts remarquables en mathématiques, physique-chimie et histoire-géo. Élève sérieux et volontaire avec un excellent niveau général. Continue ainsi pour viser l'excellence dans tous les domaines."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 15,
+      "name": "SCHWINDEN Emy",
+      "trimestres": {
+        "T1": {
+          "moyenne": 12.1,
+          "notes": {
+            "Allemand LV2": 10.7,
+            "Anglais LV1": 10.6,
+            "Arts plastiques": 12.0,
+            "EPS": 15.3,
+            "Éducation musicale": 13.0,
+            "Français": 11.3,
+            "Histoire-Géographie": 13.8,
+            "Mathématiques": 11.3,
+            "Physique-Chimie": 12.0,
+            "SVT": 10.0,
+            "Technologie": 12.5
+          },
+          "absences": 19,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "",
+          "comportementPositif": "Élève courageuse et volontaire qui fait de gros efforts malgré la barrière de la langue\nAgréable et investie dans toutes les matières\nBons résultats en EPS et histoire-géo\nDispositif ULIS avec PPS et évaluations adaptées",
+          "appreciation": "Trimestre encourageant compte tenu du dispositif ULIS et du PPS avec évaluations adaptées. La barrière de la langue reste présente mais Emy fait de gros efforts et progresse. Points forts en EPS et histoire-géo. Élève courageuse et volontaire à encourager dans ses efforts. Continue."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 16,
+      "name": "THIRIÉT Théo",
+      "trimestres": {
+        "T1": {
+          "moyenne": 12.8,
+          "notes": {
+            "Allemand LV2": 13.3,
+            "Anglais LV1": 14.1,
+            "Arts plastiques": 15.0,
+            "EPS": 15.6,
+            "Éducation musicale": 14.3,
+            "Français": 12.9,
+            "Histoire-Géographie": 15.9,
+            "Mathématiques": 11.4,
+            "Physique-Chimie": 11.0,
+            "SVT": 14.6,
+            "Technologie": 15.0
+          },
+          "absences": 4,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "",
+          "comportementPositif": "Élève sérieux, agréable et volontaire dans toutes les matières\nBon investissement général\nParticulièrement bons résultats en histoire-géo, EPS et arts plastiques",
+          "appreciation": "Bon trimestre avec des résultats satisfaisants. Points forts en histoire-géo, EPS, arts plastiques et technologie. Quelques fragilités en mathématiques et physique-chimie. Élève sérieux avec un bon investissement qui doit continuer ses efforts notamment dans les matières scientifiques pour progresser."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 17,
+      "name": "ULMANN Alexia",
+      "trimestres": {
+        "T1": {
+          "moyenne": 15.1,
+          "notes": {
+            "Allemand LV2": 15.0,
+            "Anglais LV1": 16.1,
+            "Arts plastiques": 16.7,
+            "Chant choral": 18.0,
+            "EPS": 15.3,
+            "Éducation musicale": 16.3,
+            "Français": 16.0,
+            "Histoire-Géographie": 17.8,
+            "Mathématiques": 14.0,
+            "Physique-Chimie": 14.0,
+            "SVT": 14.6,
+            "Technologie": 18.0
+          },
+          "absences": 7,
+          "retards": 3,
+          "distinction": "",
+          "comportementNegatif": "",
+          "comportementPositif": "Très bon travail dans toutes les matières\nÉlève sérieuse, agréable, volontaire et investie\nBel investissement à la chorale\nParticulièrement brillante en histoire-géo, français, technologie et matières artistiques",
+          "appreciation": "Excellent trimestre avec des résultats très satisfaisants dans toutes les matières. Points forts remarquables en chant choral, technologie, histoire-géo, arts plastiques et éducation musicale. Élève sérieuse, investie et agréable avec un excellent état d'esprit. Continue comme ça."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 18,
+      "name": "VADOT PHILIPPE Jade",
+      "trimestres": {
+        "T1": {
+          "moyenne": 9.0,
+          "notes": {
+            "Allemand LV2": 6.8,
+            "Anglais LV1": 6.0,
+            "EPS": 14.8,
+            "Mathématiques": 6.7,
+            "Technologie": 10.5
+          },
+          "absences": 84,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "Travail très insuffisant dans toutes les matières\nManque d'investissement généralisé\nAbsentéisme massif qui pénalise fortement",
+          "comportementPositif": "Élève agréable\nBon trimestre en EPS",
+          "appreciation": "Trimestre très fragile avec un absentéisme massif de 84h qui rend l'évaluation difficile. Les résultats sont très insuffisants dans toutes les matières évaluées, notamment en allemand, anglais et mathématiques. Seul point positif en EPS. Élève agréable mais la situation est très préoccupante. Doit absolument se ressaisir."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    },
+    {
+      "id": 19,
+      "name": "VINCENT Noémie",
+      "trimestres": {
+        "T1": {
+          "moyenne": 11.1,
+          "notes": {
+            "Allemand LV2": 11.7,
+            "Anglais LV1": 12.6,
+            "Arts plastiques": 14.0,
+            "Chant choral": 18.5,
+            "EPS": 13.3,
+            "Éducation musicale": 14.0,
+            "Français": 13.4,
+            "Histoire-Géographie": 15.4,
+            "Mathématiques": 10.1,
+            "Physique-Chimie": 10.5,
+            "SVT": 14.1,
+            "Technologie": 14.0
+          },
+          "absences": 6,
+          "retards": 0,
+          "distinction": "",
+          "comportementNegatif": "",
+          "comportementPositif": "Élève agréable, sérieuse et volontaire dans toutes les matières\nTrès bel investissement à la chorale\nBons résultats en histoire-géo et SVT",
+          "appreciation": "Trimestre moyen avec des résultats globalement satisfaisants. Points forts en chant choral, histoire-géo et français. Quelques fragilités en mathématiques et physique-chimie. Élève sérieuse et volontaire qui doit continuer ses efforts pour progresser dans les matières scientifiques."
+        }
+      },
+      "orientation": {
+        "parcours": "",
+        "voeux": []
+      }
+    }
+  ],
+  "appreciationsClasse": {
+    "T1": "Classe agréable dans l'ensemble avec une attitude positive générale. Cependant, le travail personnel reste très irrégulier pour de nombreux élèves. Certains élèves excellent tandis que d'autres rencontrent de sérieuses difficultés. L'absentéisme est préoccupant pour plusieurs élèves. Il est impératif que chacun s'investisse davantage dans le travail personnel pour progresser."
+  }
+}
