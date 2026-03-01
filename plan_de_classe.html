@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Plan de Classe</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 0;
+            min-height: 600px;
+        }
+
+        .sidebar {
+            background: #f8f9fa;
+            padding: 25px;
+            border-right: 2px solid #e0e0e0;
+            overflow-y: auto;
+            max-height: calc(100vh - 150px);
+        }
+
+        .main-area {
+            padding: 30px;
+            overflow-y: auto;
+            max-height: calc(100vh - 150px);
+        }
+
+        .section {
+            margin-bottom: 25px;
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 18px;
+            margin-bottom: 12px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 5px;
+        }
+
+        .input-group {
+            margin-bottom: 12px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+            font-size: 14px;
+        }
+
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        }
+
+        .constraint-item {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .constraint-item span {
+            font-size: 13px;
+            flex: 1;
+        }
+
+        .constraint-item button {
+            width: auto;
+            padding: 5px 10px;
+            margin: 0;
+            font-size: 12px;
+        }
+
+        .constraint-type {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .type-separer {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .type-eloigner {
+            background: #dc3545;
+            color: white;
+        }
+
+        .type-ensemble {
+            background: #28a745;
+            color: white;
+        }
+
+        .type-seul {
+            background: #6f42c1;
+            color: white;
+        }
+
+        .classroom {
+            background: #fefefe;
+            border: 3px solid #333;
+            border-radius: 10px;
+            padding: 30px;
+            position: relative;
+        }
+
+        .classroom-title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .classroom-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            position: relative;
+        }
+
+        .bureau {
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+            border: 3px solid #654321;
+            border-radius: 8px;
+            padding: 15px;
+            color: white;
+            font-weight: 700;
+            text-align: center;
+            width: 120px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            font-size: 14px;
+            align-self: flex-end;
+        }
+
+        .rangees-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .rangee {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .rangee-label {
+            text-align: center;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .table-double {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border: 3px solid #2196F3;
+            border-radius: 10px;
+            padding: 12px;
+            width: 200px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+
+        .table-places {
+            display: flex;
+            gap: 8px;
+        }
+
+        .place {
+            flex: 1;
+            background: white;
+            border: 2px solid #2196F3;
+            border-radius: 6px;
+            padding: 8px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .place:hover {
+            background: #f0f0f0;
+            transform: scale(1.05);
+        }
+
+        .place.occupied {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .place.empty {
+            background: #f9f9f9;
+            color: #999;
+            font-style: italic;
+            border-style: dashed;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        }
+
+        .stat-card .number {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-card .label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .alert {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 15px;
+            color: #856404;
+            font-size: 14px;
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 12px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            color: #0d47a1;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 1024px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                border-right: none;
+                border-bottom: 2px solid #e0e0e0;
+                max-height: none;
+            }
+
+            .rangees-container {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+                max-width: 100%;
+            }
+
+            .table-double {
+                width: 100%;
+                min-width: 100px;
+            }
+
+            .bureau {
+                width: 100px;
+                height: 70px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Générateur de Plan de Classe</h1>
+            <p>Configuration : 3 rangées de 5 tables doubles (30 places) | Bureau en bas à droite</p>
+        </header>
+
+        <div class="content">
+            <div class="sidebar">
+                <div class="section">
+                    <h2>1. Liste des élèves</h2>
+                    <div class="input-group">
+                        <label>Entrez les noms des élèves (un par ligne) :</label>
+                        <textarea id="elevesList" placeholder="Martin Dupont&#10;Sophie Leclerc&#10;Thomas Bernard&#10;..."></textarea>
+                    </div>
+                    <button onclick="chargerEleves()">📝 Charger les élèves</button>
+                </div>
+
+                <div class="section">
+                    <h2>2. Contraintes</h2>
+                    <div class="input-group">
+                        <label>Type de contrainte :</label>
+                        <select id="contraintType" onchange="toggleEleve2()">
+                            <option value="separer">🔀 Séparer (ne pas mettre à la même table)</option>
+                            <option value="eloigner">↔️ Éloigner au maximum</option>
+                            <option value="ensemble">🤝 Mettre ensemble</option>
+                            <option value="seul">👤 Mettre seul (sans voisin)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Élève 1 :</label>
+                        <select id="eleve1"></select>
+                    </div>
+                    <div class="input-group" id="eleve2Container">
+                        <label>Élève 2 :</label>
+                        <select id="eleve2"></select>
+                    </div>
+                    <button class="btn-secondary" onclick="ajouterContrainte()">➕ Ajouter contrainte</button>
+                    
+                    <div style="margin-top: 15px;" id="contraintesList"></div>
+                </div>
+
+                <div class="section">
+                    <h2>3. Génération</h2>
+                    <button onclick="genererPlan()">🎲 Générer le plan</button>
+                    <button class="btn-danger" onclick="reinitialiser()">🔄 Réinitialiser</button>
+                </div>
+            </div>
+
+            <div class="main-area">
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="number" id="statEleves">0</div>
+                        <div class="label">Élèves</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number" id="statPlaces">30</div>
+                        <div class="label">Places disponibles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number" id="statContraintes">0</div>
+                        <div class="label">Contraintes</div>
+                    </div>
+                </div>
+
+                <div id="alertContainer"></div>
+
+                <div class="classroom">
+                    <div class="classroom-title">🏫 Plan de Classe</div>
+                    <div class="classroom-layout">
+                        <div class="rangees-container">
+                            <div class="rangee">
+                                <div class="rangee-label">Rangée 1 (gauche)</div>
+                                <div class="table-double">
+                                    <div class="table-places">
+                                        <div class="place empty" data-rangee="1" data-table="1" data-place="1">-</div>
+                                        <div class="place empty" data-rangee="1" data-table="1" data-place="2">-</div>
+                                    </div>
+                                </div>
+                                <div class="table-double">
+                                    <div class="table-places">
+                                        <div class="place empty" data-rangee="1" data-table="2" data-place="1">-</div>
+                                        <div class="place empty" data-rangee="1" data-table="2" data-place="2">-</div>
+                                    </div>
+                                </div>
+                                <div class="table-double">
+                                    <div class="table-places">
+                                        <div class="place empty" data-rangee="1" data-table="3" data-place="1">-</div>
+                                        <div class="place empty" data-rangee="1" data-table="3" data-place="2">-</div>
+                                    </div>
+                                </div>
+                                <div class="table-double">
+                                    <div class="table-places">
+                                        <div class="place empty" data-rangee="1" data-table="4" data-place="1">-</div>
+                                        <div class="place empty" data-rangee="1" data-table="4" data-place="2">-</div>
+                                    </div>
+                                </div>
+                                <div class="table-double">
+                                    <div class="table-places">
+                                        <div class="place empty" data-rangee="1" data-table="5" data-place="1">-</div>
+                                        <div class="place empty" data-rangee="1" data-table="5" data-place="2">-</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="rangee">
+                                <div class="rangee-label">Rangée 2 (centre)</div>
+                                <div class="table-double">
+                                    <div class="table-places">
+                                        <div class="place empty" data-rangee="2" data-table="1" data-place="1">-</div>
+                                        <div class="place empty" data-rangee="2" data-table="1" data-place="2">-</div>
+                                    </div>
+                                </div>
+                                <div class="table-double">
+                                    <div class="table-places">
+                                        <div class="place empty" data-rangee="2" data-table="2" data-place="1">-</div>
+                                        <div class="place empty" data-rangee="2" data-table="2" data-place="2">-</div>
+                                    </div>
+                                </div>
+                                <div class="table-double">
+                                    <div class="table-places">
+                                        <div class="place empty" data-rangee="2" data-table="3" data-place="1">-</div>
+                                        <div class="place empty" data-rangee="2" data-table="3" data-place="2">-</div>
+                                    </div>
+                                </div>
+                                <div class="table-double">
+                                    <div class="table-places">
+                                        <div class="place empty" data-rangee="2" data-table="4" data-place="1">-</div>
+                                        <div class="place empty" data-rangee="2" data-table="4" data-place="2">-</div>
+                                    </div>
+                                </div>
+                                <div class="table-double">
+                                    <div class="table-places">
+                                        <div class="place empty" data-rangee="2" data-table="5" data-place="1">-</div>
+                                        <div class="place empty" data-rangee="2" data-table="5" data-place="2">-</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="rangee">
+                                <div class="rangee-label">Rangée 3 (droite)</div>
+                                <div class="table-double">
+                                    <div class="table-places">
+                                        <div class="place empty" data-rangee="3" data-table="1" data-place="1">-</div>
+                                        <div class="place empty" data-rangee="3" data-table="1" data-place="2">-</div>
+                                    </div>
+                                </div>
+                                <div class="table-double">
+                                    <div class="table-places">
+                                        <div class="place empty" data-rangee="3" data-table="2" data-place="1">-</div>
+                                        <div class="place empty" data-rangee="3" data-table="2" data-place="2">-</div>
+                                    </div>
+                                </div>
+                                <div class="table-double">
+                                    <div class="table-places">
+                                        <div class="place empty" data-rangee="3" data-table="3" data-place="1">-</div>
+                                        <div class="place empty" data-rangee="3" data-table="3" data-place="2">-</div>
+                                    </div>
+                                </div>
+                                <div class="table-double">
+                                    <div class="table-places">
+                                        <div class="place empty" data-rangee="3" data-table="4" data-place="1">-</div>
+                                        <div class="place empty" data-rangee="3" data-table="4" data-place="2">-</div>
+                                    </div>
+                                </div>
+                                <div class="table-double">
+                                    <div class="table-places">
+                                        <div class="place empty" data-rangee="3" data-table="5" data-place="1">-</div>
+                                        <div class="place empty" data-rangee="3" data-table="5" data-place="2">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bureau">BUREAU<br>Prof</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let eleves = [];
+        let contraintes = [];
+
+        function toggleEleve2() {
+            const type = document.getElementById('contraintType').value;
+            const eleve2Container = document.getElementById('eleve2Container');
+            
+            if (type === 'seul') {
+                eleve2Container.style.display = 'none';
+            } else {
+                eleve2Container.style.display = 'block';
+            }
+        }
+
+        function chargerEleves() {
+            const text = document.getElementById('elevesList').value.trim();
+            if (!text) {
+                afficherAlerte('Veuillez entrer au moins un élève', 'danger');
+                return;
+            }
+
+            eleves = text.split('\n').map(e => e.trim()).filter(e => e !== '');
+            
+            if (eleves.length > 30) {
+                afficherAlerte(`Attention : Vous avez ${eleves.length} élèves mais seulement 30 places disponibles. Seuls les 30 premiers seront placés.`, 'warning');
+            }
+
+            updateSelectEleves();
+            document.getElementById('statEleves').textContent = eleves.length;
+            afficherAlerte(`${eleves.length} élève(s) chargé(s) avec succès !`, 'success');
+        }
+
+        function updateSelectEleves() {
+            const select1 = document.getElementById('eleve1');
+            const select2 = document.getElementById('eleve2');
+            
+            select1.innerHTML = '<option value="">-- Choisir --</option>';
+            select2.innerHTML = '<option value="">-- Choisir --</option>';
+            
+            eleves.forEach((eleve, index) => {
+                select1.innerHTML += `<option value="${index}">${eleve}</option>`;
+                select2.innerHTML += `<option value="${index}">${eleve}</option>`;
+            });
+        }
+
+        function ajouterContrainte() {
+            const type = document.getElementById('contraintType').value;
+            const index1 = document.getElementById('eleve1').value;
+            const index2 = document.getElementById('eleve2').value;
+
+            if (!index1) {
+                afficherAlerte('Veuillez sélectionner un élève', 'danger');
+                return;
+            }
+
+            if (type !== 'seul' && !index2) {
+                afficherAlerte('Veuillez sélectionner deux élèves', 'danger');
+                return;
+            }
+
+            if (type !== 'seul' && index1 === index2) {
+                afficherAlerte('Veuillez sélectionner deux élèves différents', 'danger');
+                return;
+            }
+
+            const eleve1 = eleves[parseInt(index1)];
+            
+            if (type === 'seul') {
+                contraintes.push({
+                    type: type,
+                    eleve1: eleve1,
+                    eleve2: null
+                });
+            } else {
+                const eleve2 = eleves[parseInt(index2)];
+                contraintes.push({
+                    type: type,
+                    eleve1: eleve1,
+                    eleve2: eleve2
+                });
+            }
+
+            afficherContraintes();
+            document.getElementById('statContraintes').textContent = contraintes.length;
+            afficherAlerte('Contrainte ajoutée !', 'success');
+        }
+
+        function afficherContraintes() {
+            const container = document.getElementById('contraintesList');
+            container.innerHTML = '';
+
+            contraintes.forEach((c, index) => {
+                const typeLabel = {
+                    'separer': '🔀 Séparer',
+                    'eloigner': '↔️ Éloigner',
+                    'ensemble': '🤝 Ensemble',
+                    'seul': '👤 Seul'
+                }[c.type];
+
+                const typeClass = {
+                    'separer': 'type-separer',
+                    'eloigner': 'type-eloigner',
+                    'ensemble': 'type-ensemble',
+                    'seul': 'type-seul'
+                }[c.type];
+
+                const texte = c.type === 'seul' 
+                    ? c.eleve1 
+                    : `${c.eleve1} • ${c.eleve2}`;
+
+                container.innerHTML += `
+                    <div class="constraint-item">
+                        <span>
+                            <span class="constraint-type ${typeClass}">${typeLabel}</span>
+                            ${texte}
+                        </span>
+                        <button class="btn-danger" onclick="supprimerContrainte(${index})">✕</button>
+                    </div>
+                `;
+            });
+        }
+
+        function supprimerContrainte(index) {
+            contraintes.splice(index, 1);
+            afficherContraintes();
+            document.getElementById('statContraintes').textContent = contraintes.length;
+        }
+
+        function afficherAlerte(message, type = 'warning') {
+            const container = document.getElementById('alertContainer');
+            const className = type === 'danger' ? 'alert-danger' : (type === 'success' ? 'alert-success' : 'alert');
+            container.innerHTML = `<div class="${className}">${message}</div>`;
+            
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 4000);
+        }
+
+        function calculerDistance(pos1, pos2) {
+            // Distance entre deux positions [rangée, table]
+            const dr = Math.abs(pos1[0] - pos2[0]);
+            const dt = Math.abs(pos1[1] - pos2[1]);
+            return dr + dt;
+        }
+
+        function genererPlan() {
+            if (eleves.length === 0) {
+                afficherAlerte('Veuillez d\'abord charger la liste des élèves', 'danger');
+                return;
+            }
+
+            // Créer liste de toutes les places
+            const places = [];
+            for (let r = 1; r <= 3; r++) {
+                for (let t = 1; t <= 5; t++) {
+                    for (let p = 1; p <= 2; p++) {
+                        places.push([r, t, p]);
+                    }
+                }
+            }
+
+            // Mélanger les élèves
+            const elevesAplacer = [...eleves].slice(0, 30);
+            
+            // Tentatives avec algorithme simple
+            let meilleurePlan = null;
+            let meilleurScore = -Infinity;
+            const tentatives = 100;
+
+            for (let i = 0; i < tentatives; i++) {
+                const plan = genererPlanAleatoire(elevesAplacer, places);
+                const score = evaluerPlan(plan);
+                
+                if (score > meilleurScore) {
+                    meilleurScore = score;
+                    meilleurePlan = plan;
+                }
+            }
+
+            afficherPlan(meilleurePlan);
+            afficherAlerte(`Plan généré avec succès ! (Score: ${meilleurScore})`, 'success');
+        }
+
+        function genererPlanAleatoire(elevesAplacer, places) {
+            const plan = {};
+            const elevesShuffled = [...elevesAplacer].sort(() => Math.random() - 0.5);
+            
+            elevesShuffled.forEach((eleve, index) => {
+                const place = places[index];
+                plan[eleve] = place;
+            });
+
+            return plan;
+        }
+
+        function evaluerPlan(plan) {
+            let score = 0;
+
+            contraintes.forEach(c => {
+                if (c.type === 'seul') {
+                    const pos1 = plan[c.eleve1];
+                    if (!pos1) return;
+
+                    // Vérifier si l'autre place de la table est vide
+                    const [rangee, table, place] = pos1;
+                    const autrePlace = place === 1 ? 2 : 1;
+                    
+                    // Chercher si quelqu'un occupe l'autre place
+                    let voisinTrouve = false;
+                    for (const [eleve, pos] of Object.entries(plan)) {
+                        if (pos[0] === rangee && pos[1] === table && pos[2] === autrePlace) {
+                            voisinTrouve = true;
+                            break;
+                        }
+                    }
+                    
+                    score += voisinTrouve ? -1000 : 500;
+                } else {
+                    const pos1 = plan[c.eleve1];
+                    const pos2 = plan[c.eleve2];
+
+                    if (!pos1 || !pos2) return;
+
+                    const memeTable = pos1[0] === pos2[0] && pos1[1] === pos2[1];
+                    const distance = calculerDistance([pos1[0], pos1[1]], [pos2[0], pos2[1]]);
+
+                    if (c.type === 'separer') {
+                        score += memeTable ? -1000 : 100;
+                    } else if (c.type === 'eloigner') {
+                        score += distance * 50;
+                    } else if (c.type === 'ensemble') {
+                        score += memeTable ? 500 : -distance * 50;
+                    }
+                }
+            });
+
+            return score;
+        }
+
+        function afficherPlan(plan) {
+            // Vider toutes les places
+            document.querySelectorAll('.place').forEach(place => {
+                place.textContent = '-';
+                place.className = 'place empty';
+            });
+
+            // Remplir avec le plan
+            Object.entries(plan).forEach(([eleve, pos]) => {
+                const [rangee, table, place] = pos;
+                const element = document.querySelector(
+                    `.place[data-rangee="${rangee}"][data-table="${table}"][data-place="${place}"]`
+                );
+                if (element) {
+                    element.textContent = eleve;
+                    element.className = 'place occupied';
+                }
+            });
+        }
+
+        function reinitialiser() {
+            if (!confirm('Voulez-vous vraiment tout réinitialiser ?')) return;
+
+            eleves = [];
+            contraintes = [];
+            document.getElementById('elevesList').value = '';
+            document.getElementById('statEleves').textContent = '0';
+            document.getElementById('statContraintes').textContent = '0';
+            updateSelectEleves();
+            afficherContraintes();
+            
+            document.querySelectorAll('.place').forEach(place => {
+                place.textContent = '-';
+                place.className = 'place empty';
+            });
+
+            afficherAlerte('Réinitialisation effectuée', 'success');
+        }
+
+        // Initialisation
+        updateSelectEleves();
+        toggleEleve2();
+    </script>
+</body>
+</html>
