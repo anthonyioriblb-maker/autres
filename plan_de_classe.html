@@ -192,6 +192,11 @@
             color: white;
         }
 
+        .type-bureau {
+            background: #8B4513;
+            color: white;
+        }
+
         .classroom {
             background: #fefefe;
             border: 3px solid #333;
@@ -231,7 +236,42 @@
             justify-content: center;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
             font-size: 14px;
+        }
+
+        .bureau-zone {
+            display: flex;
+            align-items: center;
+            gap: 20px;
             align-self: flex-end;
+        }
+
+        .table-simple {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border: 3px solid #e65100;
+            border-radius: 10px;
+            padding: 12px;
+            width: 110px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .table-simple-label {
+            text-align: center;
+            font-size: 10px;
+            font-weight: 600;
+            color: #e65100;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .table-simple .place {
+            border-color: #e65100;
+        }
+
+        .table-simple .place.occupied {
+            background: linear-gradient(135deg, #e65100 0%, #bf360c 100%);
+            border-color: #e65100;
         }
 
         .rangees-container {
@@ -284,14 +324,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s;
-            cursor: pointer;
+            transition: all 0.2s;
+            cursor: grab;
+            user-select: none;
         }
 
-        .place:hover {
-            background: #f0f0f0;
-            transform: scale(1.05);
-        }
+        .place:hover { background: #f0f0f0; transform: scale(1.05); }
 
         .place.occupied {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -305,6 +343,83 @@
             font-style: italic;
             border-style: dashed;
         }
+
+        .place.dragging { opacity: 0.4; cursor: grabbing; }
+
+        .place.drag-over {
+            border: 3px dashed #ff9800 !important;
+            background: #fff3e0 !important;
+            transform: scale(1.1);
+        }
+
+        .table-double { position: relative; transition: all 0.2s; }
+
+        .table-double.drag-over-table {
+            border: 3px dashed #ff9800 !important;
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%) !important;
+            transform: scale(1.05);
+        }
+
+        .table-double.dragging-table { opacity: 0.4; }
+
+        .mode-toggle {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            justify-content: center;
+        }
+
+        .mode-btn {
+            padding: 7px 18px;
+            border-radius: 20px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.2s;
+            width: auto;
+            margin: 0;
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .mode-btn:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(102,126,234,0.3); }
+
+        .drag-hint {
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 12px;
+            font-style: italic;
+        }
+
+        .table-handle {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #667eea;
+            color: white;
+            border-radius: 10px;
+            padding: 2px 8px;
+            font-size: 11px;
+            cursor: grab;
+            display: none;
+            white-space: nowrap;
+            z-index: 10;
+        }
+
+        .mode-table .table-double:hover .table-handle { display: block; }
+        .mode-table .table-double { cursor: grab; }
+        .mode-table .place { cursor: default; pointer-events: none; }
+        .mode-eleve .table-handle { display: none !important; }
+        .mode-table .table-places { pointer-events: none; }
+        .mode-table .table-double { pointer-events: all; }
 
         .stats {
             display: grid;
@@ -399,7 +514,7 @@
     <div class="container">
         <header>
             <h1>📚 Générateur de Plan de Classe</h1>
-            <p>Configuration : 3 rangées de 5 tables doubles (30 places) | Bureau en bas à droite</p>
+            <p>Configuration : 3 rangées de 5 tables doubles + 1 table simple contre le bureau (31 places)</p>
         </header>
 
         <div class="content">
@@ -422,6 +537,7 @@
                             <option value="eloigner">↔️ Éloigner au maximum</option>
                             <option value="ensemble">🤝 Mettre ensemble</option>
                             <option value="seul">👤 Mettre seul (sans voisin)</option>
+                            <option value="bureau">📌 Contre le bureau (table simple)</option>
                         </select>
                     </div>
                     <div class="input-group">
@@ -451,7 +567,7 @@
                         <div class="label">Élèves</div>
                     </div>
                     <div class="stat-card">
-                        <div class="number" id="statPlaces">30</div>
+                        <div class="number" id="statPlaces">31</div>
                         <div class="label">Places disponibles</div>
                     </div>
                     <div class="stat-card">
@@ -464,35 +580,47 @@
 
                 <div class="classroom">
                     <div class="classroom-title">🏫 Plan de Classe</div>
+
+                    <div class="mode-toggle">
+                        <button class="mode-btn active" id="btnModeEleve" onclick="setMode('eleve')">👤 Déplacer un élève</button>
+                        <button class="mode-btn" id="btnModeTable" onclick="setMode('table')">🪑 Déplacer une table</button>
+                    </div>
+                    <div class="drag-hint" id="dragHint">Glissez-déposez un élève pour l'échanger avec un autre</div>
+
                     <div class="classroom-layout">
                         <div class="rangees-container">
                             <div class="rangee">
                                 <div class="rangee-label">Rangée 1 (gauche)</div>
-                                <div class="table-double">
+                                <div class="table-double" data-table-id="r1t1" draggable="false">
+                                    <div class="table-handle" draggable="true">⠿ Table R1T1</div>
                                     <div class="table-places">
                                         <div class="place empty" data-rangee="1" data-table="1" data-place="1">-</div>
                                         <div class="place empty" data-rangee="1" data-table="1" data-place="2">-</div>
                                     </div>
                                 </div>
-                                <div class="table-double">
+                                <div class="table-double" data-table-id="r1t2" draggable="false">
+                                    <div class="table-handle" draggable="true">⠿ Table R1T2</div>
                                     <div class="table-places">
                                         <div class="place empty" data-rangee="1" data-table="2" data-place="1">-</div>
                                         <div class="place empty" data-rangee="1" data-table="2" data-place="2">-</div>
                                     </div>
                                 </div>
-                                <div class="table-double">
+                                <div class="table-double" data-table-id="r1t3" draggable="false">
+                                    <div class="table-handle" draggable="true">⠿ Table R1T3</div>
                                     <div class="table-places">
                                         <div class="place empty" data-rangee="1" data-table="3" data-place="1">-</div>
                                         <div class="place empty" data-rangee="1" data-table="3" data-place="2">-</div>
                                     </div>
                                 </div>
-                                <div class="table-double">
+                                <div class="table-double" data-table-id="r1t4" draggable="false">
+                                    <div class="table-handle" draggable="true">⠿ Table R1T4</div>
                                     <div class="table-places">
                                         <div class="place empty" data-rangee="1" data-table="4" data-place="1">-</div>
                                         <div class="place empty" data-rangee="1" data-table="4" data-place="2">-</div>
                                     </div>
                                 </div>
-                                <div class="table-double">
+                                <div class="table-double" data-table-id="r1t5" draggable="false">
+                                    <div class="table-handle" draggable="true">⠿ Table R1T5</div>
                                     <div class="table-places">
                                         <div class="place empty" data-rangee="1" data-table="5" data-place="1">-</div>
                                         <div class="place empty" data-rangee="1" data-table="5" data-place="2">-</div>
@@ -502,31 +630,36 @@
 
                             <div class="rangee">
                                 <div class="rangee-label">Rangée 2 (centre)</div>
-                                <div class="table-double">
+                                <div class="table-double" data-table-id="r2t1" draggable="false">
+                                    <div class="table-handle" draggable="true">⠿ Table R2T1</div>
                                     <div class="table-places">
                                         <div class="place empty" data-rangee="2" data-table="1" data-place="1">-</div>
                                         <div class="place empty" data-rangee="2" data-table="1" data-place="2">-</div>
                                     </div>
                                 </div>
-                                <div class="table-double">
+                                <div class="table-double" data-table-id="r2t2" draggable="false">
+                                    <div class="table-handle" draggable="true">⠿ Table R2T2</div>
                                     <div class="table-places">
                                         <div class="place empty" data-rangee="2" data-table="2" data-place="1">-</div>
                                         <div class="place empty" data-rangee="2" data-table="2" data-place="2">-</div>
                                     </div>
                                 </div>
-                                <div class="table-double">
+                                <div class="table-double" data-table-id="r2t3" draggable="false">
+                                    <div class="table-handle" draggable="true">⠿ Table R2T3</div>
                                     <div class="table-places">
                                         <div class="place empty" data-rangee="2" data-table="3" data-place="1">-</div>
                                         <div class="place empty" data-rangee="2" data-table="3" data-place="2">-</div>
                                     </div>
                                 </div>
-                                <div class="table-double">
+                                <div class="table-double" data-table-id="r2t4" draggable="false">
+                                    <div class="table-handle" draggable="true">⠿ Table R2T4</div>
                                     <div class="table-places">
                                         <div class="place empty" data-rangee="2" data-table="4" data-place="1">-</div>
                                         <div class="place empty" data-rangee="2" data-table="4" data-place="2">-</div>
                                     </div>
                                 </div>
-                                <div class="table-double">
+                                <div class="table-double" data-table-id="r2t5" draggable="false">
+                                    <div class="table-handle" draggable="true">⠿ Table R2T5</div>
                                     <div class="table-places">
                                         <div class="place empty" data-rangee="2" data-table="5" data-place="1">-</div>
                                         <div class="place empty" data-rangee="2" data-table="5" data-place="2">-</div>
@@ -536,31 +669,36 @@
 
                             <div class="rangee">
                                 <div class="rangee-label">Rangée 3 (droite)</div>
-                                <div class="table-double">
+                                <div class="table-double" data-table-id="r3t1" draggable="false">
+                                    <div class="table-handle" draggable="true">⠿ Table R3T1</div>
                                     <div class="table-places">
                                         <div class="place empty" data-rangee="3" data-table="1" data-place="1">-</div>
                                         <div class="place empty" data-rangee="3" data-table="1" data-place="2">-</div>
                                     </div>
                                 </div>
-                                <div class="table-double">
+                                <div class="table-double" data-table-id="r3t2" draggable="false">
+                                    <div class="table-handle" draggable="true">⠿ Table R3T2</div>
                                     <div class="table-places">
                                         <div class="place empty" data-rangee="3" data-table="2" data-place="1">-</div>
                                         <div class="place empty" data-rangee="3" data-table="2" data-place="2">-</div>
                                     </div>
                                 </div>
-                                <div class="table-double">
+                                <div class="table-double" data-table-id="r3t3" draggable="false">
+                                    <div class="table-handle" draggable="true">⠿ Table R3T3</div>
                                     <div class="table-places">
                                         <div class="place empty" data-rangee="3" data-table="3" data-place="1">-</div>
                                         <div class="place empty" data-rangee="3" data-table="3" data-place="2">-</div>
                                     </div>
                                 </div>
-                                <div class="table-double">
+                                <div class="table-double" data-table-id="r3t4" draggable="false">
+                                    <div class="table-handle" draggable="true">⠿ Table R3T4</div>
                                     <div class="table-places">
                                         <div class="place empty" data-rangee="3" data-table="4" data-place="1">-</div>
                                         <div class="place empty" data-rangee="3" data-table="4" data-place="2">-</div>
                                     </div>
                                 </div>
-                                <div class="table-double">
+                                <div class="table-double" data-table-id="r3t5" draggable="false">
+                                    <div class="table-handle" draggable="true">⠿ Table R3T5</div>
                                     <div class="table-places">
                                         <div class="place empty" data-rangee="3" data-table="5" data-place="1">-</div>
                                         <div class="place empty" data-rangee="3" data-table="5" data-place="2">-</div>
@@ -568,7 +706,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="bureau">BUREAU<br>Prof</div>
+                        <div class="bureau-zone">
+                            <div class="table-simple" data-table-id="bureau_t1">
+                                <div class="table-simple-label">Contre bureau</div>
+                                <div class="place empty" data-rangee="0" data-table="0" data-place="1">-</div>
+                            </div>
+                            <div class="bureau">BUREAU<br>Prof</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -583,7 +727,7 @@
             const type = document.getElementById('contraintType').value;
             const eleve2Container = document.getElementById('eleve2Container');
             
-            if (type === 'seul') {
+            if (type === 'seul' || type === 'bureau') {
                 eleve2Container.style.display = 'none';
             } else {
                 eleve2Container.style.display = 'block';
@@ -599,8 +743,8 @@
 
             eleves = text.split('\n').map(e => e.trim()).filter(e => e !== '');
             
-            if (eleves.length > 30) {
-                afficherAlerte(`Attention : Vous avez ${eleves.length} élèves mais seulement 30 places disponibles. Seuls les 30 premiers seront placés.`, 'warning');
+            if (eleves.length > 31) {
+                afficherAlerte(`Attention : Vous avez ${eleves.length} élèves mais seulement 31 places disponibles. Seuls les 31 premiers seront placés.`, 'warning');
             }
 
             updateSelectEleves();
@@ -631,19 +775,19 @@
                 return;
             }
 
-            if (type !== 'seul' && !index2) {
+            if (type !== 'seul' && type !== 'bureau' && !index2) {
                 afficherAlerte('Veuillez sélectionner deux élèves', 'danger');
                 return;
             }
 
-            if (type !== 'seul' && index1 === index2) {
+            if (type !== 'seul' && type !== 'bureau' && index1 === index2) {
                 afficherAlerte('Veuillez sélectionner deux élèves différents', 'danger');
                 return;
             }
 
             const eleve1 = eleves[parseInt(index1)];
             
-            if (type === 'seul') {
+            if (type === 'seul' || type === 'bureau') {
                 contraintes.push({
                     type: type,
                     eleve1: eleve1,
@@ -672,17 +816,19 @@
                     'separer': '🔀 Séparer',
                     'eloigner': '↔️ Éloigner',
                     'ensemble': '🤝 Ensemble',
-                    'seul': '👤 Seul'
+                    'seul': '👤 Seul',
+                    'bureau': '📌 Bureau'
                 }[c.type];
 
                 const typeClass = {
                     'separer': 'type-separer',
                     'eloigner': 'type-eloigner',
                     'ensemble': 'type-ensemble',
-                    'seul': 'type-seul'
+                    'seul': 'type-seul',
+                    'bureau': 'type-bureau'
                 }[c.type];
 
-                const texte = c.type === 'seul' 
+                const texte = (c.type === 'seul' || c.type === 'bureau') 
                     ? c.eleve1 
                     : `${c.eleve1} • ${c.eleve2}`;
 
@@ -727,26 +873,15 @@
                 return;
             }
 
-            // Créer liste de toutes les places
-            const places = [];
-            for (let r = 1; r <= 3; r++) {
-                for (let t = 1; t <= 5; t++) {
-                    for (let p = 1; p <= 2; p++) {
-                        places.push([r, t, p]);
-                    }
-                }
-            }
-
-            // Mélanger les élèves
-            const elevesAplacer = [...eleves].slice(0, 30);
+            const elevesAplacer = [...eleves].slice(0, 31);
             
-            // Tentatives avec algorithme simple
+            // Tentatives : on garde le meilleur score
             let meilleurePlan = null;
             let meilleurScore = -Infinity;
-            const tentatives = 100;
+            const tentatives = 200;
 
             for (let i = 0; i < tentatives; i++) {
-                const plan = genererPlanAleatoire(elevesAplacer, places);
+                const plan = genererPlanAleatoire(elevesAplacer);
                 const score = evaluerPlan(plan);
                 
                 if (score > meilleurScore) {
@@ -756,17 +891,89 @@
             }
 
             afficherPlan(meilleurePlan);
-            afficherAlerte(`Plan généré avec succès ! (Score: ${meilleurScore})`, 'success');
+            afficherAlerte(`Plan généré avec succès !`, 'success');
         }
 
-        function genererPlanAleatoire(elevesAplacer, places) {
+        function genererPlanAleatoire(elevesAplacer) {
             const plan = {};
-            const elevesShuffled = [...elevesAplacer].sort(() => Math.random() - 0.5);
-            
-            elevesShuffled.forEach((eleve, index) => {
-                const place = places[index];
-                plan[eleve] = place;
-            });
+
+            // Toutes les tables (3 rangées × 5 tables + 1 table bureau)
+            const allTables = [];
+            // Table bureau (rangée 0, table 0, 1 seule place)
+            allTables.push({ r: 0, t: 0, spots: [null], isBureau: true });
+            for (let r = 1; r <= 3; r++)
+                for (let t = 1; t <= 5; t++)
+                    allTables.push({ r, t, spots: [null, null], isBureau: false });
+
+            // Mélanger les tables normales (pas le bureau)
+            const bureauTable = allTables[0];
+            const normalTables = allTables.slice(1).sort(() => Math.random() - 0.5);
+
+            // Mélanger les élèves
+            const shuffled = [...elevesAplacer].sort(() => Math.random() - 0.5);
+            const assignes = new Set();
+
+            // 0. Pré-assigner les élèves "contre le bureau"
+            const bureauContraintes = contraintes.filter(c =>
+                c.type === 'bureau' &&
+                elevesAplacer.includes(c.eleve1)
+            );
+            if (bureauContraintes.length > 0 && !assignes.has(bureauContraintes[0].eleve1)) {
+                bureauTable.spots[0] = bureauContraintes[0].eleve1;
+                assignes.add(bureauContraintes[0].eleve1);
+            }
+
+            // 1. Pré-assigner les paires "ensemble" à la même table
+            const ensemblePairs = contraintes.filter(c =>
+                c.type === 'ensemble' &&
+                elevesAplacer.includes(c.eleve1) &&
+                elevesAplacer.includes(c.eleve2)
+            );
+
+            let tableIdx = 0;
+            for (const pair of ensemblePairs) {
+                if (assignes.has(pair.eleve1) || assignes.has(pair.eleve2)) continue;
+                while (tableIdx < normalTables.length &&
+                       (normalTables[tableIdx].spots[0] !== null || normalTables[tableIdx].spots[1] !== null))
+                    tableIdx++;
+                if (tableIdx >= normalTables.length) break;
+
+                normalTables[tableIdx].spots[0] = pair.eleve1;
+                normalTables[tableIdx].spots[1] = pair.eleve2;
+                assignes.add(pair.eleve1);
+                assignes.add(pair.eleve2);
+                tableIdx++;
+            }
+
+            // 2. Distribuer les élèves restants
+            const restants = shuffled.filter(e => !assignes.has(e));
+            let ri = 0;
+
+            // Passe 1 : une place par table normale
+            for (let i = 0; i < normalTables.length && ri < restants.length; i++) {
+                if (normalTables[i].spots[0] === null) {
+                    normalTables[i].spots[0] = restants[ri++];
+                }
+            }
+            // Passe 2 : deuxième place par table normale
+            for (let i = 0; i < normalTables.length && ri < restants.length; i++) {
+                if (normalTables[i].spots[1] === null) {
+                    normalTables[i].spots[1] = restants[ri++];
+                }
+            }
+            // Si la table bureau est encore libre et qu'il reste des élèves
+            if (bureauTable.spots[0] === null && ri < restants.length) {
+                bureauTable.spots[0] = restants[ri++];
+            }
+
+            // Construire le plan
+            if (bureauTable.spots[0]) {
+                plan[bureauTable.spots[0]] = [0, 0, 1];
+            }
+            for (const tbl of normalTables) {
+                if (tbl.spots[0]) plan[tbl.spots[0]] = [tbl.r, tbl.t, 1];
+                if (tbl.spots[1]) plan[tbl.spots[1]] = [tbl.r, tbl.t, 2];
+            }
 
             return plan;
         }
@@ -793,6 +1000,11 @@
                     }
                     
                     score += voisinTrouve ? -1000 : 500;
+                } else if (c.type === 'bureau') {
+                    const pos1 = plan[c.eleve1];
+                    if (!pos1) return;
+                    // L'élève doit être à la table bureau (rangée 0, table 0)
+                    score += (pos1[0] === 0 && pos1[1] === 0) ? 2000 : -2000;
                 } else {
                     const pos1 = plan[c.eleve1];
                     const pos2 = plan[c.eleve2];
@@ -833,6 +1045,8 @@
                     element.className = 'place occupied';
                 }
             });
+            // Re-init drag & drop after plan display
+            setTimeout(initDrag, 50);
         }
 
         function reinitialiser() {
@@ -854,9 +1068,216 @@
             afficherAlerte('Réinitialisation effectuée', 'success');
         }
 
+
+        // ===== DRAG & DROP =====
+        let dragMode = 'eleve';
+        let dragSrcPlace = null;
+        let dragSrcTableId = null;
+
+        function setMode(mode) {
+            dragMode = mode;
+            document.getElementById('btnModeEleve').classList.toggle('active', mode === 'eleve');
+            document.getElementById('btnModeTable').classList.toggle('active', mode === 'table');
+            document.getElementById('dragHint').textContent = mode === 'eleve'
+                ? 'Glissez-deposez un eleve vers une autre place pour les echanger'
+                : 'Glissez-deposez une poignee de table vers une autre table pour les echanger';
+            const layout = document.querySelector('.classroom-layout');
+            layout.classList.toggle('mode-eleve', mode === 'eleve');
+            layout.classList.toggle('mode-table', mode === 'table');
+        }
+
+        function initDrag() {
+            document.querySelectorAll('.place').forEach(p => initPlaceDrag(p));
+            document.querySelectorAll('.table-handle').forEach(h => initHandleDrag(h));
+            document.querySelectorAll('.table-double').forEach(t => initTableDrop(t));
+        }
+
+        // --- Drag eleve ---
+        function initPlaceDrag(el) {
+            el.setAttribute('draggable', 'true');
+            el.addEventListener('dragstart', e => {
+                if (dragMode !== 'eleve') { e.preventDefault(); return; }
+                dragSrcPlace = el;
+                el.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', 'eleve');
+                e.stopPropagation();
+            });
+            el.addEventListener('dragend', () => {
+                el.classList.remove('dragging');
+                document.querySelectorAll('.drag-over').forEach(x => x.classList.remove('drag-over'));
+                dragSrcPlace = null;
+            });
+            el.addEventListener('dragover', e => {
+                if (dragMode !== 'eleve' || !dragSrcPlace) return;
+                e.preventDefault();
+                e.stopPropagation();
+                el.classList.add('drag-over');
+            });
+            el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
+            el.addEventListener('drop', e => {
+                e.preventDefault();
+                e.stopPropagation();
+                el.classList.remove('drag-over');
+                if (!dragSrcPlace || dragSrcPlace === el || dragMode !== 'eleve') return;
+                const srcText = dragSrcPlace.textContent;
+                const srcClass = dragSrcPlace.className;
+                dragSrcPlace.textContent = el.textContent;
+                dragSrcPlace.className = el.className.replace('drag-over', '').trim();
+                el.textContent = srcText;
+                el.className = srcClass;
+            });
+        }
+
+        // --- Drag table (via handle) ---
+        function initHandleDrag(handle) {
+            handle.addEventListener('dragstart', e => {
+                if (dragMode !== 'table') { e.preventDefault(); return; }
+                const tableEl = handle.closest('.table-double');
+                dragSrcTableId = tableEl.dataset.tableId;
+                tableEl.classList.add('dragging-table');
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', 'table:' + dragSrcTableId);
+                e.stopPropagation();
+            });
+            handle.addEventListener('dragend', () => {
+                document.querySelectorAll('.dragging-table').forEach(x => x.classList.remove('dragging-table'));
+                document.querySelectorAll('.drag-over-table').forEach(x => x.classList.remove('drag-over-table'));
+                dragSrcTableId = null;
+            });
+        }
+
+        function initTableDrop(tableEl) {
+            tableEl.addEventListener('dragover', e => {
+                if (dragMode !== 'table' || !dragSrcTableId) return;
+                if (tableEl.dataset.tableId === dragSrcTableId) return;
+                e.preventDefault();
+                tableEl.classList.add('drag-over-table');
+            });
+            tableEl.addEventListener('dragleave', e => {
+                // Only remove if truly leaving the table (not just a child)
+                if (!tableEl.contains(e.relatedTarget)) {
+                    tableEl.classList.remove('drag-over-table');
+                }
+            });
+            tableEl.addEventListener('drop', e => {
+                e.preventDefault();
+                e.stopPropagation();
+                tableEl.classList.remove('drag-over-table');
+                if (!dragSrcTableId || tableEl.dataset.tableId === dragSrcTableId || dragMode !== 'table') return;
+
+                const srcTable = document.querySelector(`.table-double[data-table-id="${dragSrcTableId}"]`);
+                if (!srcTable) return;
+
+                const srcPlaces = srcTable.querySelectorAll('.place');
+                const dstPlaces = tableEl.querySelectorAll('.place');
+
+                srcPlaces.forEach((sp, i) => {
+                    const dp = dstPlaces[i];
+                    const tmpText = sp.textContent;
+                    const tmpClass = sp.className;
+                    sp.textContent = dp.textContent;
+                    sp.className = dp.className;
+                    dp.textContent = tmpText;
+                    dp.className = tmpClass;
+                });
+            });
+        }
+
+        // Init mode on load - called from Initialisation section
+
+
+        function initDrag() {
+            // Init eleve drag
+            document.querySelectorAll('.place').forEach(p => initPlaceDrag(p));
+            // Init table drag (via handles)
+            document.querySelectorAll('.table-handle').forEach(h => initTableHandleDrag(h));
+        }
+
+        function initPlaceDrag(el) {
+            el.setAttribute('draggable', 'true');
+            el.addEventListener('dragstart', e => {
+                if (dragMode !== 'eleve') { e.preventDefault(); return; }
+                dragSrcPlace = el;
+                el.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+            });
+            el.addEventListener('dragend', () => {
+                el.classList.remove('dragging');
+                document.querySelectorAll('.drag-over').forEach(x => x.classList.remove('drag-over'));
+                dragSrcPlace = null;
+            });
+            el.addEventListener('dragover', e => {
+                if (dragMode !== 'eleve') return;
+                e.preventDefault();
+                el.classList.add('drag-over');
+            });
+            el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
+            el.addEventListener('drop', e => {
+                e.preventDefault();
+                el.classList.remove('drag-over');
+                if (!dragSrcPlace || dragSrcPlace === el || dragMode !== 'eleve') return;
+                // Swap text and classes
+                const srcText = dragSrcPlace.textContent;
+                const srcClass = dragSrcPlace.className;
+                dragSrcPlace.textContent = el.textContent;
+                dragSrcPlace.className = el.className.replace('drag-over', '');
+                el.textContent = srcText;
+                el.className = srcClass;
+            });
+        }
+
+        function initTableHandleDrag(handle) {
+            handle.setAttribute('draggable', 'true');
+            const tableEl = handle.closest('.table-double');
+
+            handle.addEventListener('dragstart', e => {
+                if (dragMode !== 'table') { e.preventDefault(); return; }
+                dragSrcTable = tableEl;
+                tableEl.classList.add('dragging-table');
+                e.dataTransfer.effectAllowed = 'move';
+                e.stopPropagation();
+            });
+            handle.addEventListener('dragend', () => {
+                document.querySelectorAll('.dragging-table').forEach(x => x.classList.remove('dragging-table'));
+                document.querySelectorAll('.drag-over-table').forEach(x => x.classList.remove('drag-over-table'));
+                dragSrcTable = null;
+            });
+
+            tableEl.addEventListener('dragover', e => {
+                if (dragMode !== 'table' || !dragSrcTable) return;
+                e.preventDefault();
+                if (tableEl !== dragSrcTable) tableEl.classList.add('drag-over-table');
+            });
+            tableEl.addEventListener('dragleave', () => tableEl.classList.remove('drag-over-table'));
+            tableEl.addEventListener('drop', e => {
+                e.preventDefault();
+                tableEl.classList.remove('drag-over-table');
+                if (!dragSrcTable || dragSrcTable === tableEl || dragMode !== 'table') return;
+
+                // Swap content of all 4 places between the two tables
+                const srcPlaces = dragSrcTable.querySelectorAll('.place');
+                const dstPlaces = tableEl.querySelectorAll('.place');
+
+                srcPlaces.forEach((sp, i) => {
+                    const dp = dstPlaces[i];
+                    const tmpText = sp.textContent;
+                    const tmpClass = sp.className;
+                    sp.textContent = dp.textContent;
+                    sp.className = dp.className;
+                    dp.textContent = tmpText;
+                    dp.className = tmpClass;
+                });
+            });
+        }
+
+
+
         // Initialisation
         updateSelectEleves();
         toggleEleve2();
+        setMode('eleve');
+        initDrag();
     </script>
 </body>
 </html>

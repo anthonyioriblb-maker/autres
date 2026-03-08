@@ -653,6 +653,24 @@
             }
         }
     </style>
+    <script>
+    // Chargement dynamique de la lib docx
+    (function() {
+        const urls = [
+            'https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js',
+            'https://unpkg.com/docx@8.5.0/build/index.umd.js',
+        ];
+        function tryLoad(i) {
+            if (i >= urls.length) { console.error('Aucun CDN docx disponible'); return; }
+            const s = document.createElement('script');
+            s.src = urls[i];
+            s.onload = () => console.log('docx chargé depuis', urls[i], '→ window.docx =', typeof window.docx);
+            s.onerror = () => { console.warn('Échec CDN:', urls[i]); tryLoad(i + 1); };
+            document.head.appendChild(s);
+        }
+        tryLoad(0);
+    })();
+    </script>
 </head>
 <body>
     <!-- CHOICE PAGE -->
@@ -744,6 +762,7 @@
             <div style="margin-top: 30px; background: white; padding: 20px; border-radius: 10px; border: 2px solid #e0e0e0;">
                 <h3 style="margin-bottom: 20px;">🏆 Distinctions par trimestre</h3>
                 <div id="distinctionsParTrimestre"></div>
+                <div id="courriersParTrimestre"></div>
             </div>
 
             <div class="chart-container">
@@ -771,14 +790,15 @@
             </div>
 
             <div class="export-section">
-                <h3>🖨️ Impression</h3>
-                <p>Générez un rapport imprimable de tous les élèves pour le trimestre sélectionné.</p>
+                <h3>📄 Rapport Word (.docx)</h3>
+                <p>Génère un document Word avec les appréciations et distinctions en couleur pour le trimestre sélectionné.</p>
                 <div class="trimestre-selector" style="margin-bottom: 15px;">
                     <button class="trimestre-btn" onclick="selectPrintTrimestre(1)">Trimestre 1</button>
                     <button class="trimestre-btn" onclick="selectPrintTrimestre(2)">Trimestre 2</button>
                     <button class="trimestre-btn active" onclick="selectPrintTrimestre(3)">Trimestre 3</button>
                 </div>
-                <button onclick="exportPrintableReport()">🖨️ Générer rapport imprimable</button>
+                <button onclick="exportDocx()" id="btnDocx">📄 Télécharger rapport .docx</button>
+                <span id="docxStatus" style="margin-left:10px;font-size:0.9em;color:#666;"></span>
             </div>
 
             <div class="export-section" style="background: #ffe0e0; border: 2px solid #dc3545;">
@@ -1058,6 +1078,27 @@
                     </div>
                 </div>
 
+                <!-- SECTION COURRIERS PARENTS -->
+                <div style="margin-top: 5px; padding: 8px 10px; background: #fff3cd; border-radius: 6px; border: 2px solid #f59e0b; display: flex; gap: 20px; align-items: center;">
+                    <span style="font-weight: 700; font-size: 0.92em; color: #92400e;">✉️ COURRIERS PARENTS :</span>
+                    <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em; font-weight: 600; color: #b45309;">
+                        <input type="checkbox" 
+                               id="courrierTravail_${student.id}_${trimestre}"
+                               ${data.courrierTravail ? 'checked' : ''}
+                               onchange="saveCourrierTravail(${student.id}, '${trimestre}', this.checked)"
+                               style="width: 18px; height: 18px; cursor: pointer; accent-color: #d97706;">
+                        📚 Manque de travail
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9em; font-weight: 600; color: #dc2626;">
+                        <input type="checkbox"
+                               id="courrierComportement_${student.id}_${trimestre}"
+                               ${data.courrierComportement ? 'checked' : ''}
+                               onchange="saveCourrierComportement(${student.id}, '${trimestre}', this.checked)"
+                               style="width: 18px; height: 18px; cursor: pointer; accent-color: #dc2626;">
+                        ⚠️ Comportement
+                    </label>
+                </div>
+
                 <!-- SECTION 3 : APPRÉCIATION GÉNÉRALE -->
                 <div style="margin-top: 5px; padding: 6px; background: #f8f9ff; border-radius: 6px;">
                     <h4 style="color: #667eea; margin-bottom: 5px; font-size: 0.95em;">📝 APPRÉCIATION GÉNÉRALE DU CONSEIL DE CLASSE</h4>
@@ -1088,6 +1129,20 @@
             }
             
             return appreciation;
+        }
+
+        function saveCourrierTravail(studentId, trimestre, value) {
+            const student = students.find(s => s.id === studentId);
+            if (student && student.trimestres[trimestre]) {
+                student.trimestres[trimestre].courrierTravail = value;
+            }
+        }
+
+        function saveCourrierComportement(studentId, trimestre, value) {
+            const student = students.find(s => s.id === studentId);
+            if (student && student.trimestres[trimestre]) {
+                student.trimestres[trimestre].courrierComportement = value;
+            }
         }
 
         function toggleDistinction(studentId, trimestre, distinction) {
@@ -1254,7 +1309,59 @@
             // Distinctions par trimestre
             renderDistinctionsParTrimestre();
 
+            // Courriers parents par trimestre
+            renderCourriersParTrimestre();
+
             drawStatsChart();
+        }
+
+        function renderCourriersParTrimestre() {
+            // Chercher ou créer le conteneur
+            let container = document.getElementById('courriersParTrimestre');
+            if (!container) return;
+
+            const courriersByTrimestre = {
+                'T1': { travail: [], comportement: [] },
+                'T2': { travail: [], comportement: [] },
+                'T3': { travail: [], comportement: [] }
+            };
+
+            students.forEach(student => {
+                ['T1', 'T2', 'T3'].forEach(t => {
+                    const data = student.trimestres[t];
+                    if (!data) return;
+                    if (data.courrierTravail) courriersByTrimestre[t].travail.push(student.name);
+                    if (data.courrierComportement) courriersByTrimestre[t].comportement.push(student.name);
+                });
+            });
+
+            const hasAny = ['T1','T2','T3'].some(t =>
+                courriersByTrimestre[t].travail.length > 0 || courriersByTrimestre[t].comportement.length > 0
+            );
+
+            if (!hasAny) {
+                container.innerHTML = '';
+                return;
+            }
+
+            let html = '<div style="margin-top: 20px; padding: 12px; background: #fff3cd; border-radius: 8px; border: 2px solid #f59e0b;">';
+            html += '<h3 style="color: #92400e; margin-bottom: 10px;">✉️ Courriers parents à envoyer</h3>';
+
+            ['T1','T2','T3'].forEach(t => {
+                const d = courriersByTrimestre[t];
+                if (d.travail.length === 0 && d.comportement.length === 0) return;
+                html += `<div style="margin-bottom: 10px;"><strong style="color:#374151">${t}</strong><br>`;
+                if (d.travail.length > 0) {
+                    html += `<span style="display:inline-block;margin-top:4px;padding:3px 8px;background:#fde68a;border-radius:4px;font-size:0.88em;">📚 Manque de travail (${d.travail.length}) :</span> <span style="font-size:0.88em;">${d.travail.join(', ')}</span><br>`;
+                }
+                if (d.comportement.length > 0) {
+                    html += `<span style="display:inline-block;margin-top:4px;padding:3px 8px;background:#fecaca;border-radius:4px;font-size:0.88em;">⚠️ Comportement (${d.comportement.length}) :</span> <span style="font-size:0.88em;">${d.comportement.join(', ')}</span><br>`;
+                }
+                html += '</div>';
+            });
+
+            html += '</div>';
+            container.innerHTML = html;
         }
 
         function renderDistinctionsParTrimestre() {
@@ -1497,6 +1604,141 @@
             event.target.value = ''; // Reset input
         }
 
+        async function exportDocx() {
+            const btn = document.getElementById('btnDocx');
+            const status = document.getElementById('docxStatus');
+            btn.disabled = true;
+            status.textContent = '⏳ Génération en cours...';
+
+            try {
+                // La lib docx peut s'appeler 'docx' ou 'DocxJS' selon la version/CDN
+                const docxLib = window.docx || window.DocxJS || window.DOCX;
+                if (!docxLib) {
+                    // Diagnostic : lister les variables globales contenant 'doc'
+                    const candidates = Object.keys(window).filter(k => k.toLowerCase().includes('doc') || k.toLowerCase().includes('packer') || k.toLowerCase().includes('paragraph'));
+                    throw new Error("Librairie docx non chargée. Variables trouvées : " + (candidates.join(', ') || 'aucune'));
+                }
+                const { Document, Packer, Paragraph, TextRun, ShadingType, BorderStyle, AlignmentType } = docxLib;
+                const trimestreKey = `T${currentPrintTrimestre}`;
+
+                const COLORS = {
+                    felicitations: { bg: 'FFD700', text: '7B4F00', label: 'FÉLICITATIONS DU CONSEIL DE CLASSE' },
+                    compliments:   { bg: 'FFD700', text: '7B4F00', label: 'COMPLIMENTS DU CONSEIL DE CLASSE' },
+                    encouragements:{ bg: '4472C4', text: 'FFFFFF', label: 'ENCOURAGEMENTS DU CONSEIL DE CLASSE' },
+                };
+
+                const allChildren = [
+                    new Paragraph({
+                        alignment: AlignmentType.CENTER,
+                        spacing: { before: 0, after: 120 },
+                        children: [new TextRun({ text: `Rapport de Conseil de Classe — 3ème`, bold: true, size: 32, color: '1F3864', font: 'Arial' })]
+                    }),
+                    new Paragraph({
+                        alignment: AlignmentType.CENTER,
+                        spacing: { before: 0, after: 300 },
+                        children: [new TextRun({ text: `Trimestre ${currentPrintTrimestre} — ${new Date().toLocaleDateString('fr-FR')}`, size: 24, color: '4472C4', font: 'Arial' })]
+                    }),
+                ];
+
+                const sorted = [...students].sort((a, b) => a.name.localeCompare(b.name));
+
+                sorted.forEach(student => {
+                    const data = student.trimestres[trimestreKey];
+                    if (!data) return;
+
+                    // Nom élève
+                    allChildren.push(new Paragraph({
+                        spacing: { before: 280, after: 60 },
+                        border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: '2E75B6', space: 1 } },
+                        children: [new TextRun({ text: student.name, bold: true, size: 26, color: '1F3864', font: 'Arial' })]
+                    }));
+
+                    // Moyenne + distinction
+                    const moyChildren = [
+                        new TextRun({ text: 'Moyenne : ', bold: true, size: 22, font: 'Arial' }),
+                        new TextRun({ text: `${data.moyenne ? data.moyenne.toFixed(2) : '-'}/20`, bold: true, size: 22, color: '1F3864', font: 'Arial' }),
+                    ];
+                    if (data.distinction && COLORS[data.distinction]) {
+                        const c = COLORS[data.distinction];
+                        moyChildren.push(new TextRun({ text: '   ' }));
+                        moyChildren.push(new TextRun({
+                            text: `  ${c.label}  `, bold: true, size: 20, color: c.text, font: 'Arial',
+                            shading: { fill: c.bg, type: ShadingType.CLEAR },
+                        }));
+                    }
+                    allChildren.push(new Paragraph({ spacing: { before: 60, after: 40 }, children: moyChildren }));
+
+                    // Courriers parents
+                    if (data.courrierTravail || data.courrierComportement) {
+                        const courriers = [];
+                        if (data.courrierTravail) courriers.push('📚 Manque de travail');
+                        if (data.courrierComportement) courriers.push('⚠️ Comportement');
+                        allChildren.push(new Paragraph({
+                            spacing: { before: 40, after: 40 },
+                            shading: { fill: 'FFF3CD', type: ShadingType.CLEAR },
+                            children: [
+                                new TextRun({ text: '✉️ Courrier(s) parents : ', bold: true, size: 20, color: '92400E', font: 'Arial' }),
+                                new TextRun({ text: courriers.join(' — '), size: 20, color: '92400E', font: 'Arial' }),
+                            ]
+                        }));
+                    }
+
+                    // Appréciation
+                    if (data.appreciation) {
+                        allChildren.push(new Paragraph({
+                            spacing: { before: 40, after: 60 },
+                            children: [
+                                new TextRun({ text: 'Appréciation : ', bold: true, size: 22, font: 'Arial' }),
+                                new TextRun({ text: data.appreciation, size: 22, font: 'Arial' }),
+                            ]
+                        }));
+                    }
+
+                    // Vœux
+                    if (student.orientation && student.orientation.voeux && student.orientation.voeux.length > 0) {
+                        allChildren.push(new Paragraph({
+                            spacing: { before: 40, after: 20 },
+                            children: [new TextRun({ text: "Vœux d'orientation :", bold: true, size: 22, font: 'Arial' })]
+                        }));
+                        student.orientation.voeux.forEach((v, i) => {
+                            allChildren.push(new Paragraph({
+                                spacing: { before: 0, after: 0 },
+                                indent: { left: 360 },
+                                children: [new TextRun({ text: `${i + 1}. ${v}`, size: 22, font: 'Arial', italics: true })]
+                            }));
+                        });
+                    }
+                });
+
+                const doc = new Document({
+                    sections: [{
+                        properties: {
+                            page: {
+                                size: { width: 11906, height: 16838 },
+                                margin: { top: 1134, right: 1134, bottom: 1134, left: 1134 }
+                            }
+                        },
+                        children: allChildren
+                    }]
+                });
+
+                const blob = await Packer.toBlob(doc);
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `rapport_conseil_T${currentPrintTrimestre}_${new Date().toLocaleDateString('fr-FR').replace(/\//g,'-')}.docx`;
+                a.click();
+                URL.revokeObjectURL(url);
+
+                status.textContent = '✅ Téléchargé !';
+                setTimeout(() => { status.textContent = ''; }, 3000);
+            } catch(e) {
+                console.error(e);
+                status.textContent = '❌ Erreur : ' + e.message;
+            }
+            btn.disabled = false;
+        }
+
         function exportPrintableReport() {
             const container = document.getElementById('printReport');
             const trimestreKey = `T${currentPrintTrimestre}`;
@@ -1517,6 +1759,12 @@
                     html += `<p><strong>Distinction:</strong> ${data.distinction}</p>`;
                 }
 
+                if (data.courrierTravail || data.courrierComportement) {
+                    let courriers = [];
+                    if (data.courrierTravail) courriers.push('📚 Manque de travail');
+                    if (data.courrierComportement) courriers.push('⚠️ Comportement');
+                    html += `<p style="background:#fff3cd;padding:6px 10px;border-radius:5px;border-left:4px solid #f59e0b;"><strong>✉️ Courrier(s) parents :</strong> ${courriers.join(' — ')}</p>`;
+                }
                 if (data.appreciation) {
                     html += `<p><strong>Appréciation:</strong> ${data.appreciation}</p>`;
                 }
